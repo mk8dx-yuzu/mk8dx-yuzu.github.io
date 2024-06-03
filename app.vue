@@ -25,6 +25,7 @@
 					mmr: player.mmr || player.MMR,
 					wins: player.wins || 0,
 					losses: player.losses || 0,
+					history: player.history || []
 				}))
 				.filter((item) => !(item["wins"] == 0 && item["mmr"] == 2000))
 		).reverse()

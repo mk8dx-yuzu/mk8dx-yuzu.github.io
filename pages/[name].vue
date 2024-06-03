@@ -9,6 +9,8 @@
             </div>
             <img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon">
         </span>
+        <p class="text-4xl">History:</p>
+        <p>{{ player.history.join(", ") }}</p>
     </div>
     <div v-else>
         <p>This player does not exist</p>
