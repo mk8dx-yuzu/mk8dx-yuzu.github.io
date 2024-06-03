@@ -1,0 +1,24 @@
+.rank10wood {
+    color: rgb(102, 56, 18);
+}
+.rank09bronze {
+    color: #cd7f32;
+}
+.rank08silver {
+    color: #C0C0C0;
+}
+.rank07gold {
+    color: #FFD700;
+}
+.rank06platinum {
+    color: #3a7bae;
+}
+.rank03diamond {
+    color: #B9F2FF;
+}
+.rank02master {
+    color: #000000;
+}
+.rank01grandmaster {
+    color: #570F21;
+}
