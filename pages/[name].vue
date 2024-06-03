@@ -11,7 +11,6 @@
 		</span>
 		<p class="text-4xl">History:</p>
 		<p>{{ player.history.join(", ") }}</p>
-        <p>{{ history }}</p>
 
 		<highchart :options="chartOptions" />
 	</div>
