@@ -1,7 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	css: ["~/assets/css/main.css", "~/assets/css/ranks.css"],
+	css: ["~/assets/css/main.css", "~/assets/css/ranks.css", "~/assets/css/chart.css"],
+	modules: ['nuxt-highcharts'],
 	ssr: false,
 	postcss: {
 		plugins: {
