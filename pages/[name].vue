@@ -69,7 +69,7 @@
 			text: `Player: ${player.value?.name}`,
 		},
 		xAxis: {
-			categories: ["11 mogis ago", "10 mogis ago", "9 mogis ago", "8 mogis ago", "7 mogis ago", "6 mogis ago", "5 mogis ago", "4 mogis ago", "3 mogis ago", "2 mogis ago", "latest mogi"],
+			categories: scores.map((x, index) => `${index+1} mogis ago`).reverse(),
 			accessibility: {
 				description: "Time",
 			},
