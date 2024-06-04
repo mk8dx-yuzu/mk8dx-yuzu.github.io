@@ -16,8 +16,9 @@
 
 		<highchart :options="chartOptions" />
 	</div>
-	<div v-else>
+	<div v-else class="text-5xl flex flex-col items-center py-10">
 		<p>This player does not exist</p>
+		<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200">
 	</div>
 </template>
 
@@ -48,9 +49,9 @@
 		}
 	}
 
-	const scores = [player.value.mmr];
-	for (let i = player.value.history.length - 1; i >= 0; i--) {
-	    const change = player.value.history[i];
+	const scores = [player.value?.mmr];
+	for (let i = player.value?.history.length - 1; i >= 0; i--) {
+	    const change = player.value?.history[i];
 	    scores.push(scores[scores.length - 1] - change);
 	}
 	const history = scores.reverse();
@@ -65,7 +66,7 @@
 			text: "MMR History",
 		},
 		subtitle: {
-			text: `Player: ${player.value.name}`,
+			text: `Player: ${player.value?.name}`,
 		},
 		xAxis: {
 			categories: ["11 mogis ago", "10 mogis ago", "9 mogis ago", "8 mogis ago", "7 mogis ago", "6 mogis ago", "5 mogis ago", "4 mogis ago", "3 mogis ago", "2 mogis ago", "latest mogi"],
@@ -93,7 +94,7 @@
 		},
 		series: [
 			{
-				name: `${player.value.name}'s MMR developement'`,
+				name: `${player.value?.name}'s MMR developement'`,
 				marker: {
 					symbol: "square",
 				},
