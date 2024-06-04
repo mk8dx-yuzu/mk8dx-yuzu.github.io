@@ -1,14 +1,16 @@
 <template>
-	<div v-if="player" class="p-10">
-		<p class="text-5xl py-8">{{ player.name }}</p>
-
-		<span class="md:flex space-y-6 justify-between">
-			<div class="text-3xl">
-				<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
-				<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
-			</div>
-			<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon" />
-		</span>
+	<div v-if="player" class="p-10 flex-col">
+		<div>
+			<p class="text-5xl py-8">{{ player.name }}</p>
+	
+			<span class="md:flex space-y-6 justify-between">
+				<div class="text-3xl">
+					<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
+					<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
+				</div>
+				<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon" />
+			</span>
+		</div>
 		<p class="text-4xl">History:</p>
 		<p>{{ player.history.join(", ") }}</p>
 
@@ -100,30 +102,3 @@
 		],
 	};
 </script>
-
-<style>
-	.rank10wood {
-		color: rgb(102, 56, 18);
-	}
-	.rank09bronze {
-		color: #cd7f32;
-	}
-	.rank08silver {
-		color: #c0c0c0;
-	}
-	.rank07gold {
-		color: #ffd700;
-	}
-	.rank06platinum {
-		color: #3a7bae;
-	}
-	.rank03diamond {
-		color: #b9f2ff;
-	}
-	.rank02master {
-		color: #000000;
-	}
-	.rank01grandmaster {
-		color: #570f21;
-	}
-</style>
