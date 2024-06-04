@@ -1,24 +1,26 @@
 <template>
-	<div v-if="player" class="md:p-10">
-		<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
-			<div>
-				<p class="text-5xl py-8">{{ player.name }}</p>
-				<div class="text-3xl">
-					<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
-					<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
+	<div>
+		<div v-if="player" class="md:p-10">
+			<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
+				<div>
+					<p class="text-5xl py-8">{{ player.name }}</p>
+					<div class="text-3xl">
+						<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
+						<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
+					</div>
 				</div>
+				<p class="text-4xl py-8">Rank #{{ playerData.findIndex(obj => obj.name === player.name)+1 }} serverwide</p>
+				<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon" />
 			</div>
-			<p class="text-4xl py-8">Rank #{{ playerData.findIndex(obj => obj.name === player.name)+1 }} serverwide</p>
-			<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon" />
+			<p class="text-4xl">History:</p>
+			<p>{{ player.history.join(", ") }}</p>
+	
+			<highchart :options="chartOptions" />
 		</div>
-		<p class="text-4xl">History:</p>
-		<p>{{ player.history.join(", ") }}</p>
-
-		<highchart :options="chartOptions" />
-	</div>
-	<div v-else class="text-5xl flex flex-col items-center py-10">
-		<p>This player does not exist</p>
-		<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200">
+		<div v-else class="text-5xl flex flex-col items-center py-10">
+			<p>This player does not exist</p>
+			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200">
+		</div>
 	</div>
 </template>
 

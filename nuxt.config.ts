@@ -11,6 +11,7 @@ export default defineNuxtConfig({
 		},
 	},
 	app: {
+		pageTransition: { name: 'page', mode: 'out-in' },
 		head: {
 			link: [
 				{ rel: "apple-touch-icon", sizes: "57x57", href: "/favicon/apple-icon-57x57.png" },
