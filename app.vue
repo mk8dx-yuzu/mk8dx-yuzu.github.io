@@ -1,13 +1,24 @@
 <template>
 	<div>
 		<div class="gradient-bg"></div>
-		<nav class="bg-slate-950 flex justify-between">
+		<nav class="h-14 bg-slate-950 flex justify-between">
 			<nuxt-link to="/">
 				<img src="/favicon/android-icon-192x192.png" alt="icon" class="w-14 h-14">
 			</nuxt-link>
+			<div class="mr-48 self-center text-center">
+				<UTooltip text="Search" :shortcuts="['CTRL', 'K']">
+					<UIcon name="h-6 w-6 i-heroicons-magnifying-glass" />
+				</UTooltip>
+			</div>
 			<DownloadBtn @click="downloadSheet" />
 		</nav>
 		<NuxtPage />
+		<UModal v-model="isSearchOpen">
+			<div class="p-4">
+        		<p class="text-2xl">Search (this doesnt work yet)</p>
+				<UInput v-model="searchQuery" />
+      		</div>
+		</UModal>
 	</div>
 </template>
 
@@ -83,6 +94,17 @@
 	    console.error('Error downloading JSON:', error);
 	  }
 	}
+
+	const isSearchOpen = ref(false)
+	const searchQuery = ref("")
+	defineShortcuts({
+		meta_k: {
+			usingInput: true,
+			handler: () => {
+				isSearchOpen.value = !isSearchOpen.value
+			}
+		}
+	})
 </script>
 
 <style>
