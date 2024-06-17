@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "fuse.js": "^7.0.0",
     "nuxt": "^3.11.2",
     "nuxt-highcharts": "^3.1.1",
     "vue": "^3.4.27",
