@@ -3,32 +3,36 @@
 		<div class="gradient-bg"></div>
 		<nav class="h-14 bg-slate-950 flex justify-between">
 			<nuxt-link to="/">
-				<img src="/favicon/android-icon-192x192.png" alt="icon" class="w-14 h-14">
+				<img src="/favicon/android-icon-192x192.png" alt="icon" class="w-14 h-14" />
 			</nuxt-link>
 			<div class="mr-48 self-center text-center">
-				<UTooltip text="Search" :shortcuts="['CTRL', 'K']">
-					<UIcon name="h-6 w-6 i-heroicons-magnifying-glass" />
-				</UTooltip>
+				<UPopover v-model:open="isSearchOpen">
+					<UTooltip text="Search (CTRL+K)" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
+						<UButton class="h-6 w-6 i-heroicons-magnifying-glass" />
+					</UTooltip>
+
+					<template #panel>
+						<div class="p-4">
+							<p class="text-2xl">Search (this doesnt work yet)</p>
+						</div>
+					</template>
+				</UPopover>
 			</div>
 			<DownloadBtn @click="downloadSheet" />
 		</nav>
 		<NuxtPage />
-		<UModal v-model="isSearchOpen">
-			<div class="p-4">
-        		<p class="text-2xl">Search (this doesnt work yet)</p>
-				<UInput v-model="searchQuery" />
-      		</div>
-		</UModal>
 	</div>
 </template>
 
 <script setup>
+	import Fuse from 'fuse.js' 
+
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 
 	const data = await $fetch(url.value).then((hasLoaded.value = true));
 
-	const playerData = useState("data", (() => 
+	const playerData = useState("data", (() =>
 		sortByMMR(
 			data
 				.map((player) => ({
@@ -96,7 +100,6 @@
 	}
 
 	const isSearchOpen = ref(false)
-	const searchQuery = ref("")
 	defineShortcuts({
 		meta_k: {
 			usingInput: true,
@@ -105,17 +108,29 @@
 			}
 		}
 	})
+
+	const searchQuery = ref("")
+	const fuseOptions = {
+		// includeMatches: false,
+		// threshold: 0.6,
+		keys: [
+			"name",
+			"mmr"
+		]
+	};
+	const fuse = new Fuse(playerData.value, fuseOptions);
+	const results = computed(() => fuse.search(searchQuery.value))
 </script>
 
 <style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.4s;
-}
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-  transform: rotate3d(1, 1, 1, 2deg);
-}
+	.page-enter-active,
+	.page-leave-active {
+		transition: all 0.4s;
+	}
+	.page-enter-from,
+	.page-leave-to {
+		opacity: 0;
+		filter: blur(1rem);
+		transform: rotate3d(1, 1, 1, 2deg);
+	}
 </style>
