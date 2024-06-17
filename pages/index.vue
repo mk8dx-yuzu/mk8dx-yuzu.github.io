@@ -20,8 +20,8 @@
 					</tr>
 				</thead>
 				<tbody id="leaderboard-body">
-					<tr v-for="(player, index) in playerData" :key="index" class="cursor-pointer" :class="[getColor(player.mmr)]" @click="navTo(player.name)">
-						<td class="rank">{{ index + 1 }}</td>
+					<tr v-for="(player, index) in filteredPlayers" :key="index" class="cursor-pointer" :class="[getColor(player.mmr)]" @click="navTo(player.name)">
+						<td class="rank">{{ playerData.indexOf(player) + 1 }}</td>
 						<td class="truncate max-w-24">{{ player.name }}</td>
 						<td>{{ player.mmr }}</td>
 						<td>{{ player.wins }}</td>
@@ -34,12 +34,29 @@
 </template>
 
 <script setup lang="js">
+	import Fuse from 'fuse.js' 
+
 	const router = useRouter()
 
 	const url = useState("url")
 	const hasLoaded = useState("loaded")
 
 	const playerData = useState("data")
+	const searchQuery = useState('searchQuery')
+
+	const fuseOptions = {
+		// includeMatches: false,
+		// threshold: 0.6,
+		keys: [
+			"name",
+			"mmr"
+		]
+	};
+	const fuse = new Fuse(playerData.value, fuseOptions);
+	const filteredPlayers = computed(() => {
+		if (searchQuery.value) return fuse.search(searchQuery.value).map((item) => item.item)
+		return playerData.value
+	})
 
 	const { getColor } = useColor()
 

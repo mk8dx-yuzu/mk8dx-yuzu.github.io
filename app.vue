@@ -7,13 +7,14 @@
 			</nuxt-link>
 			<div class="mr-48 self-center text-center">
 				<UPopover v-model:open="isSearchOpen">
-					<UTooltip text="Search (CTRL+K)" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
+					<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
 						<UButton class="h-6 w-6 i-heroicons-magnifying-glass" />
 					</UTooltip>
 
 					<template #panel>
 						<div class="p-4">
-							<p class="text-2xl">Search (this doesnt work yet)</p>
+							<p class="text-2xl">Search players</p>
+							<UInput v-model="searchQuery" />
 						</div>
 					</template>
 				</UPopover>
@@ -25,8 +26,6 @@
 </template>
 
 <script setup>
-	import Fuse from 'fuse.js' 
-
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 
@@ -99,6 +98,7 @@
 	  }
 	}
 
+	const searchQuery = useState('searchQuery', (() => ""))
 	const isSearchOpen = ref(false)
 	defineShortcuts({
 		meta_k: {
@@ -108,18 +108,6 @@
 			}
 		}
 	})
-
-	const searchQuery = ref("")
-	const fuseOptions = {
-		// includeMatches: false,
-		// threshold: 0.6,
-		keys: [
-			"name",
-			"mmr"
-		]
-	};
-	const fuse = new Fuse(playerData.value, fuseOptions);
-	const results = computed(() => fuse.search(searchQuery.value))
 </script>
 
 <style>
