@@ -1,9 +1,9 @@
 export function useColor() {
     
 	function getColor(mmr) {
-		if (mmr < 0) {
+		if (mmr < 2) {
 			return "rank10wood";
-		} else if (mmr >= 0 && mmr <= 1499) {
+		} else if (mmr >= 2 && mmr <= 1499) {
 			return "rank09bronze";
 		} else if (mmr >= 1500 && mmr <= 2999) {
 			return "rank08silver";

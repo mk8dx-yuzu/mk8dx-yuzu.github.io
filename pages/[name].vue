@@ -38,9 +38,9 @@
 	const { getColor } = useColor();
 
 	function getRank(mmr) {
-		if (mmr < 0) {
+		if (mmr < 2) {
 			return "Wood";
-		} else if (mmr >= 0 && mmr <= 1499) {
+		} else if (mmr >= 2 && mmr <= 1499) {
 			return "Bronze";
 		} else if (mmr >= 1500 && mmr <= 2999) {
 			return "Silver";
