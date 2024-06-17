@@ -11,10 +11,24 @@
 						<UButton class="h-6 w-6 i-heroicons-magnifying-glass" />
 					</UTooltip>
 
-					<template #panel>
+					<template #panel> 
 						<div class="p-4">
 							<p class="text-2xl">Search players</p>
-							<UInput v-model="searchQuery" />
+							<div class="flex space-x-4">
+								<!-- <div>
+									<p>By Rank:</p>
+									<USelectMenu v-model="selectedRank" :options="ranks">
+										<template #leading>
+											<img v-if="selectedRank != 'any'" :src="`/images/ranks/${selectedRank}.webp`" class="w-5 h-5" />
+											<p v-else>any</p>
+										</template>
+									</USelectMenu>
+								</div> -->
+								<div class="flex text-center items-center">
+									<UInput v-model="searchQuery" />
+									<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+								</div>
+							</div>
 						</div>
 					</template>
 				</UPopover>
@@ -31,7 +45,7 @@
 
 	const data = await $fetch(url.value).then((hasLoaded.value = true));
 
-	const playerData = useState("data", (() =>
+	const playerData = useState("data", () =>
 		sortByMMR(
 			data
 				.map((player) => ({
@@ -39,75 +53,79 @@
 					mmr: player.mmr || player.MMR,
 					wins: player.wins || 0,
 					losses: player.losses || 0,
-					history: player.history || []
+					history: player.history || [],
 				}))
 				.filter((item) => !(item["wins"] == 0 && item["mmr"] == 2000))
 		).reverse()
-	));
+	);
 
 	function sortByMMR(data) {
-	    // 1. Create a new array to store sorted objects
-	    const sortedData = [];
+		// 1. Create a new array to store sorted objects
+		const sortedData = [];
 
-	    // 2. Loop through the original data
-	    for (const item of data) {
-	        // 3. Find the appropriate insertion point in the sorted array
-	        let insertionIndex = 0;
-	        while (insertionIndex < sortedData.length && item.mmr >= sortedData[insertionIndex].mmr) {
-	            insertionIndex++;
-	        }
+		// 2. Loop through the original data
+		for (const item of data) {
+			// 3. Find the appropriate insertion point in the sorted array
+			let insertionIndex = 0;
+			while (insertionIndex < sortedData.length && item.mmr >= sortedData[insertionIndex].mmr) {
+				insertionIndex++;
+			}
 
-	        // 4. Insert the object at the found position
-	        sortedData.splice(insertionIndex, 0, item);
-	    }
+			// 4. Insert the object at the found position
+			sortedData.splice(insertionIndex, 0, item);
+		}
 
-	    // 5. Return the sorted array
-	    return sortedData;
+		// 5. Return the sorted array
+		return sortedData;
 	}
 
 	async function downloadSheet() {
-	    try {
-	    const response = await fetch(url.value);
-	    if (!response.ok) {
-	      throw new Error(`API request failed with status ${response.status}`);
-	    }
-	    const data = await response.json();
+		try {
+			const response = await fetch(url.value);
+			if (!response.ok) {
+				throw new Error(`API request failed with status ${response.status}`);
+			}
+			const data = await response.json();
 
-	    let date = new Date()
+			let date = new Date();
 
-	    const filename = `leaderboard-${date.toISOString().split('T')[0]}.json`;
-	    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+			const filename = `leaderboard-${date.toISOString().split("T")[0]}.json`;
+			const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 
-	    if (window.navigator.webkitURL) { // Chrome and Safari
-	      const link = document.createElement('a');
-	      link.href = window.navigator.webkitURL.createObjectURL(blob);
-	      link.download = filename;
-	      link.click();
-	    } else { // Firefox
-	      const link = document.createElement('a');
-	      link.href = URL.createObjectURL(blob);
-	      link.download = filename;
-	      link.style.display = 'none';
-	      document.body.appendChild(link);
-	      link.click();
-	      document.body.removeChild(link);
-	    }
-
-	  } catch (error) {
-	    console.error('Error downloading JSON:', error);
-	  }
+			if (window.navigator.webkitURL) {
+				// Chrome and Safari
+				const link = document.createElement("a");
+				link.href = window.navigator.webkitURL.createObjectURL(blob);
+				link.download = filename;
+				link.click();
+			} else {
+				// Firefox
+				const link = document.createElement("a");
+				link.href = URL.createObjectURL(blob);
+				link.download = filename;
+				link.style.display = "none";
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			}
+		} catch (error) {
+			console.error("Error downloading JSON:", error);
+		}
 	}
 
-	const searchQuery = useState('searchQuery', (() => ""))
-	const isSearchOpen = ref(false)
+	const ranks = ['any', 'wood', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'master']
+
+	const searchQuery = useState("searchQuery", () => "");
+	const selectedRank = ref(ranks[0])
+	const isSearchOpen = ref(false);
 	defineShortcuts({
 		meta_k: {
 			usingInput: true,
 			handler: () => {
-				isSearchOpen.value = !isSearchOpen.value
-			}
-		}
-	})
+				isSearchOpen.value = !isSearchOpen.value;
+			},
+		},
+	});
 </script>
 
 <style>
