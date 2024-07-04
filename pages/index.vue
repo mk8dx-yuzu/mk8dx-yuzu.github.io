@@ -55,7 +55,7 @@
 	const fuse = new Fuse(playerData.value, fuseOptions);
 	const filteredPlayers = computed(() => {
 		if (searchQuery.value) return fuse.search(searchQuery.value).map((item) => item.item)
-		return playerData.value
+		return playerData.value.filter((item) => !(item["wins"] == 0 && item["mmr"] == 2000))
 	})
 
 	const { getColor } = useColor()
