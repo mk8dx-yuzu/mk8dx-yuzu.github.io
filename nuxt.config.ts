@@ -36,6 +36,42 @@ export default defineNuxtConfig({
 				{ name: "msapplication-TileColor", content: "#ffffff" },
 				{ name: "theme-color", content: "#ffffff" },
 				{ name: "msapplication-TileImage", content: "favicon/ms-icon-144x144.png" },
+				{
+					name: "viewport",
+					content: "width=device-width, initial-scale=1.0",
+				},
+				{
+					name: "description",
+					content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline",
+				},
+				{
+					property: "og:title",
+					content: "MK8DX-Yuzu Leaderboard",
+				},
+				{
+					property: "og:site_name",
+					content: "dsc.gg/yuzuonline",
+				},
+				{
+					property: "al:web:url",
+					content: "https://dsc.gg/yuzuonline",
+				},
+				{
+					property: "og:description",
+					content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!",
+				},
+				{
+					property: "og:type",
+					content: "website",
+				},
+				{
+					property: "og:url",
+					content: "https://mk8dx-yuzu.github.io/",
+				},
+				{
+					property: "og:image",
+					content: "https://mk8dx-yuzu.github.io/images/kawaii_icon_by_kevnkkm.png",
+				},
 			],
 		},
 	},
