@@ -3,7 +3,7 @@
 		<div class="gradient-bg"></div>
 		<nav class="h-14 bg-slate-950 flex justify-between">
 			<nuxt-link to="/">
-			<img :src="!uwu ? '/favicon/android-icon-192x192.png' : '/images/kawaii_icon_by_kevnkkm.png'" alt="icon" class="w-14 h-14" />
+				<img :src="!uwu ? '/favicon/android-icon-192x192.png' : '/images/kawaii_icon_by_kevnkkm.png'" alt="icon" class="w-14 h-14" />
 			</nuxt-link>
 			<div class="mr-48 self-center text-center">
 				<UPopover v-model:open="isSearchOpen">
@@ -11,7 +11,7 @@
 						<UButton class="h-6 w-6 i-heroicons-magnifying-glass" />
 					</UTooltip>
 
-					<template #panel> 
+					<template #panel>
 						<div class="p-4">
 							<p class="text-2xl">Search players</p>
 							<div class="flex space-x-4">
@@ -40,10 +40,10 @@
 </template>
 
 <script setup>
-	const uwu = useCookie('uwu')
-	const route = useRoute()
+	const uwu = useCookie("uwu");
+	const route = useRoute();
 	if (route.query.uwu) {
-		uwu.value = true
+		uwu.value = true;
 	}
 
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
@@ -53,14 +53,13 @@
 
 	const playerData = useState("data", () =>
 		sortByMMR(
-			data
-				.map((player) => ({
-					name: player.name || player.Player,
-					mmr: player.mmr || player.MMR,
-					wins: player.wins || 0,
-					losses: player.losses || 0,
-					history: player.history || [],
-				}))
+			data.map((player) => ({
+				name: player.name || player.Player,
+				mmr: player.mmr || player.MMR,
+				wins: player.wins || 0,
+				losses: player.losses || 0,
+				history: player.history || [],
+			}))
 		).reverse()
 	);
 
@@ -118,10 +117,10 @@
 		}
 	}
 
-	const ranks = ['any', 'wood', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'master']
+	const ranks = ["any", "wood", "bronze", "silver", "gold", "platinum", "diamond", "master"];
 
 	const searchQuery = useState("searchQuery", () => "");
-	const selectedRank = ref(ranks[0])
+	const selectedRank = ref(ranks[0]);
 	const isSearchOpen = ref(false);
 	defineShortcuts({
 		meta_k: {
@@ -130,6 +129,48 @@
 				isSearchOpen.value = !isSearchOpen.value;
 			},
 		},
+	});
+
+	useHead({
+		title: "",
+		meta: [
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1.0",
+			},
+			{
+				name: "description",
+				content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline",
+			},
+			{
+				property: "og:title",
+				content: "MK8DX-Yuzu Leaderboard",
+			},
+			{
+				property: "og:site_name",
+				content: "dsc.gg/yuzuonline",
+			},
+			{
+				property: "al:web:url",
+				content: "https://dsc.gg/yuzuonline",
+			},
+			{
+				property: "og:description",
+				content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!",
+			},
+			{
+				property: "og:type",
+				content: "website",
+			},
+			{
+				property: "og:url",
+				content: "https://mk8dx-yuzu.github.io/",
+			},
+			{
+				property: "og:image",
+				content: "https://mk8dx-yuzu.github.io/images/kawaii_icon_by_kevnkkm.png",
+			},
+		],
 	});
 </script>
 
