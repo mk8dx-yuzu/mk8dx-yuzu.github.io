@@ -3,7 +3,7 @@
 		<div v-if="player" class="md:p-10 space-y-2">
 			<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
 				<div>
-					<p class="text-5xl py-8">{{ player.name }}</p>
+					<a class="text-5xl py-8" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
 					<div class="text-3xl">
 						<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
 						<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
