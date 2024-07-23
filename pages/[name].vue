@@ -17,6 +17,10 @@
 				<p>{{ player.history.slice(-5).join(", ") }}</p>
 			</div>
 			<div>
+				<p class="text-2xl">{{ Math.round(player.wins/(player.wins+player.losses)*100) }}% Winrate</p>
+				<p>out of {{player.wins+player.losses}} total mogis</p>
+			</div>
+			<div>
 				<p class="text-4xl">Extended History:</p>
 				<highchart :options="chartOptions" />
 			</div>
