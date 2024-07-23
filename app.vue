@@ -68,6 +68,7 @@
 				wins: player.wins || 0,
 				losses: player.losses || 0,
 				history: player.history || [],
+				discord: player.discord || undefined
 			}))
 		).reverse()
 	);
