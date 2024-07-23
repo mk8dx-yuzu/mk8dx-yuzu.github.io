@@ -3,7 +3,7 @@
 		<div class="gradient-bg"></div>
 		<nav class="h-14 bg-slate-950 flex justify-between">
 			<nuxt-link to="/">
-				<img src="/favicon/android-icon-192x192.png" alt="icon" class="w-14 h-14" />
+			<img :src="!uwu ? '/favicon/android-icon-192x192.png' : '/images/kawaii_icon_by_kevnkkm.png'" alt="icon" class="w-14 h-14" />
 			</nuxt-link>
 			<div class="mr-48 self-center text-center">
 				<UPopover v-model:open="isSearchOpen">
@@ -40,6 +40,12 @@
 </template>
 
 <script setup>
+	const uwu = useCookie('uwu')
+	const route = useRoute()
+	if (route.query.uwu) {
+		uwu.value = true
+	}
+
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 
