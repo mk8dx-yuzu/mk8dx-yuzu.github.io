@@ -132,7 +132,7 @@
 	});
 
 	useHead({
-		title: "",
+		title: "MK8DX-Yuzu Leaderboard",
 		meta: [
 			{
 				name: "viewport",
