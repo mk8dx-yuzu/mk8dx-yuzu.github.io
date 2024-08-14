@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title">
-			<h1>Leaderboard</h1>
+			<h1>Yuzu-Online Leaderboard</h1>
 			<p>Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 		</div>
 	
