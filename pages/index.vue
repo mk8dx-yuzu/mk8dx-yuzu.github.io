@@ -20,7 +20,7 @@
 					</tr>
 				</thead>
 				<tbody id="leaderboard-body">
-					<tr v-for="(player, index) in filteredPlayers" :key="index" class="cursor-pointer" :class="[getColor(player.mmr)]" @click="navTo(player.name)">
+					<tr v-for="(player, index) in filteredPlayers" :key="index" class="cursor-pointer" :class="[getColor(player.mmr, playerData.indexOf(player))]" @click="navTo(player.name)">
 						<td class="rank">{{ playerData.indexOf(player) + 1 }}</td>
 						<td class="truncate max-w-24">{{ player.name }}</td>
 						<td>{{ player.mmr }}</td>

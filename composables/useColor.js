@@ -1,6 +1,6 @@
 export function useColor() {
     
-	function getColor(mmr) {
+	function getColor(mmr, rank = null) {
 		if (mmr < 2) {
 			return "rank10wood";
 		} else if (mmr >= 2 && mmr <= 1499) {
@@ -14,6 +14,7 @@ export function useColor() {
 		} else if (mmr >= 7000 && mmr <= 9499) {
 			return "rank03diamond";
 		} else if (mmr >= 9500) {
+			if (rank == 0) return "rank01grandmaster"
 			return "rank02master";
 		}
 	}

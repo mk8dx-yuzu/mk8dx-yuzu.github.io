@@ -5,12 +5,12 @@
 				<div>
 					<a class="text-5xl py-8" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
 					<div class="text-3xl">
-						<p :class="[getColor(player.mmr)]">{{ player.mmr }} MMR</p>
-						<p :class="[getColor(player.mmr)]">{{ getRank(player.mmr) }} Rank</p>
+						<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
+						<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
 					</div>
 				</div>
 				<p class="text-4xl py-8">Rank #{{ playerData.findIndex(obj => obj.name === player.name)+1 }} serverwide</p>
-				<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr).toLowerCase()}.webp`" alt="rank icon" />
+				<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr, playerData.indexOf(player)).toLowerCase()}.webp`" alt="rank icon" />
 			</div>
 			<div>
 				<p class="text-2xl">Your last 5 MMR changes:</p>

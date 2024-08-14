@@ -1,5 +1,5 @@
 export function useRank() {
-    function getRank(mmr) {
+    function getRank(mmr, rank = null) {
 		if (mmr < 2) {
 			return "Wood";
 		} else if (mmr >= 2 && mmr <= 1499) {
@@ -13,6 +13,7 @@ export function useRank() {
 		} else if (mmr >= 7000 && mmr <= 9499) {
 			return "Diamond";
 		} else if (mmr >= 9500) {
+			if (rank == 0) return "Grandmaster"
 			return "Master";
 		}
 	}
