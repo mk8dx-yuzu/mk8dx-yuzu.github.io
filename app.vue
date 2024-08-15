@@ -58,7 +58,13 @@
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 
-	const data = await $fetch(url.value).then((hasLoaded.value = true));
+	try {
+		var data = await $fetch(url.value).then((hasLoaded.value = true));
+	}
+	catch (e) {
+		console.log(e)
+		var data = []
+	}
 
 	const playerData = useState("data", () =>
 		sortByMMR(
