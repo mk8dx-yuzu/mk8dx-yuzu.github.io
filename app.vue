@@ -55,7 +55,7 @@
 		uwu.value = true;
 	}
 
-	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
+	const url = useState("url", () => "https://mk8dx-yuzu.nya.care/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 
 	try {
