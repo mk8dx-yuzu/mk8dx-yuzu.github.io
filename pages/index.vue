@@ -11,7 +11,7 @@
 		</div>
 	
 		<Loader v-if="!hasLoaded"/>
-		<ErrorTxt v-if="hasLoaded && !playerData.length"/>
+		<ErrorTxt v-if="hasLoaded && !playerData.length && error"/>
 	
 		<div class="leaderboard-container">
 			<table class="leaderboard-table" id="leaderboard-table">
@@ -45,6 +45,7 @@
 
 	const url = useState("url")
 	const hasLoaded = useState("loaded")
+	const error = useState("error")
 
 	const playerData = useState("data")
 	const searchQuery = useState('searchQuery')

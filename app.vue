@@ -57,13 +57,25 @@
 
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
+	const globalError = useState("error", () => null)
 
 	try {
 		var data = await $fetch(url.value).then((hasLoaded.value = true));
-	}
-	catch (e) {
-		console.log(e)
-		var data = []
+		if (!data.length) {
+			globalError.value = "The service responded, but without any data. We are working on a fix, try again later."
+		}
+	} catch (e) {
+		if (e instanceof Error) {
+			// API didn't respond or is unavailable/domain doesn't exist
+			globalError.value = "The service was unreachable. We are working on a fix, try again later."
+		} else if (e.response && e.response.status >= 500) {
+			// API returned an error (server-side error)
+			globalError.value = "The service ran into an error. We are working on a fix, try again later."
+		} else {
+			// Unhandled error
+			globalError.value = "The service ran into an unknown error. We are working on a fix, try again later."
+		}
+		var data = [];
 	}
 
 	const playerData = useState("data", () =>
@@ -74,7 +86,7 @@
 				wins: player.wins || 0,
 				losses: player.losses || 0,
 				history: player.history || [],
-				discord: player.discord || undefined
+				discord: player.discord || undefined,
 			}))
 		).reverse()
 	);
