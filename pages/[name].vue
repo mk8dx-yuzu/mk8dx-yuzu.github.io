@@ -25,9 +25,6 @@
 				<highchart :options="chartOptions" />
 			</div>
 		</div>
-		<div v-else-if="error">
-			<ErrorTxt/>
-		</div>
 		<div v-else class="text-5xl flex flex-col items-center py-10">
 			<p>This player does not exist</p>
 			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200">
@@ -43,7 +40,6 @@ import { useRank } from '~/composables/useRank';
 
 	const playerData = useState("data");
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
-	const error = useState("error")
 
 	const { getColor } = useColor();
 	const { getRank } = useRank();
