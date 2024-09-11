@@ -17,7 +17,7 @@
 			<div class="mr-48 self-center text-center">
 				<UPopover v-model:open="isSearchOpen" v-if="route.fullPath == '/'">
 					<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
-						<UButton class="h-6 w-6 i-heroicons-magnifying-glass" />
+						<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
 					</UTooltip>
 
 					<template #panel>

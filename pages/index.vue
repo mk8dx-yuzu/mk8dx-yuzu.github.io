@@ -5,7 +5,7 @@
 			<div class="flex">
 				<p>Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 				<UTooltip text="How to register" :popper="{ placement: 'right' }">
-				<UButton class="h-6 w-6 i-heroicons-question-mark-circle" to="https://discord.com/channels/1084911987626094654/1181312934803144724"/>
+				<UButton class="h-6 w-6" style="background-color: transparent !important;" icon="heroicons-question-mark-circle" to="https://discord.com/channels/1084911987626094654/1181312934803144724"/>
 			</UTooltip>
 			</div>
 		</div>
