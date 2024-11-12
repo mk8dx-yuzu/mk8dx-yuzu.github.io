@@ -55,29 +55,9 @@
 		uwu.value = true;
 	}
 
-	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
-
-	try {
-		var data = await $fetch(url.value).then((hasLoaded.value = true));
-	}
-	catch (e) {
-		console.log(e)
-		var data = []
-	}
-
-	const playerData = useState("data", () =>
-		sortByMMR(
-			data.map((player) => ({
-				name: player.name || player.Player,
-				mmr: player.mmr || player.MMR,
-				wins: player.wins || 0,
-				losses: player.losses || 0,
-				history: player.history || [],
-				discord: player.discord || undefined
-			}))
-		).reverse()
-	);
+	const hasMounted = useState("mounted", () => false);
+	const playerData = useState("data", () => []);
 
 	function sortByMMR(data) {
 		// 1. Create a new array to store sorted objects
@@ -98,6 +78,29 @@
 		// 5. Return the sorted array
 		return sortedData;
 	}
+	onMounted(async () => {
+		hasMounted.value = true;
+		const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
+		try {
+			var data = await $fetch(url.value);
+		} catch (e) {
+			console.log(e);
+			var data = [];
+		}
+
+		playerData.value = sortByMMR(
+			data.map((player) => ({
+				name: player.name || player.Player,
+				mmr: player.mmr || player.MMR,
+				wins: player.wins || 0,
+				losses: player.losses || 0,
+				history: player.history || [],
+				discord: player.discord || undefined,
+			}))
+		).reverse();
+
+		hasLoaded.value = true;
+	});
 
 	async function downloadSheet() {
 		try {
