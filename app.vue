@@ -100,6 +100,16 @@
 		).reverse();
 
 		hasLoaded.value = true;
+
+		// ANIMATION
+		nextTick(() => {
+        const cells = document.querySelectorAll('#leaderboard-table td');
+        cells.forEach((cell, index) => {
+            cell.style.opacity = 0;
+            cell.style.animation = "tiltanimation 0.75s forwards";
+            cell.style.animationDelay = (index * 0.005) + "s";
+        });
+    });
 	});
 
 	async function downloadSheet() {
