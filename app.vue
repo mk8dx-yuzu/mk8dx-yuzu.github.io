@@ -55,6 +55,7 @@
 		uwu.value = true;
 	}
 
+	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasLoaded = useState("loaded", () => false);
 	const hasMounted = useState("mounted", () => false);
 	const playerData = useState("data", () => []);
@@ -80,7 +81,6 @@
 	}
 	onMounted(async () => {
 		hasMounted.value = true;
-		const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 		try {
 			var data = await $fetch(url.value);
 		} catch (e) {
@@ -103,13 +103,13 @@
 
 		// ANIMATION
 		nextTick(() => {
-        	const cells = document.querySelectorAll('#leaderboard-table td');
-        	cells.forEach((cell, index) => {
-            	cell.style.opacity = 0;
-            	cell.style.animation = "tiltanimation 0.75s forwards";
-            	cell.style.animationDelay = (index * 0.005) + "s";
-        	});
-    	});
+			const cells = document.querySelectorAll("#leaderboard-table td");
+			cells.forEach((cell, index) => {
+				cell.style.opacity = 0;
+				cell.style.animation = "tiltanimation 0.75s forwards";
+				cell.style.animationDelay = index * 0.005 + "s";
+			});
+		});
 	});
 
 	async function downloadSheet() {
