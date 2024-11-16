@@ -92,10 +92,10 @@
 			data.map((player) => ({
 				name: player.name || player.Player,
 				mmr: player.mmr || player.MMR,
-				wins: player.wins || 0,
-				losses: player.losses || 0,
 				history: player.history || [],
-				discord: player.discord || undefined,
+				wins: player.history.filter((delta) => delta >= 0).length,
+				losses: player.history.filter((delta) => delta < 0).length,
+				discord: player.discord_id || undefined,
 			}))
 		).reverse();
 
