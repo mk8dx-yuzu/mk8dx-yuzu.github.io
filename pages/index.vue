@@ -2,6 +2,7 @@
 	<div>
 		<div class="title">
 			<h1>Yuzu-Online Leaderboard</h1>
+			<h2>Season 3</h2>
 			<div class="flex">
 				<p>Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 				<UTooltip text="How to register" :popper="{ placement: 'right' }">
