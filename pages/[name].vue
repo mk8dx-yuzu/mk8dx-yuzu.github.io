@@ -9,16 +9,16 @@
 						<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
 					</div>
 				</div>
-				<p class="text-4xl py-8">Rank #{{ playerData.findIndex(obj => obj.name === player.name)+1 }} serverwide</p>
-				<img class="w-48 h-48" :src="`/images/ranks/${getRank(player.mmr, playerData.indexOf(player)).toLowerCase()}.webp`" alt="rank icon" />
+				<p class="text-4xl py-8">Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
+				<img class="w-48 h-48" :src="`https://github.com/mk8dx-yuzu/ranks/blob/main/${getRank(player.mmr, playerData.indexOf(player)).png`" alt="rank icon" />
 			</div>
 			<div>
 				<p class="text-2xl">Your last 5 MMR changes:</p>
 				<p>{{ player.history.slice(-5).join(", ") }}</p>
 			</div>
 			<div>
-				<p class="text-2xl">{{ Math.round(player.wins/(player.wins+player.losses)*100) }}% Winrate</p>
-				<p>out of {{player.wins+player.losses}} total mogis</p>
+				<p class="text-2xl">{{ Math.round((player.wins / (player.wins + player.losses)) * 100) }}% Winrate</p>
+				<p>out of {{ player.wins + player.losses }} total mogis</p>
 			</div>
 			<div>
 				<p class="text-4xl">Extended History:</p>
@@ -27,13 +27,13 @@
 		</div>
 		<div v-else class="text-5xl flex flex-col items-center py-10">
 			<p>This player does not exist</p>
-			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200">
+			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200" />
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { useRank } from '~/composables/useRank';
+	import { useRank } from "~/composables/useRank";
 
 	const route = useRoute();
 	const name = route.params.name;
@@ -46,16 +46,15 @@ import { useRank } from '~/composables/useRank';
 
 	const scores = [player.value?.mmr];
 	for (let i = player.value?.history.length - 1; i >= 0; i--) {
-	    const change = player.value?.history[i];
-	    scores.push(scores[scores.length - 1] - change);
+		const change = player.value?.history[i];
+		scores.push(scores[scores.length - 1] - change);
 	}
 	const history = scores.reverse();
-
 
 	const chartOptions = {
 		chart: {
 			type: "spline",
-            styledMode: true
+			styledMode: true,
 		},
 		title: {
 			text: "MMR History",
@@ -64,7 +63,7 @@ import { useRank } from '~/composables/useRank';
 			text: `Player: ${player.value?.name}`,
 		},
 		xAxis: {
-			categories: scores.map((x, index) => `${index+1} mogis ago`).reverse(),
+			categories: scores.map((x, index) => `${index + 1} mogis ago`).reverse(),
 			accessibility: {
 				description: "Time",
 			},
@@ -93,7 +92,7 @@ import { useRank } from '~/composables/useRank';
 				marker: {
 					symbol: "square",
 				},
-				data: history
+				data: history,
 			},
 		],
 	};
