@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<p class="text-4xl py-8">Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
-				<img class="w-48 h-48" :src="`https://github.com/mk8dx-yuzu/ranks/blob/main/${getRank(player.mmr, playerData.indexOf(player)).png`" alt="rank icon" />
+				<img class="w-48 h-48" :src="`https://github.com/mk8dx-yuzu/ranks/blob/main/${getRank(player.mmr, playerData.indexOf(player))}.png`" alt="rank icon" />
 			</div>
 			<div>
 				<p class="text-2xl">Your last 5 MMR changes:</p>
@@ -63,7 +63,10 @@
 			text: `Player: ${player.value?.name}`,
 		},
 		xAxis: {
-			categories: scores.map((x, index) => `${index + 1} mogis ago`).reverse(),
+			title: {
+				text: "Mogis",
+			},
+			categories: scores.map((x, index) => `${index + 1}`).reverse(),
 			accessibility: {
 				description: "Time",
 			},
