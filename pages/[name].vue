@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<div v-if="player" class="md:p-10 space-y-2">
+		<Loader v-if="!hasMounted || !hasLoaded" />
+		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
+		<div v-else-if="player" class="md:p-10 space-y-2">
 			<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
 				<div>
 					<a class="text-5xl py-8" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
@@ -24,8 +26,8 @@
 				<p>out of {{ player.wins + player.losses }} total mogis</p>
 			</div>
 			<div>
-				<p class="text-4xl">Extended History:</p>
-				<highchart :options="chartOptions" />
+				<p v-if="player?.name" class="text-4xl">Extended History:</p>
+				<highchart v-if="player?.name" :options="chartOptions" />
 			</div>
 		</div>
 		<div v-else class="text-5xl flex flex-col items-center py-10">
@@ -44,62 +46,71 @@
 	const playerData = useState("data");
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
 
+	const hasLoaded = useState("loaded");
+	const hasMounted = useState("mounted", () => false);
+
 	const { getColor } = useColor();
 	const { getRank } = useRank();
 
-	const scores = [player.value?.mmr];
-	for (let i = player.value?.history.length - 1; i >= 0; i--) {
-		const change = player.value?.history[i];
-		scores.push(scores[scores.length - 1] - change);
-	}
-	const history = scores.reverse();
+	const history = computed(() => {
+		let scores = [player.value?.mmr];
+		for (let i = player.value?.history.length - 1; i >= 0; i--) {
+			const change = player.value?.history[i];
+			scores.push(scores[scores.length - 1] - change);
+		}
+		return scores.reverse();
+	});
 
-	const chartOptions = {
-		chart: {
-			type: "spline",
-			styledMode: true,
-		},
-		title: {
-			text: "MMR History",
-		},
-		subtitle: {
-			text: `Player: ${player.value?.name}`,
-		},
-		xAxis: {
+	const chartOptions = computed(() => {
+		if (!player.value) return {};
+
+		return {
+			chart: {
+				type: "spline",
+				styledMode: true,
+			},
 			title: {
-				text: "Mogis",
+				text: "MMR History",
 			},
-			categories: scores.map((x, index) => `${index + 1}`).reverse(),
-			accessibility: {
-				description: "Time",
+			subtitle: {
+				text: `Player: ${player.value?.name}`,
 			},
-		},
-		yAxis: {
-			title: {
-				text: "MMR",
-			},
-		},
-		tooltip: {
-			crosshairs: true,
-			shared: true,
-		},
-		plotOptions: {
-			spline: {
-				marker: {
-					radius: 4,
-					lineColor: "#666666",
-					lineWidth: 1,
+			xAxis: {
+				title: {
+					text: "Mogis",
+				},
+				categories: history.value.map((x, index) => `${index + 1}`),
+				accessibility: {
+					description: "Time",
 				},
 			},
-		},
-		series: [
-			{
-				name: `${player.value?.name}'s MMR developement'`,
-				marker: {
-					symbol: "square",
+			yAxis: {
+				title: {
+					text: "MMR",
 				},
-				data: history,
 			},
-		],
-	};
+			tooltip: {
+				crosshairs: true,
+				shared: true,
+			},
+			plotOptions: {
+				spline: {
+					marker: {
+						radius: 4,
+						lineColor: "#666666",
+						lineWidth: 1,
+					},
+				},
+			},
+			series: [
+				{
+					name: `${player.value?.name}'s MMR developement'`,
+					marker: {
+						symbol: "square",
+					},
+					data: history.value,
+				},
+			],
+		};
+	});
 </script>
