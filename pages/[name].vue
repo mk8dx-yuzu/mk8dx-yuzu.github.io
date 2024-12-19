@@ -1,4 +1,5 @@
 <template>
+	<!---
 	<div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
@@ -36,6 +37,8 @@
 		</div>
 	</div> -->
 	<div>
+		<Loader v-if="!hasMounted || !hasLoaded" />
+		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-if="player" class="content">
 			<div class="profile-container">
 				<div class="rank-icon-background">
@@ -71,8 +74,8 @@
 					</div>
 				</div>
 				<div class="history-container">
-					<!-- <p>Extended History:</p> -->
-					<highchart :options="chartOptions" />
+					<!-- <p v-if="player?.name">Extended History:</p> -->
+					<highchart v-if="player?.name" :options="chartOptions" />
 				</div>
 			</div>
 		</div>
