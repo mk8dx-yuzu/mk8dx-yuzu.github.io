@@ -40,14 +40,14 @@
 					<img
 						:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
 						alt="rank icon" />
-					<!-- <div class="gradient-blur">
+					<div class="gradient-blur">
+						<div v-for="i in 6" :key="i"</div>
+						<!-- <div></div>
 						<div></div>
 						<div></div>
 						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div> -->
+						<div></div> -->
+					</div>
 					<div class="overlay">
 					<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
 					<div class="rank-info">

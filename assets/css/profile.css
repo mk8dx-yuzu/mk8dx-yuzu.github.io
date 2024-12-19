@@ -13,9 +13,10 @@
 }
 
 .rank-icon-background {
-    z-index: 1;
+    z-index: 0;
     position: relative;
     width: 30%;
+    max-width: 1800px;
 }
 
 .rank-icon-background img {
@@ -25,7 +26,7 @@
 }
 
 .overlay {
-    z-index: 5;
+    z-index: 10;
     position: absolute;
     /* margin-top: 18%; */
     left: 0; 
@@ -39,7 +40,7 @@
 }
 
 .overlay p {
-    font-size: 1.25vw;
+    font-size: clamp(1rem, 1.25vw, 2rem);
 }
 
 .player-name {
@@ -56,7 +57,7 @@
 }
 
 .rank-info p {
-    font-size: 1.25vw;
+    font-size: clamp(1rem, 1.25vw, 2rem);
 }
 
 .stats {
@@ -70,11 +71,11 @@
 }
 
 .stat-title {
-    font-size: 0.75vw;
+    font-size: clamp(1rem, 0.75vw, 2rem);
 }
 
 .stat-value {
-    font-size: 1.25vw;
+    font-size: clamp(1rem, 1.25vw, 2rem);
 }
 
 .history-container {
@@ -84,7 +85,7 @@
     padding-top: 40px;
 }
 
-/* .gradient-blur {
+.gradient-blur {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -183,4 +184,30 @@
       rgba(0, 0, 0, 0) 87.5%,
       rgba(0, 0, 0, 1) 100%
     );
-} */
+}
+
+@media only screen and (max-width:767px) {
+    .rank-icon-background {
+        width: 100%;
+    }
+
+    .overlay p {
+        font-size: 16px;
+    }
+
+    .player-name {
+        font-size: 44px;
+    }
+
+    /* .rank-info p {
+        font-size: 16px;
+    } */
+
+    .stat-title {
+        font-size: 20px;
+    }
+    
+    .stat-value {
+        font-size: 16px;
+    }
+}
