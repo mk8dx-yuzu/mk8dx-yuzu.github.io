@@ -54,7 +54,6 @@
 
 	const router = useRouter()
 
-	const url = useState("url")
 	const hasLoaded = useState("loaded")
 	const hasMounted = useState("mounted", () => false);
 
