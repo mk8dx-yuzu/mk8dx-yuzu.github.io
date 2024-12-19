@@ -46,7 +46,7 @@
 						:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
 						alt="rank icon" />
 					<div class="gradient-blur">
-						<div v-for="i in 6" :key="i"</div>
+						<div v-for="i in 3" :key="i"</div>
 						<!-- <div></div>
 						<div></div>
 						<div></div>
@@ -69,9 +69,18 @@
 						<p class="stat-value">{{ player.history.slice(-5).join(", ") }}</p>
 					</div>
 					<div class="stat">
+						<p class="stat-value"><b>{{ player.wins }}</b> total wins</p>
+						<p class="stat-title">and <b>{{ player.losses }}</b> total losses</p>
+					</div>
+					<div class="stat">
 						<p class="stat-value"><b>{{ Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate</p>
 						<p class="stat-title">out of <b>{{ player.wins + player.losses }}</b> total mogis</p>
 					</div>
+					<!-- TODO Add disconnects to the player object if DCs should be shown -->
+					<!-- <div class="stat">
+						<p class="stat-value"><b>{{ player.disconnects != null ? player.disconnects : 0 }}</b> disconnects</p>
+						<p class="stat-title">in this Season</p>
+					</div> -->
 				</div>
 				<div class="history-container">
 					<!-- <p v-if="player?.name">Extended History:</p> -->

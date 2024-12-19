@@ -21,8 +21,8 @@
 
 .rank-icon-background img {
     width: 100%;
-    -webkit-mask-image: linear-gradient(to bottom,black 10%,transparent 80%);
-    mask-image: linear-gradient(to bottom,black 10%,transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom,black 10%,transparent 70%); /* Original value 80% */
+    mask-image: linear-gradient(to bottom,black 10%,transparent 70%);
 }
 
 .overlay {
@@ -62,6 +62,8 @@
 
 .stats {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10vw;
 }
 
@@ -202,6 +204,10 @@
     /* .rank-info p {
         font-size: 16px;
     } */
+
+    .stats {
+        gap: 5vw;
+    }
 
     .stat-title {
         font-size: 20px;
