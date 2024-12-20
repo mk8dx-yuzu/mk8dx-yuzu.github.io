@@ -81,10 +81,10 @@
 						<p class="stat-value"><b>{{ (player.wins + player.losses) * 68 }} minutes</b> wasted</p>
 					</div>
 					<!-- TODO Add disconnects to the player object if DCs should be shown -->
-					<div class="stat">
+					<!-- <div class="stat">
 						<p class="stat-value"><b>{{ player.disconnects != null ? player.disconnects : 0 }}</b> disconnects</p>
-						<p class="stat-title">in this Season</p>
-					</div>
+						<p class="stat-title">in this season</p>
+					</div> -->
 				</div>
 				<div class="history-container">
 					<!-- <p v-if="player?.name">Extended History:</p> -->
