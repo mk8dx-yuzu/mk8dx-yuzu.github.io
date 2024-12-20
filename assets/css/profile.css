@@ -62,22 +62,24 @@
 
 .stats {
     display: flex;
+    width: 100%;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 10vw;
+    justify-content: space-around;
+    /* gap: 10vw; */
 }
 
 .stat {
     display: flex;
     flex-direction: column;
+    padding: 10px 10px;
 }
 
 .stat-title {
-    font-size: clamp(1.25rem, 0.75vw, 2rem);
+    font-size: clamp(1rem, 0.75vw, 2rem);
 }
 
 .stat-value {
-    font-size: clamp(1rem, 1.25vw, 2rem);
+    font-size: clamp(1.25rem, 1.25vw, 2rem);
 }
 
 .history-container {
@@ -205,15 +207,15 @@
         font-size: 16px;
     } */
 
-    .stats {
+    /* .stats {
         gap: 5vw;
-    }
+    } */
 
     .stat-title {
-        font-size: 20px;
+        font-size: 16px;
     }
     
     .stat-value {
-        font-size: 16px;
+        font-size: 20px;
     }
 }

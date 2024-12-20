@@ -76,11 +76,15 @@
 						<p class="stat-value"><b>{{ Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate</p>
 						<p class="stat-title">out of <b>{{ player.wins + player.losses }}</b> total mogis</p>
 					</div>
+					<div class="stat">
+						<p class="stat-title">With an average of 68 minutes per mogi</p>
+						<p class="stat-value"><b>{{ (player.wins + player.losses) * 68 }} minutes</b> wasted</p>
+					</div>
 					<!-- TODO Add disconnects to the player object if DCs should be shown -->
-					<!-- <div class="stat">
+					<div class="stat">
 						<p class="stat-value"><b>{{ player.disconnects != null ? player.disconnects : 0 }}</b> disconnects</p>
 						<p class="stat-title">in this Season</p>
-					</div> -->
+					</div>
 				</div>
 				<div class="history-container">
 					<!-- <p v-if="player?.name">Extended History:</p> -->
