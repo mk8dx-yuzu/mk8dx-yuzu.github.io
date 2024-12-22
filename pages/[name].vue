@@ -52,7 +52,7 @@
 						<p class="stat-value">
 							<b>{{ player.disconnects }}</b> disconnects
 						</p>
-						<p class="stat-title">in this season</p>
+						<p class="stat-title">{{ player.disconnects * 3 }} minutes wasted for others</p>
 					</div>
 				</div>
 				<div class="history-container">
