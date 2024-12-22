@@ -2,7 +2,7 @@
 	<div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
-		<div v-if="player" class="content">
+		<div v-else-if="player" class="content">
 			<div class="profile-container">
 				<div class="rank-icon-background">
 					<img
@@ -58,7 +58,7 @@
 				<div class="history-container">
 					<!-- <p v-if="player?.name">Extended History:</p> -->
 					<!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
-					<highchart v-if="player?.name" :options="chartOptions" />
+					<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
 				</div>
 			</div>
 		</div>
