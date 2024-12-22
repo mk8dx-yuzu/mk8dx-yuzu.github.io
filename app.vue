@@ -96,6 +96,7 @@
 				wins: player.history.filter((delta) => delta >= 0).length,
 				losses: player.history.filter((delta) => delta < 0).length,
 				discord: player.discord_id || undefined,
+				disconnects: player.disconnects || 0,
 			}))
 		).reverse();
 

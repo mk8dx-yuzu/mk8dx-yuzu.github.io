@@ -1,41 +1,4 @@
 <template>
-	<!---
-	<div>
-		<Loader v-if="!hasMounted || !hasLoaded" />
-		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
-		<div v-else-if="player" class="md:p-10 space-y-2">
-			<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
-				<div>
-					<a class="text-5xl py-8" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
-					<div class="text-3xl">
-						<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
-						<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
-					</div>
-				</div>
-				<p class="text-4xl py-8">Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
-				<img
-					class="w-48 h-48"
-					:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
-					alt="rank icon" />
-			</div>
-			<div>
-				<p class="text-2xl">Your last 5 MMR changes:</p>
-				<p>{{ player.history.slice(-5).join(", ") }}</p>
-			</div>
-			<div>
-				<p class="text-2xl">{{ Math.round((player.wins / (player.wins + player.losses)) * 100) }}% Winrate</p>
-				<p>out of {{ player.wins + player.losses }} total mogis</p>
-			</div>
-			<div>
-				<p v-if="player?.name" class="text-4xl">Extended History:</p>
-				<highchart v-if="player?.name" :options="chartOptions" />
-			</div>
-		</div>
-		<div v-else class="text-5xl flex flex-col items-center py-10">
-			<p>This player does not exist</p>
-			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200" />
-		</div>
-	</div> -->
 	<div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
@@ -46,12 +9,7 @@
 						:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
 						alt="rank icon" />
 					<div class="gradient-blur">
-						<div v-for="i in 3" :key="i"</div>
-						<!-- <div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div> -->
+						<div v-for="i in 3" :key="i"></div>
 					</div>
 					<div class="overlay">
 					<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
@@ -80,18 +38,18 @@
 						<p class="stat-title">With an average of 68 minutes per mogi</p>
 						<p class="stat-value"><b>{{ (player.wins + player.losses) * 68 }} minutes</b> wasted</p>
 					</div>
-					<!-- TODO Add disconnects to the player object if DCs should be shown -->
-					<!-- <div class="stat">
-						<p class="stat-value"><b>{{ player.disconnects != null ? player.disconnects : 0 }}</b> disconnects</p>
+					<div class="stat">
+						<p class="stat-value"><b>{{ player.disconnects }}</b> disconnects</p>
 						<p class="stat-title">in this season</p>
-					</div> -->
+					</div>
 				</div>
 				<div class="history-container">
 					<!-- <p v-if="player?.name">Extended History:</p> -->
+					 <!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
 					<highchart v-if="player?.name" :options="chartOptions" />
 				</div>
 			</div>
-		</div>
+		</div> 
 		<div v-else class="text-5xl flex flex-col items-center py-10">
 			<p>This player does not exist</p>
 			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200" />
