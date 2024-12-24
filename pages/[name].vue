@@ -24,7 +24,7 @@
 				<div class="stats">
 					<div class="stat">
 						<p class="stat-title">Your last 5 MMR changes:</p>
-						<p class="stat-value">{{ player.history.slice(-5).join(", ") }}</p>
+						<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None"}}</p>
 					</div>
 					<div class="stat">
 						<p class="stat-value">
@@ -36,7 +36,7 @@
 					</div>
 					<div class="stat">
 						<p class="stat-value">
-							<b>{{ Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
+							<b>{{ player.wins + player.losses === 0 ? 0 : Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
 						</p>
 						<p class="stat-title">
 							out of <b>{{ player.wins + player.losses }}</b> total mogis
