@@ -20,6 +20,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+pages:
+  build:
+    path: .output/public
+
 jobs:
   # Build job
   build:
