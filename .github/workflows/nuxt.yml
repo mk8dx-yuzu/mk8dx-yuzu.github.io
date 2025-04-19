@@ -48,19 +48,13 @@ jobs:
         run: npx nuxi generate
 
       - name: Create .nojekyll
-        run: touch ./dist/.nojekyll
-
-      - name: Logging
-        run: ls ./dist
-
-      - name: Logging
-        run: ls ./dist
+        run: touch ./.output/.nojekyll
         
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: ./dist
+          path: ./.output
 
   # Deployment job
   deploy:
