@@ -51,7 +51,7 @@ jobs:
         run: touch ./.output/.nojekyll
 
       - name: Logging
-        run: tree
+        run: tree -a
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
