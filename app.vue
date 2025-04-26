@@ -15,7 +15,7 @@
 				<img :src="!uwu ? '/favicon/android-icon-192x192.png' : '/images/kawaii_icon_by_kevnkkm.png'" alt="icon" class="w-14 h-14" />
 			</nuxt-link>
 			<div class="mr-48 self-center text-center">
-				<UPopover v-model:open="isSearchOpen" v-if="route.fullPath == '/'">
+				<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
 					<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
 						<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
 					</UTooltip>
