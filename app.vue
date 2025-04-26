@@ -35,7 +35,7 @@
 
 							<template #panel>
 								<div class="p-4">
-									<p class="text-2xl">Search players</p>
+									<p class="text-2xl text-center pb-2">Search players</p>
 									<div class="flex space-x-4">
 										<div class="flex text-center items-center">
 											<UInput v-model="searchQuery" />
