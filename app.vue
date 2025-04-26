@@ -13,7 +13,9 @@
 		<div class="navigation-container">
 			<div class="navigation-container-inner">
 				<div class="navigation-image">
-				<img src="/images/Yuzu Online Lounge Logo v2.png" alt="Yuzu Online Lounge Logo" />
+					<nuxt-link to="/">
+						<img src="/images/Yuzu Online Lounge Logo v2.png" alt="Yuzu Online Lounge Logo" />
+					</nuxt-link> 
 				</div>
 				<div class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu">
 					<span class="bun bun-top">
