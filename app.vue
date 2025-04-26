@@ -10,40 +10,53 @@
 	<meta property="og:image" content="https://mk8dx-yuzu.github.io/favicon/ms-icon-310x310.png" />
 	<div>
 		<div class="gradient-bg"></div>
-		<nav class="h-14 bg-slate-950 flex justify-between">
-			<nuxt-link to="/">
-				<img :src="!uwu ? '/favicon/android-icon-192x192.png' : '/images/kawaii_icon_by_kevnkkm.png'" alt="icon" class="w-14 h-14" />
-			</nuxt-link>
-			<div class="mr-48 self-center text-center">
-				<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
-					<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
-						<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
-					</UTooltip>
+		<div class="navigation-container">
+			<div class="navigation-container-inner">
+				<div class="navigation-image">
+				<img src="/images/Yuzu Online Lounge Logo v2.png" alt="Yuzu Online Lounge Logo" />
+				</div>
+				<div class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu">
+					<span class="bun bun-top">
+						<span class="bun-crust bun-crust-top"></span>
+					</span>
+					<span class="bun bun-bottom">
+						<span class="bun-crust bun-crust-bottom"></span>
+					</span>
+				</div>
+				<nav :class="{ open: isMenuOpen }">
+					<ul>
+						<li class="search-icon">
+							<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
+								<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
+									<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
+								</UTooltip>
 
-					<template #panel>
-						<div class="p-4">
-							<p class="text-2xl">Search players</p>
-							<div class="flex space-x-4">
-								<!-- <div>
-									<p>By Rank:</p>
-									<USelectMenu v-model="selectedRank" :options="ranks">
-										<template #leading>
-											<img v-if="selectedRank != 'any'" :src="`/images/ranks/${selectedRank}.webp`" class="w-5 h-5" />
-											<p v-else>any</p>
-										</template>
-									</USelectMenu>
-								</div> -->
-								<div class="flex text-center items-center">
-									<UInput v-model="searchQuery" />
-									<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+							<template #panel>
+								<div class="p-4">
+									<p class="text-2xl">Search players</p>
+									<div class="flex space-x-4">
+										<div class="flex text-center items-center">
+											<UInput v-model="searchQuery" />
+											<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-					</template>
-				</UPopover>
+							</template>
+							</UPopover>
+						</li>
+						<li>
+							<nuxt-link to="/" class="nav-link">Leaderboard</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
+						</li>
+						<li>
+							<a href="#" @click="downloadSheet">Download JSON</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
-			<DownloadBtn @click="downloadSheet" />
-		</nav>
+		</div>
 		<NuxtPage />
 	</div>
 </template>
@@ -152,6 +165,12 @@
 	const searchQuery = useState("searchQuery", () => "");
 	const selectedRank = ref(ranks[0]);
 	const isSearchOpen = ref(false);
+	const isMenuOpen = ref(false);
+
+	function toggleMenu() {
+		isMenuOpen.value = !isMenuOpen.value;
+	}
+
 	defineShortcuts({
 		meta_k: {
 			usingInput: true,
