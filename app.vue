@@ -47,7 +47,7 @@
 							</UPopover>
 						</li>
 						<li>
-							<nuxt-link to="/" class="nav-link">Leaderboard</nuxt-link>
+							<nuxt-link to="/" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
 						</li>
 						<li>
 							<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
@@ -171,6 +171,10 @@
 
 	function toggleMenu() {
 		isMenuOpen.value = !isMenuOpen.value;
+	}
+
+	function closeMenu() {
+		isMenuOpen.value = false;
 	}
 
 	defineShortcuts({
