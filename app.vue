@@ -66,8 +66,10 @@
 <script setup>
 	const uwu = useCookie("uwu");
 	const route = useRoute();
-	if (route.query.uwu) {
-		uwu.value = true;
+	if (route.query.uwu === 'true') {
+	  uwu.value = true;
+	} else if (route.query.uwu === 'false') {
+	  uwu.value = false;
 	}
 
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
