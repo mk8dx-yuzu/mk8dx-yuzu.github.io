@@ -15,7 +15,7 @@
 				<div class="navigation-image">
 					<nuxt-link to="/">
 						<img :src="!uwu ? '/images/Yuzu Online Lounge Logo v2.png' : '/images/Yuzu Online Lounge Logo v2 uwu.png'" alt="Yuzu Online Lounge Logo" />
-					</nuxt-link> 
+					</nuxt-link>
 				</div>
 				<div class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu">
 					<span class="bun bun-top">
@@ -33,17 +33,17 @@
 									<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
 								</UTooltip>
 
-							<template #panel>
-								<div class="p-4">
-									<p class="text-2xl text-center pb-2">Search players</p>
-									<div class="flex space-x-4">
-										<div class="flex text-center items-center">
-											<UInput v-model="searchQuery" />
-											<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+								<template #panel>
+									<div class="p-4">
+										<p class="text-2xl text-center pb-2">Search players</p>
+										<div class="flex space-x-4">
+											<div class="flex text-center items-center">
+												<UInput v-model="searchQuery" />
+												<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+											</div>
 										</div>
 									</div>
-								</div>
-							</template>
+								</template>
 							</UPopover>
 						</li>
 						<li>
@@ -51,6 +51,9 @@
 						</li>
 						<li>
 							<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge-Bot</nuxt-link>
 						</li>
 						<li>
 							<a href="#" @click="downloadSheet">Download JSON</a>
@@ -66,10 +69,10 @@
 <script setup>
 	const uwu = useCookie("uwu");
 	const route = useRoute();
-	if (route.query.uwu === 'true') {
-	  uwu.value = true;
-	} else if (route.query.uwu === 'false') {
-	  uwu.value = false;
+	if (route.query.uwu === "true") {
+		uwu.value = true;
+	} else if (route.query.uwu === "false") {
+		uwu.value = false;
 	}
 
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
