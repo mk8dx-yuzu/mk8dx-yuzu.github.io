@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-	const uwu = useCookie("uwu");
+	const uwu = useCookie("uwu", { maxAge: 31536000000 });
 	const route = useRoute();
 	if (route.query.uwu === "true") {
 		uwu.value = true;
