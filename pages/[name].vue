@@ -4,7 +4,7 @@
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
 			<div v-if="suspended" class="notice-banner">
-				<p><b>This player is suspended and may no longer participate in MK8DX-yuzu Lounge.</b></p>
+				<p><b>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</b></p>
 			</div>
 			<div class="profile-container">
 				<div class="profile-container-inner">
