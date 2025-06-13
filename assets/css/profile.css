@@ -8,6 +8,8 @@
     background-color: #520000;
     background: repeating-linear-gradient(-45deg, #660000 0, #660000, 6px, #520000 6px, #520000 12px);
     border: 1px solid #A30000;
+    border-right: none;
+    border-left: none;
     margin-bottom: 10px;
     padding: 10px 20px;
     z-index: 1000; /* Ensure it appears above other content */
