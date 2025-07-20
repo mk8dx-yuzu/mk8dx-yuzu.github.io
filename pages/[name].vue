@@ -3,64 +3,70 @@
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
+			<div v-if="suspended" class="notice-banner">
+				<p><b>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</b></p>
+			</div>
 			<div class="profile-container">
-				<div class="rank-icon-background">
-					<img
-						:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
-						alt="rank icon" />
-					<div class="gradient-blur">
-						<div v-for="i in 3" :key="i"></div>
-					</div>
-					<div class="overlay">
-						<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
-						<div class="rank-info">
-							<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
-							<p :class="[getColor(player.mmr, playerData.indexOf(player))]">●</p>
-							<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
+				<div class="profile-container-inner">
+					<div class="rank-icon-background">
+						<img
+							:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
+							alt="rank icon" />
+						<div class="gradient-blur">
+							<div v-for="i in 3" :key="i"></div>
 						</div>
-						<p>Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
+						<div class="overlay">
+							<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
+							<div class="rank-info">
+								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
+								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">●</p>
+								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
+							</div>
+							<p>Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
+						</div>
 					</div>
-				</div>
-				<div class="stats">
-					<div class="stat">
-						<p class="stat-title">Your last 5 MMR changes:</p>
-						<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None"}}</p>
+					<div class="stats">
+						<div class="stat">
+							<p class="stat-title">Your last 5 MMR changes:</p>
+							<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None"}}</p>
+						</div>
+						<div class="stat">
+							<p class="stat-value">
+								<b>{{ player.wins }}</b> total wins
+							</p>
+							<p class="stat-title">
+								and <b>{{ player.losses }}</b> total losses
+							</p>
+						</div>
+						<div class="stat">
+							<p class="stat-value">
+								<b>{{ player.wins + player.losses === 0 ? 0 : Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
+							</p>
+							<p class="stat-title">
+								out of <b>{{ player.wins + player.losses }}</b> total mogis
+							</p>
+						</div>
+						<div class="stat">
+							<p class="stat-title">With an average of 69 minutes per mogi</p>
+							<p class="stat-value">
+								<b>{{ (player.wins + player.losses) * 69 }} minutes</b> wasted
+							</p>
+						</div>
+						<div class="stat">
+							<p class="stat-value">
+								<b>{{ player.disconnects }}</b> disconnects
+							</p>
+							<p class="stat-title"><b>{{ player.disconnects * 3 }}</b> minutes wasted for others</p>
+						</div>
 					</div>
-					<div class="stat">
-						<p class="stat-value">
-							<b>{{ player.wins }}</b> total wins
-						</p>
-						<p class="stat-title">
-							and <b>{{ player.losses }}</b> total losses
-						</p>
+					<div class="history-container">
+						<!-- <p v-if="player?.name">Extended History:</p> -->
+						<!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
+						<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
 					</div>
-					<div class="stat">
-						<p class="stat-value">
-							<b>{{ player.wins + player.losses === 0 ? 0 : Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
-						</p>
-						<p class="stat-title">
-							out of <b>{{ player.wins + player.losses }}</b> total mogis
-						</p>
-					</div>
-					<div class="stat">
-						<p class="stat-title">With an average of 69 minutes per mogi</p>
-						<p class="stat-value">
-							<b>{{ (player.wins + player.losses) * 69 }} minutes</b> wasted
-						</p>
-					</div>
-					<div class="stat">
-						<p class="stat-value">
-							<b>{{ player.disconnects }}</b> disconnects
-						</p>
-						<p class="stat-title"><b>{{ player.disconnects * 3 }}</b> minutes wasted for others</p>
-					</div>
-				</div>
-				<div class="history-container">
-					<!-- <p v-if="player?.name">Extended History:</p> -->
-					<!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
-					<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
 				</div>
 			</div>
+			
 		</div>
 		<div v-else class="text-5xl flex flex-col items-center py-10">
 			<p>This player does not exist</p>
@@ -77,6 +83,7 @@
 
 	const playerData = useState("data");
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
+	const suspended = computed(() => player.value?.suspended == true);
 
 	const hasLoaded = useState("loaded");
 	const hasMounted = useState("mounted", () => false);

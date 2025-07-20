@@ -62,9 +62,26 @@
 				</nav>
 			</div>
 		</div>
-		<NuxtLayout>
-			<NuxtPage />
-		</NuxtLayout>
+		<NuxtPage />
+		<div class="footer-container">
+			<div class="footer-container-inner">
+				<div class="footer-upper">
+					<div class="footer-text">
+						<p>
+							Made with ❤️ by <a class="link-dotted" href="https://github.com/kevnkkm">kevnkkm</a> and
+							<a class="link-dotted" href="https://github.com/probablyjassin">probablyjassin</a>
+						</p>
+					</div>
+					<div class="footer-links">
+						<p>Check the source code:</p>
+						<a href="https://github.com/mk8dx-yuzu"><img src="/images/github-mark-white.png" /></a>
+					</div>
+				</div>
+				<div class="footer-lower">
+					<p>Mario Kart 8 Deluxe ™ and © Nintendo</p>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -119,6 +136,7 @@
 				losses: player.history.filter((delta) => delta < 0).length,
 				discord: player.discord_id || undefined,
 				disconnects: player.disconnects || 0,
+				suspended: player.suspended || false,
 			}))
 		).reverse();
 
