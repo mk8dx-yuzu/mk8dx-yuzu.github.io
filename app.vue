@@ -28,7 +28,7 @@
 				<nav :class="{ open: isMenuOpen }">
 					<ul>
 						<li class="search-icon">
-							<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
+							<UPopover v-model:open="isSearchOpen" v-if="route.path === '/' || route.path === '/season-3'">
 								<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
 									<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
 								</UTooltip>
@@ -67,11 +67,14 @@
 			<div class="footer-container-inner">
 				<div class="footer-upper">
 					<div class="footer-text">
-						<p>Made with ❤️ by <a class="link-dotted" href="https://github.com/kevnkkm">kevnkkm</a> and <a class="link-dotted" href="https://github.com/probablyjassin">probablyjassin</a></p>
+						<p>
+							Made with ❤️ by <a class="link-dotted" href="https://github.com/kevnkkm">kevnkkm</a> and
+							<a class="link-dotted" href="https://github.com/probablyjassin">probablyjassin</a>
+						</p>
 					</div>
 					<div class="footer-links">
 						<p>Check the source code:</p>
-						<a href="https://github.com/mk8dx-yuzu"><img src="/images/github-mark-white.png"></a>
+						<a href="https://github.com/mk8dx-yuzu"><img src="/images/github-mark-white.png" /></a>
 					</div>
 				</div>
 				<div class="footer-lower">
