@@ -15,33 +15,10 @@
 						to="https://discord.com/channels/1084911987626094654/1181312934803144724" />
 				</UTooltip>
 			</div>
-			<div class="season-selector">
-				<fieldset class="season-tabs" role="radiogroup" aria-labelledby="season-selector-label">
-					<legend id="season-selector-label" class="sr-only">Select Season</legend>
-					<label class="season-tab">
-						<input 
-							type="radio" 
-							:value="4" 
-							v-model="selectedSeason"
-							@change="onSeasonChange"
-							name="season"
-							aria-label="Season 4"
-						/>
-						<span>Season 4</span>
-					</label>
-					<label class="season-tab">
-						<input 
-							type="radio" 
-							:value="3" 
-							v-model="selectedSeason"
-							@change="onSeasonChange"
-							name="season"
-							aria-label="Season 3"
-						/>
-						<span>Season 3</span>
-					</label>
-				</fieldset>
-			</div>
+			<SeasonSelector 
+				v-model="selectedSeason" 
+				@change="onSeasonChange" 
+			/>
 		</div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
