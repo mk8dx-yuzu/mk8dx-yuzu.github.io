@@ -40,6 +40,112 @@
     text-align: center;
 }
 
+.season-selector {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* Screen reader only class for accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.season-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: fit-content;
+    margin: 0 auto;
+    /* Remove default fieldset styling */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+}
+
+.season-tabs legend {
+    padding: 0;
+    margin: 0;
+}
+
+.season-tab {
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    user-select: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+/* Hide the radio button visually but keep it accessible */
+.season-tab input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.season-tab span {
+    pointer-events: none;
+}
+
+.season-tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #585858;
+}
+
+.season-tab:focus-within {
+    outline: 2px solid #02bae7;
+    outline-offset: 2px;
+}
+
+/* Style for checked/selected state */
+.season-tab:has(input:checked) {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #585858;
+    color: #ffffff;
+    /* font-weight: bold; */
+}
+
+.season-tab:has(input:checked):hover {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #585858;
+}
+
+/* Fallback for browsers that don't support :has()
+.season-tab input[type="radio"]:checked + span {
+    font-weight: bold;
+}
+
+Alternative approach using adjacent sibling for older browsers
+@supports not selector(:has(*)) {
+    .season-tab input[type="radio"]:checked {
+        background: #02bae7;
+        border: 1px solid #02bae7;
+    }
+} */
+
 .leaderboard-container {
     display: flex;
     justify-content: center;

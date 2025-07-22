@@ -81,12 +81,11 @@
 	const route = useRoute();
 	const name = route.params.name;
 
-	const playerData = useState("data");
+	const { playerData, hasLoaded } = usePlayerData();
+	const hasMounted = useState("mounted", () => false);
+	
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
 	const suspended = computed(() => player.value?.suspended == true);
-
-	const hasLoaded = useState("loaded");
-	const hasMounted = useState("mounted", () => false);
 
 	const { getColor } = useColor();
 	const { getRank } = useRank();

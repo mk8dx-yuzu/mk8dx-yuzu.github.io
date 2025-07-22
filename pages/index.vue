@@ -2,7 +2,9 @@
 	<div>
 		<div class="title">
 			<h1 class="text-center">Leaderboard</h1>
-			<h2>Season 3</h2>
+			<div class="flex items-center justify-between">
+				<!-- <h2>Season {{ selectedSeason }}</h2> -->
+			</div>
 			<div class="flex">
 				<p>Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 				<UTooltip text="How to register" :popper="{ placement: 'right' }">
@@ -12,6 +14,33 @@
 						icon="heroicons-question-mark-circle"
 						to="https://discord.com/channels/1084911987626094654/1181312934803144724" />
 				</UTooltip>
+			</div>
+			<div class="season-selector">
+				<fieldset class="season-tabs" role="radiogroup" aria-labelledby="season-selector-label">
+					<legend id="season-selector-label" class="sr-only">Select Season</legend>
+					<label class="season-tab">
+						<input 
+							type="radio" 
+							:value="4" 
+							v-model="selectedSeason"
+							@change="onSeasonChange"
+							name="season"
+							aria-label="Season 4"
+						/>
+						<span>Season 4</span>
+					</label>
+					<label class="season-tab">
+						<input 
+							type="radio" 
+							:value="3" 
+							v-model="selectedSeason"
+							@change="onSeasonChange"
+							name="season"
+							aria-label="Season 3"
+						/>
+						<span>Season 3</span>
+					</label>
+				</fieldset>
 			</div>
 		</div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
@@ -54,10 +83,8 @@
 
 	const router = useRouter()
 
-	const hasLoaded = useState("loaded")
 	const hasMounted = useState("mounted", () => false);
-
-	const playerData = useState("data")
+	const { playerData, hasLoaded, isDataFromCache, selectedSeason, loadPlayerData, animateTable } = usePlayerData()
 	const searchQuery = useState('searchQuery')
 
 	const fuseOptions = {
@@ -83,4 +110,19 @@
 	function navTo(playerName) {
 		router.push(`/${playerName}`)
 	}
+
+	async function onSeasonChange() {
+		await loadPlayerData(selectedSeason.value)
+		animateTable()
+	}
+
+	async function refreshData() {
+		await loadPlayerData(selectedSeason.value, true) // Force refresh
+		animateTable()
+	}
+
+	// Load Season 4 data by default when component mounts
+	onMounted(() => {
+		onSeasonChange()
+	})
 </script>

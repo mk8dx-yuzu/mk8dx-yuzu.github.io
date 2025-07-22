@@ -92,62 +92,22 @@
 	}
 
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
-	const hasLoaded = useState("loaded", () => false);
 	const hasMounted = useState("mounted", () => false);
-	const playerData = useState("data", () => []);
+	const { playerData, hasLoaded, loadPlayerData, animateTable, clearCache } = usePlayerData();
 
-	function sortByMMR(data) {
-		// 1. Create a new array to store sorted objects
-		const sortedData = [];
-
-		// 2. Loop through the original data
-		for (const item of data) {
-			// 3. Find the appropriate insertion point in the sorted array
-			let insertionIndex = 0;
-			while (insertionIndex < sortedData.length && item.mmr >= sortedData[insertionIndex].mmr) {
-				insertionIndex++;
-			}
-
-			// 4. Insert the object at the found position
-			sortedData.splice(insertionIndex, 0, item);
-		}
-
-		// 5. Return the sorted array
-		return sortedData;
-	}
 	onMounted(async () => {
 		hasMounted.value = true;
-		try {
-			var data = await $fetch(url.value);
-		} catch (e) {
-			console.log(e);
-			var data = [];
+		
+		// Clear cache on page refresh/initial load to ensure fresh data
+		clearCache();
+		
+		// Note: Data loading is now handled by individual pages for season-specific content
+		
+		// Only load default data if on a non-index page that needs it
+		if (route.path !== '/') {
+			await loadPlayerData(3); // Load Season 3 data for non-index pages
+			animateTable();
 		}
-
-		playerData.value = sortByMMR(
-			data.map((player) => ({
-				name: player.name || player.Player,
-				mmr: player.mmr || player.MMR,
-				history: player.history || [],
-				wins: player.history.filter((delta) => delta >= 0).length,
-				losses: player.history.filter((delta) => delta < 0).length,
-				discord: player.discord_id || undefined,
-				disconnects: player.disconnects || 0,
-				suspended: player.suspended || false,
-			}))
-		).reverse();
-
-		hasLoaded.value = true;
-
-		// ANIMATION
-		nextTick(() => {
-			const cells = document.querySelectorAll("#leaderboard-table td");
-			cells.forEach((cell, index) => {
-				cell.style.opacity = 0;
-				cell.style.animation = "tiltanimation 0.75s forwards";
-				cell.style.animationDelay = index * 0.005 + "s";
-			});
-		});
 	});
 
 	async function downloadSheet() {
