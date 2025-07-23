@@ -3,16 +3,11 @@
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
-			<NoticeBanner 
-				v-if="selectedSeason != 4" 
+			<NoticeBanner
+				v-if="selectedSeason != 4"
 				:message="`You are viewing historical player data from Season ${selectedSeason}. Select the current season on the leaderboard for up-to-date stats.`"
-				color="blue"
-			/>
-			<NoticeBanner 
-				v-else-if="suspended" 
-				message="This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge."
-				color="red"
-			/>
+				color="blue" />
+			<NoticeBanner v-else-if="suspended" message="This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge." color="red" />
 			<div class="profile-container">
 				<div class="profile-container-inner">
 					<div class="rank-icon-background">
@@ -36,7 +31,7 @@
 					<div class="stats">
 						<div class="stat">
 							<p class="stat-title">Your last 5 MMR changes:</p>
-							<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None"}}</p>
+							<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None" }}</p>
 						</div>
 						<div class="stat">
 							<p class="stat-value">
@@ -64,7 +59,9 @@
 							<p class="stat-value">
 								<b>{{ player.disconnects }}</b> disconnects
 							</p>
-							<p class="stat-title"><b>{{ player.disconnects * 3 }}</b> minutes wasted for others</p>
+							<p class="stat-title">
+								<b>{{ player.disconnects * 3 }}</b> minutes wasted for others
+							</p>
 						</div>
 					</div>
 					<div class="history-container">
@@ -74,7 +71,6 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 		<div v-else class="text-5xl flex flex-col items-center py-10">
 			<p>This player does not exist</p>
@@ -89,9 +85,10 @@
 	const route = useRoute();
 	const name = route.params.name;
 
-	const { playerData, hasLoaded, selectedSeason } = usePlayerData();
+	const { playerData, hasLoaded } = usePlayerData();
+	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
 	const hasMounted = useState("mounted", () => false);
-	
+
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
 	const suspended = computed(() => player.value?.suspended == true);
 

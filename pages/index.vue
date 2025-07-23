@@ -15,10 +15,7 @@
 						to="https://discord.com/channels/1084911987626094654/1181312934803144724" />
 				</UTooltip>
 			</div>
-			<SeasonSelector 
-				v-model="selectedSeason" 
-				@change="onSeasonChange" 
-			/>
+			<SeasonSelector v-model="selectedSeason" @change="onSeasonChange" />
 		</div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
@@ -59,9 +56,11 @@
 	import { useState } from '#app'
 
 	const router = useRouter()
+	const route = useRoute()
 
 	const hasMounted = useState("mounted", () => false);
-	const { playerData, hasLoaded, isDataFromCache, selectedSeason, loadPlayerData, animateTable } = usePlayerData()
+	const { playerData, hasLoaded, isDataFromCache, loadPlayerData, animateTable } = usePlayerData()
+	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
 	const searchQuery = useState('searchQuery')
 
 	const fuseOptions = {
@@ -85,7 +84,7 @@
 	const { getColor } = useColor()
 
 	function navTo(playerName) {
-		router.push(`/${playerName}`)
+		router.replace({path: `/${playerName}`, query: route.query})
 	}
 
 	async function onSeasonChange() {

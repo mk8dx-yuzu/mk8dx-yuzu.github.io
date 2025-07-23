@@ -13,7 +13,7 @@
 		<div class="navigation-container">
 			<div class="navigation-container-inner">
 				<div class="navigation-image">
-					<nuxt-link to="/">
+					<nuxt-link :to="{ path: '/', query: { ...route.query } }">
 						<img :src="!uwu ? '/images/Yuzu Online Lounge Logo v2.png' : '/images/Yuzu Online Lounge Logo v2 uwu.png'" alt="Yuzu Online Lounge Logo" />
 					</nuxt-link>
 				</div>
@@ -47,7 +47,7 @@
 							</UPopover>
 						</li>
 						<li>
-							<nuxt-link to="/" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
+							<nuxt-link :to="{ route: '/', query: { ...route.query } }" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
 						</li>
 						<li>
 							<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
@@ -67,11 +67,14 @@
 			<div class="footer-container-inner">
 				<div class="footer-upper">
 					<div class="footer-text">
-						<p>Made with ❤️ by <a class="link-dotted" href="https://github.com/kevnkkm">kevnkkm</a> and <a class="link-dotted" href="https://github.com/probablyjassin">probablyjassin</a></p>
+						<p>
+							Made with ❤️ by <a class="link-dotted" href="https://github.com/kevnkkm">kevnkkm</a> and
+							<a class="link-dotted" href="https://github.com/probablyjassin">probablyjassin</a>
+						</p>
 					</div>
 					<div class="footer-links">
 						<p>Check the source code:</p>
-						<a href="https://github.com/mk8dx-yuzu"><img src="/images/github-mark-white.png"></a>
+						<a href="https://github.com/mk8dx-yuzu"><img src="/images/github-mark-white.png" /></a>
 					</div>
 				</div>
 				<div class="footer-lower">
@@ -94,20 +97,26 @@
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasMounted = useState("mounted", () => false);
 	const { playerData, hasLoaded, loadPlayerData, animateTable, clearCache } = usePlayerData();
+	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
 
 	onMounted(async () => {
 		hasMounted.value = true;
-		
+
 		// Clear cache on page refresh/initial load to ensure fresh data
 		clearCache();
-		
+
 		// Note: Data loading is now handled by individual pages for season-specific content
-		
+
 		// Only load default data if on a non-index page that needs it
-		if (route.path !== '/') {
-			await loadPlayerData(3); // Load Season 3 data for non-index pages
-			animateTable();
+
+		console.log(`-- CURRENT S QUERY: ${route.query.s}`);
+		let season = 4;
+		if (route.query.s == 3) {
+			season = 3;
 		}
+		console.log(`LOADING DATA FOR SEASON ${season}`);
+		await loadPlayerData(season); // Load Season 3 data for non-index pages
+		animateTable();
 	});
 
 	async function downloadSheet() {
