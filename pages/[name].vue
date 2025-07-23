@@ -3,9 +3,16 @@
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
-			<div v-if="suspended" class="notice-banner">
-				<p><b>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</b></p>
-			</div>
+			<NoticeBanner 
+				v-if="selectedSeason != 4" 
+				:message="`You are viewing historical player data from Season ${selectedSeason}. Select the current season on the leaderboard for up-to-date stats.`"
+				color="blue"
+			/>
+			<NoticeBanner 
+				v-else-if="suspended" 
+				message="This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge."
+				color="red"
+			/>
 			<div class="profile-container">
 				<div class="profile-container-inner">
 					<div class="rank-icon-background">
@@ -17,6 +24,7 @@
 						</div>
 						<div class="overlay">
 							<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
+							<!-- <h2>Season {{ selectedSeason }}</h2> -->
 							<div class="rank-info">
 								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
 								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">●</p>
@@ -81,7 +89,7 @@
 	const route = useRoute();
 	const name = route.params.name;
 
-	const { playerData, hasLoaded } = usePlayerData();
+	const { playerData, hasLoaded, selectedSeason } = usePlayerData();
 	const hasMounted = useState("mounted", () => false);
 	
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
