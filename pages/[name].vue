@@ -4,10 +4,12 @@
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
 			<NoticeBanner
-				v-if="selectedSeason != 4"
-				:message="`You are viewing historical player data from Season ${selectedSeason}. Select the current season on the leaderboard for up-to-date stats.`"
-				color="blue" />
-			<NoticeBanner v-else-if="suspended" message="This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge." color="red" />
+				v-if="selectedSeason != 4" color="blue">
+				<p>You are viewing historical player data from Season {{ selectedSeason }}. Select the current season on the leaderboard for up-to-date stats.</p>
+			</NoticeBanner>
+			<NoticeBanner v-else-if="suspended" color="red">
+				<p>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</p>
+			</NoticeBanner>
 			<div class="profile-container">
 				<div class="profile-container-inner">
 					<div class="rank-icon-background">

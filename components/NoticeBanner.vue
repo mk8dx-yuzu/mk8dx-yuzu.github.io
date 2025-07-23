@@ -68,7 +68,7 @@
 	);
 </script>
 
-<style scoped>
+<style>
 	.notice-banner {
 		border: 1px solid;
 		border-right: none;
@@ -82,4 +82,10 @@
 		text-align: center;
 		font-weight: bold;
 	}
+
+    .notice-banner p a {
+        text-decoration: underline;
+        text-decoration-style: dashed;
+        color: #FA8334;
+    }
 </style>

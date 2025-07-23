@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<NoticeBanner color="purple">
+			<p>Season 4 released! Check out the changes <a href="https://github.com/probablyjassin/bot-mk8dx?tab=readme-ov-file#season-3-of-mk8dx-lounge-on-yuzu-online" target="_blank">here!</a></p>
+		</NoticeBanner>
 		<div class="title">
 			<h1 class="text-center">Leaderboard</h1>
 			<div class="flex items-center justify-between">
