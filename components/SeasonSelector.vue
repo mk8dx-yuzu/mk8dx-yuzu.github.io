@@ -35,11 +35,11 @@
 		emit("change", selectedSeasonModel.value);
 
 		if (modelValue.value == 3) {
-			router.replace({ path: route.path, query: { ...route.query, s: 3 } });
+			router.push({ path: route.path, query: { ...route.query, s: 3 } });
 		} else if (modelValue.value == 4) {
 			const newQuery = { ...route.query };
 			delete newQuery["s"];
-			router.replace({ path: route.path, query: newQuery });
+			router.push({ path: route.path, query: newQuery });
 		}
 	}
 </script>

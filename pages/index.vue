@@ -84,7 +84,7 @@
 	const { getColor } = useColor()
 
 	function navTo(playerName) {
-		router.replace({path: `/${playerName}`, query: route.query})
+		router.push({path: `/${playerName}`, query: route.query})
 	}
 
 	async function onSeasonChange() {
