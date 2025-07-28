@@ -20,17 +20,17 @@
 			<div v-else class="stats-container">
 				<div class="stats-grid">
 					<div class="stat-card">
-						<h3>🏁 Total Mogis Played</h3>
+						<h3>Total Mogis Played</h3>
 						<p class="stat-value">{{ stats.totalMogis }}</p>
 					</div>
 					
 					<div class="stat-card">
-						<h3>⏱️ Average Duration</h3>
+						<h3>⏱Average Duration</h3>
 						<p class="stat-value">{{ stats.averageDurationMinutes }} minutes</p>
 					</div>
 					
 					<div class="stat-card">
-						<h3>📡 Average DCs per Mogi</h3>
+						<h3>Average DCs per Mogi</h3>
 						<p class="stat-value">{{ stats.averageDisconnections }}</p>
 					</div>
 					
