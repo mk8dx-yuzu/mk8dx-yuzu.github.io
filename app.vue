@@ -8,61 +8,66 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://mk8dx-yuzu.github.io/" />
 	<meta property="og:image" content="https://mk8dx-yuzu.github.io/favicon/ms-icon-310x310.png" />
-	<div>
+	<div class="app-container">
 		<div class="gradient-bg"></div>
-		<div class="navigation-container">
-			<div class="navigation-container-inner">
-				<div class="navigation-image">
-					<nuxt-link :to="{ path: '/', query: { ...route.query } }">
-						<img :src="!uwu ? '/images/Yuzu Online Lounge Logo v2.png' : '/images/Yuzu Online Lounge Logo v2 uwu.png'" alt="Yuzu Online Lounge Logo" />
-					</nuxt-link>
-				</div>
-				<div class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu">
-					<span class="bun bun-top">
-						<span class="bun-crust bun-crust-top"></span>
-					</span>
-					<span class="bun bun-bottom">
-						<span class="bun-crust bun-crust-bottom"></span>
-					</span>
-				</div>
-				<nav :class="{ open: isMenuOpen }">
-					<ul>
-						<li class="search-icon">
-							<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
-								<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
-									<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
-								</UTooltip>
+		<div class="main-content">
+			<div class="navigation-container">
+				<div class="navigation-container-inner">
+					<div class="navigation-image">
+						<nuxt-link :to="{ path: '/', query: { ...route.query } }">
+							<img :src="!uwu ? '/images/Yuzu Online Lounge Logo v2.png' : '/images/Yuzu Online Lounge Logo v2 uwu.png'" alt="Yuzu Online Lounge Logo" />
+						</nuxt-link>
+					</div>
+					<div class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu">
+						<span class="bun bun-top">
+							<span class="bun-crust bun-crust-top"></span>
+						</span>
+						<span class="bun bun-bottom">
+							<span class="bun-crust bun-crust-bottom"></span>
+						</span>
+					</div>
+					<nav :class="{ open: isMenuOpen }">
+						<ul>
+							<li class="search-icon">
+								<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
+									<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
+										<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
+									</UTooltip>
 
-								<template #panel>
-									<div class="p-4">
-										<p class="text-2xl text-center pb-2">Search players</p>
-										<div class="flex space-x-4">
-											<div class="flex text-center items-center">
-												<UInput v-model="searchQuery" />
-												<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+									<template #panel>
+										<div class="p-4">
+											<p class="text-2xl text-center pb-2">Search players</p>
+											<div class="flex space-x-4">
+												<div class="flex text-center items-center">
+													<UInput v-model="searchQuery" />
+													<UIcon name="i-heroicons-x-mark" class="absolute right-5 cursor-pointer" @click="searchQuery = ''" />
+												</div>
 											</div>
 										</div>
-									</div>
-								</template>
-							</UPopover>
-						</li>
-						<li>
-							<nuxt-link :to="{ route: '/', query: { ...route.query } }" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
-						</li>
-						<li>
-							<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
-						</li>
-						<li>
-							<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge-Bot</nuxt-link>
-						</li>
-						<li>
-							<a href="#" @click="downloadSheet">Download JSON</a>
-						</li>
-					</ul>
-				</nav>
+									</template>
+								</UPopover>
+							</li>
+							<li>
+								<nuxt-link :to="{ path: '/', query: { ...route.query } }" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link :to="{ path: '/season-stats', query: { ...route.query } }" class="nav-link" @click="closeMenu">Season Stats</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge-Bot</nuxt-link>
+							</li>
+							<li>
+								<a href="#" @click="downloadSheet">Download JSON</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
 			</div>
+			<NuxtPage />
 		</div>
-		<NuxtPage />
 		<div class="footer-container">
 			<div class="footer-container-inner">
 				<div class="footer-upper">
