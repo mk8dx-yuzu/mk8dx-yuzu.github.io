@@ -25,7 +25,7 @@
 					</div>
 					
 					<div class="stat-card">
-						<h3>⏱Average Duration</h3>
+						<h3>Average Duration</h3>
 						<p class="stat-value">{{ stats.averageDurationMinutes }} minutes</p>
 					</div>
 					
