@@ -158,6 +158,7 @@ export const useMogiData = () => {
 
 		// Format mapping
 		const keyToFormat = {
+			0: "mini",
 			1: "FFA",
 			2: "2v2", 
 			3: "3v3",
