@@ -49,7 +49,7 @@
 						<p class="stat-value">{{ stats.averagePlayersPerMogi }}</p>
 					</div>
 					
-					<div class="stat-card wide">
+					<div class="stat-card">
 						<h3>Biggest MMR Changes</h3>
 						<div class="mmr-changes">
 							<p><span class="gain">📈 Gain:</span> {{ stats.biggestGain }}</p>
@@ -68,7 +68,7 @@
 						<p v-else class="no-data">No player data available</p>
 					</div>
 					
-					<div class="stat-card wide">
+					<div class="stat-card">
 						<h3>Format Distribution</h3>
 						<div v-if="Object.keys(stats.formatsDict).length > 0" class="format-list">
 							<p v-for="(count, format) in stats.formatsDict" :key="format">
