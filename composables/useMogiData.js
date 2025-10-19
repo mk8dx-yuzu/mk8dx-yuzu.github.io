@@ -52,9 +52,7 @@ export const useMogiData = () => {
 		isDataFromCache.value = false;
 
 		// Determine the API endpoint based on season
-		const url = currentSeason === 4 
-			? "https://mk8dx-yuzu.kevnkkm.de/api/mogis?season=4" 
-			: "https://mk8dx-yuzu.kevnkkm.de/api/mogis";
+		const url = `https://mk8dx-yuzu.kevnkkm.de/api/leaderboard?mogis=${currentSeason}`;
 
 		try {
 			const data = await $fetch(url);
@@ -158,6 +156,7 @@ export const useMogiData = () => {
 
 		// Format mapping
 		const keyToFormat = {
+			0: "mini",
 			1: "FFA",
 			2: "2v2", 
 			3: "3v3",
