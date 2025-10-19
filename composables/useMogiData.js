@@ -38,7 +38,7 @@ export const useMogiData = () => {
 		if (!forceRefresh && isCacheValid(currentSeason)) {
 			const cachedData = getCacheData(currentSeason);
 			if (cachedData && cachedData.length > 0) {
-				console.log(`Loading Season ${currentSeason} mogi data from cache`);
+				console.log(`Loading season ${currentSeason} mogi data from cache`);
 				mogiData.value = cachedData;
 				isDataFromCache.value = true;
 				hasLoaded.value = true;
@@ -47,7 +47,7 @@ export const useMogiData = () => {
 		}
 
 		// If no valid cache or forcing refresh, fetch from API
-		console.log(`Fetching Season ${currentSeason} mogi data from API${forceRefresh ? " (forced refresh)" : ""}`);
+		console.log(`Fetching season ${currentSeason} mogi data from API${forceRefresh ? " (forced refresh)" : ""}`);
 		mogiData.value = [];
 		isDataFromCache.value = false;
 
@@ -60,7 +60,7 @@ export const useMogiData = () => {
 			// Store in cache only if we got valid data
 			if (data && data.length > 0) {
 				setCacheData(currentSeason, data);
-				console.log(`Successfully cached ${data.length} mogis for Season ${currentSeason}`);
+				console.log(`Successfully cached ${data.length} mogis for season ${currentSeason}`);
 			}
 
 			mogiData.value = data || [];
@@ -70,7 +70,7 @@ export const useMogiData = () => {
 			// If API fails, try to use expired cache as fallback
 			const fallbackData = getCacheData(currentSeason);
 			if (fallbackData && fallbackData.length > 0) {
-				console.log(`API failed, using expired cache for Season ${currentSeason} mogi data`);
+				console.log(`API failed, using expired cache for season ${currentSeason} mogi data`);
 				mogiData.value = fallbackData;
 				isDataFromCache.value = true;
 			} else {
