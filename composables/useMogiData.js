@@ -32,7 +32,7 @@ export const useMogiData = () => {
 		hasLoaded.value = false;
 
 		// Use provided season or fall back to 4
-		const currentSeason = season !== null ? season : 4;
+		const currentSeason = season !== null ? season : route.query.s ? route.query.s : 4;
 
 		// Check if we have valid cached data and not forcing a refresh
 		if (!forceRefresh && isCacheValid(currentSeason)) {
@@ -52,7 +52,7 @@ export const useMogiData = () => {
 		isDataFromCache.value = false;
 
 		// Determine the API endpoint based on season
-		const url = `https://mk8dx-yuzu.kevnkkm.de/api/leaderboard?mogis=${currentSeason}`;
+		const url = `https://mk8dx-yuzu.kevnkkm.de/api/mogis?season=${currentSeason}`;
 
 		try {
 			const data = await $fetch(url);
