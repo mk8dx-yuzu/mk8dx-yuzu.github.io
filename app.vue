@@ -60,7 +60,7 @@
 								<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge-Bot</nuxt-link>
+								<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge Bot</nuxt-link>
 							</li>
 							<li>
 								<a href="#" @click="downloadSheet">Download JSON</a>
