@@ -54,7 +54,7 @@
 								<nuxt-link :to="{ path: '/guilds', query: { ...route.query } }" class="nav-link" @click="closeMenu">Guilds</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link :to="{ path: '/season-stats', query: { ...route.query } }" class="nav-link" @click="closeMenu">Season Stats</nuxt-link>
+								<nuxt-link :to="{ path: '/season-stats', query: { ...route.query } }" class="nav-link" @click="closeMenu">Statistics</nuxt-link>
 							</li>
 							<li>
 								<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>

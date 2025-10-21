@@ -141,7 +141,7 @@ export const useGuildData = () => {
 			cards.forEach((card, index) => {
 				card.style.opacity = 0;
 				card.style.animation = "tiltanimation 0.75s forwards";
-				card.style.animationDelay = index * 0.005 + "s";
+				card.style.animationDelay = index * 0.100 + "s";
 			});
 		});
 	}
