@@ -2,18 +2,17 @@ export const useMogiData = () => {
 	const mogiData = useState("mogiData", () => []);
 	const hasLoaded = useState("mogiLoaded", () => false);
 	const isDataFromCache = useState("isMogiDataFromCache", () => false);
-	
-	// Cache for storing fetched data
+
+	// Cache for storing fetched data by season
 	const dataCache = useState("mogiDataCache", () => new Map());
 	const cacheTimestamps = useState("mogiCacheTimestamps", () => new Map());
-	
-	// Cache duration in milliseconds (10 minutes for mogi data)
+
+	// Cache duration in milliseconds (10 minutes)
 	const CACHE_DURATION = 10 * 60 * 1000;
 
 	function isCacheValid(season) {
 		const timestamp = cacheTimestamps.value.get(season);
 		if (!timestamp) return false;
-
 		const now = Date.now();
 		return now - timestamp < CACHE_DURATION;
 	}
@@ -25,6 +24,19 @@ export const useMogiData = () => {
 
 	function getCacheData(season) {
 		return dataCache.value.get(season);
+	}
+
+	function getCacheExpiryTime(season) {
+		const timestamp = cacheTimestamps.value.get(season);
+		if (!timestamp) return null;
+		const expiryTime = timestamp + CACHE_DURATION;
+		return new Date(expiryTime);
+	}
+
+	function clearCache() {
+		console.log("Clearing all cached mogi data");
+		dataCache.value.clear();
+		cacheTimestamps.value.clear();
 	}
 
 	async function loadMogiData(season = null, forceRefresh = false) {
@@ -62,7 +74,6 @@ export const useMogiData = () => {
 				setCacheData(currentSeason, data);
 				console.log(`Successfully cached ${data.length} mogis for season ${currentSeason}`);
 			}
-
 			mogiData.value = data || [];
 		} catch (e) {
 			console.error("Error fetching mogi data:", e);
@@ -77,40 +88,22 @@ export const useMogiData = () => {
 				mogiData.value = [];
 			}
 		}
-
 		hasLoaded.value = true;
 		return mogiData.value;
 	}
 
-	async function getPlayerNames(playerIds, season = 4) {
-		try {
-			const url = season === 4 
-				? "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard?season=4" 
-				: "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard";
-			
-			const leaderboardData = await $fetch(url);
-			const playerMap = {};
-			
-			leaderboardData.forEach(player => {
-				if (player.discord_id) {
-					playerMap[player.discord_id] = player.name || player.Player;
-				}
+	function getPlayerNameMap() {
+		// Build a map of player_id to name from all mogis
+		const playerMap = {};
+		mogiData.value.forEach(mogi => {
+			mogi.players?.forEach(({ player_id, name }) => {
+				playerMap[player_id] = name;
 			});
-			
-			return playerIds.map(id => ({
-				id,
-				name: playerMap[id] || `Player ${id}`
-			}));
-		} catch (error) {
-			console.error("Error fetching player names:", error);
-			return playerIds.map(id => ({
-				id,
-				name: `Player ${id}`
-			}));
-		}
+		});
+		return playerMap;
 	}
 
-	async function calculateStats(mogis, season = 4) {
+	function calculateStats(mogis) {
 		if (!mogis || mogis.length === 0) {
 			return {};
 		}
@@ -129,28 +122,27 @@ export const useMogiData = () => {
 		// Get all results
 		const allResults = mogis.flatMap(mogi => mogi.results);
 
-		// Count player occurrences
+		// Count player occurrences using new players array
 		const playerIdCounts = {};
 		mogis.forEach(mogi => {
-			mogi.player_ids.forEach(playerId => {
-				playerIdCounts[playerId] = (playerIdCounts[playerId] || 0) + 1;
-			});
+			if (Array.isArray(mogi.players)) {
+				mogi.players.forEach(player => {
+					const id = player.player_id;
+					playerIdCounts[id] = (playerIdCounts[id] || 0) + 1;
+				});
+			}
 		});
 
 		// Get top 3 most active players
 		const top3PlayerIds = Object.entries(playerIdCounts)
-			.sort(([,a], [,b]) => b - a)
+			.sort(([, a], [, b]) => b - a)
 			.slice(0, 3)
 			.map(([id, count]) => ({ id, count }));
 
 		// Get player names for top 3
-		const top3PlayersWithNames = await getPlayerNames(
-			top3PlayerIds.map(p => p.id), 
-			season
-		);
-
-		const top3Players = top3PlayerIds.map(({ id, count }, index) => [
-			top3PlayersWithNames[index].name,
+		const playerMap = getPlayerNameMap();
+		const top3Players = top3PlayerIds.map(({ id, count }) => [
+			playerMap[id] || `Player ${id}`,
 			count
 		]);
 
@@ -158,7 +150,7 @@ export const useMogiData = () => {
 		const keyToFormat = {
 			0: "mini",
 			1: "FFA",
-			2: "2v2", 
+			2: "2v2",
 			3: "3v3",
 			4: "4v4",
 			6: "6v6"
@@ -171,8 +163,8 @@ export const useMogiData = () => {
 			formatsDict[formatName] = (formatsDict[formatName] || 0) + 1;
 		});
 
-		// Calculate average players per mogi
-		const averagePlayersPerMogi = mogis.reduce((sum, mogi) => sum + mogi.player_ids.length, 0) / mogis.length;
+		// Calculate average players per mogi using mogi.players
+		const averagePlayersPerMogi = mogis.reduce((sum, mogi) => sum + (Array.isArray(mogi.players) ? mogi.players.length : 0), 0) / mogis.length;
 
 		return {
 			totalMogis: mogis.length,
@@ -193,6 +185,9 @@ export const useMogiData = () => {
 		hasLoaded: readonly(hasLoaded),
 		isDataFromCache: readonly(isDataFromCache),
 		loadMogiData,
-		calculateStats
+		calculateStats,
+		clearCache,
+		isCacheValid,
+		getCacheExpiryTime,
 	};
 };
