@@ -200,7 +200,8 @@
 <style scoped>
 
 .content {
-	min-height: 100dvh;
+	/* not needed after footer fix from a while ago */
+	/* min-height: 100dvh; */
 }
 
 .stats-container {
