@@ -302,54 +302,68 @@
 }
 
 @media (max-width: 480px) {
-	.guild-header {
-		flex-direction: column;
-		text-align: center;
-		gap: 12px;
-	}
-	
-	.guild-rank-section {
-		min-width: auto;
-	}
-	
-	.guild-rank {
-		font-size: 1rem;
-		padding: 4px 10px;
-	}
-	
-	.guild-logo {
-		width: 50px;
-		height: 50px;
-	}
-	
-	.guild-name {
-		font-size: 1.1rem;
-	}
-	
-	.guild-title-section {
-		justify-content: center;
-		flex-direction: column;
-		gap: 8px;
-	}
-	
-	.guild-tag {
-		font-size: 0.75rem;
-		padding: 2px 8px;
-	}
-	
-	.guild-stats {
-		justify-content: center;
-		gap: 20px;
-	}
-	
-	.members-list {
-		justify-content: center;
-	}
-	
-	.member-tag {
-		padding: 6px 12px;
-		font-size: 0.85rem;
-	}
+   .guild-header {
+	   flex-direction: row;
+	   text-align: left;
+	   gap: 10px;
+	   padding: 10px;
+   }
+   .guild-rank-section {
+	   min-width: 40px;
+	   justify-content: flex-start;
+   }
+   .guild-rank {
+	   font-size: 1.1rem;
+	   padding: 4px 10px;
+   }
+   .guild-logo-section {
+	   min-width: 60px;
+   }
+   .guild-logo {
+	   width: 60px;
+	   height: 60px;
+   }
+   .guild-main-info {
+	   gap: 8px;
+   }
+   .guild-name {
+	   font-size: 1.15rem;
+   }
+   .guild-title-section {
+	   flex-direction: row;
+	   gap: 6px;
+	   flex-wrap: wrap;
+   }
+   .guild-tag {
+	   font-size: 0.8rem;
+	   padding: 2px 8px;
+   }
+   .guild-stats {
+	   gap: 10px;
+	   flex-wrap: wrap;
+   }
+   .stat-item {
+	   /* min-width: 60px; */
+   }
+   .stat-value {
+	   font-size: 1rem;
+   }
+   .guild-members {
+	   padding: 10px;
+   }
+   .members-header {
+	   gap: 6px;
+	   margin-bottom: 8px;
+   }
+   .members-list {
+	   gap: 6px;
+	   flex-wrap: wrap;
+	   justify-content: flex-start;
+   }
+   .member-tag {
+	   padding: 5px 10px;
+	   font-size: 0.85rem;
+   }
 }
 </style>
 
