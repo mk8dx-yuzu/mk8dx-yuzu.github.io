@@ -134,8 +134,8 @@
 
     .hamburger {
         display: block;
-        position: absolute;
-        top: 50%;
+        position: fixed;
+        top: calc(56px / 2);
         right: 15px;
         transform: translateY(-50%);
         cursor: pointer;
@@ -181,7 +181,7 @@
     }
 }
 
-@media screen and (min-width: 1201px) {
+@media screen and (min-width: 1225px) {
     .hamburger {
         display: none;
     }
