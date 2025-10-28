@@ -84,7 +84,7 @@
 	gap: 20px;
 	padding: 0 10px;
 	max-width: 1800px;
-	margin: 0 auto;
+	margin: 0 auto 20px auto;
 }
 
 .guild-card {
