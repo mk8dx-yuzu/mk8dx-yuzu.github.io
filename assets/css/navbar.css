@@ -133,12 +133,12 @@
     }
 
     .hamburger {
-        display: block;
-        position: fixed;
-        top: calc(56px / 2);
-        right: 15px;
-        transform: translateY(-50%);
         cursor: pointer;
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 2;
     }
 
@@ -178,6 +178,13 @@
 
     .navigation-container nav.open {
         display: flex;
+    }
+
+    .hamburger.open {
+        position: fixed;
+        top: calc(56px / 2);
+        right: 15px;
+        transform: translateY(-50%);
     }
 }
 
