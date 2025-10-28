@@ -51,13 +51,16 @@
 								<nuxt-link :to="{ path: '/', query: { ...route.query } }" class="nav-link" @click="closeMenu">Leaderboard</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link :to="{ path: '/season-stats', query: { ...route.query } }" class="nav-link" @click="closeMenu">Season Stats</nuxt-link>
+								<nuxt-link :to="{ path: '/guilds', query: { ...route.query } }" class="nav-link" @click="closeMenu">Guilds</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link :to="{ path: '/season-stats', query: { ...route.query } }" class="nav-link" @click="closeMenu">Statistics</nuxt-link>
 							</li>
 							<li>
 								<nuxt-link to="https://dsc.gg/yuzuonline" class="nav-link">Discord</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge-Bot</nuxt-link>
+								<nuxt-link to="https://github.com/probablyjassin/bot-mk8dx-public" class="nav-link">Lounge Bot</nuxt-link>
 							</li>
 							<li>
 								<a href="#" @click="downloadSheet">Download JSON</a>
@@ -114,12 +117,12 @@
 
 		// Only load default data if on a non-index page that needs it
 
-		console.log(`-- CURRENT S QUERY: ${route.query.s}`);
+		console.log(`Current season query: ${route.query.s}`);
 		let season = 4;
 		if (route.query.s == 3) {
 			season = 3;
 		}
-		console.log(`LOADING DATA FOR SEASON ${season}`);
+		console.log(`Loading data for season ${season}`);
 		await loadPlayerData(season); // Load Season 3 data for non-index pages
 		animateTable();
 	});

@@ -10,7 +10,6 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -24,7 +23,6 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    z-index: 1;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

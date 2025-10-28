@@ -1,11 +1,12 @@
-export const usePlayerData = () => {
-	const playerData = useState("data", () => []);
-	const hasLoaded = useState("loaded", () => false);
-	const isDataFromCache = useState("isDataFromCache", () => false);
+export const useGuildData = () => {
+	const route = useRoute();
+	const guildData = useState("guildData", () => []);
+	const hasLoaded = useState("guildLoaded", () => false);
+	const isDataFromCache = useState("guildIsDataFromCache", () => false);
 
 	// Cache for storing fetched data by season
-	const dataCache = useState("dataCache", () => new Map());
-	const cacheTimestamps = useState("cacheTimestamps", () => new Map());
+	const dataCache = useState("guildDataCache", () => new Map());
+	const cacheTimestamps = useState("guildCacheTimestamps", () => new Map());
 
 	// Cache duration in milliseconds (5 minutes)
 	const CACHE_DURATION = 5 * 60 * 1000;
@@ -30,17 +31,19 @@ export const usePlayerData = () => {
 		return sortedData;
 	}
 
-	function processPlayerData(data) {
+	function processGuildData(data) {
 		return sortByMMR(
-			data.map((player) => ({
-				name: player.name || player.Player,
-				mmr: player.mmr || player.MMR,
-				history: player.history || [],
-				wins: player.history.filter((delta) => delta >= 0).length,
-				losses: player.history.filter((delta) => delta < 0).length,
-				discord: player.discord_id || undefined,
-				disconnects: player.disconnects || 0,
-				suspended: player.suspended || false,
+			data.map((guild) => ({
+				name: guild?.name ?? "Unnamed Guild",
+				icon: guild?.icon ?? null,
+				mmr: Number.isFinite(guild?.mmr) ? guild.mmr : 0,
+				// members: playerIds.length,
+				player_ids: Array.isArray(guild?.player_ids) ? guild.player_ids : [],
+				players: Array.isArray(guild?.players) ? guild.players : [],
+				history: Array.isArray(guild?.history) ? guild.history : [],
+				wins: guild.history.filter((delta) => delta >= 0).length,
+				losses: guild.history.filter((delta) => delta < 0).length,
+				creation_date: guild.creation_date,
 			}))
 		).reverse();
 	}
@@ -71,12 +74,12 @@ export const usePlayerData = () => {
 	}
 
 	function clearCache() {
-		console.log("Clearing all cached player data");
+		console.log("Clearing all cached guild data");
 		dataCache.value.clear();
 		cacheTimestamps.value.clear();
 	}
 
-	async function loadPlayerData(season = null, forceRefresh = false) {
+	async function loadGuildData(season = null, forceRefresh = false) {
 		// Reset loading state
 		hasLoaded.value = false;
 
@@ -87,69 +90,69 @@ export const usePlayerData = () => {
 		if (!forceRefresh && isCacheValid(currentSeason)) {
 			const cachedData = getCacheData(currentSeason);
 			if (cachedData && cachedData.length > 0) {
-				console.log(`Loading season ${currentSeason} player data from cache`);
-				playerData.value = cachedData;
+				console.log(`Loading season ${currentSeason} guild data from cache`);
+				guildData.value = cachedData;
 				isDataFromCache.value = true;
 				hasLoaded.value = true;
-				return playerData.value;
+				return guildData.value;
 			}
 		}
 
 		// If no valid cache or forcing refresh, fetch from API
-		console.log(`Fetching season ${currentSeason} player data from API${forceRefresh ? " (forced refresh)" : ""}`);
-		playerData.value = [];
+		console.log(`Fetching season ${currentSeason} guild data from API${forceRefresh ? " (forced refresh)" : ""}`);
+		guildData.value = [];
 		isDataFromCache.value = false;
 
 		// Determine the API endpoint based on season
-		const url = `https://mk8dx-yuzu.kevnkkm.de/api/leaderboard?season=${currentSeason}`;
+		const url = `https://mk8dx-yuzu.kevnkkm.de/api/guilds?season=${currentSeason}`;
 
 		try {
 			const data = await $fetch(url);
-			const processedData = processPlayerData(data);
+			const processedData = processGuildData(data);
 
 			// Store in cache only if we got valid data
 			if (processedData && processedData.length > 0) {
 				setCacheData(currentSeason, processedData);
-				console.log(`Successfully cached ${processedData.length} players for season ${currentSeason}`);
+				console.log(`Successfully cached ${processedData.length} guilds for season ${currentSeason}`);
 			}
 
-			playerData.value = processedData;
+			guildData.value = processedData;
 		} catch (e) {
-			console.error("Error fetching player data:", e);
+			console.error("Error fetching guild data:", e);
 
 			// If API fails, try to use expired cache as fallback
 			const fallbackData = getCacheData(currentSeason);
 			if (fallbackData && fallbackData.length > 0) {
 				console.log(`API failed, using expired cache for season ${currentSeason}`);
-				playerData.value = fallbackData;
+				guildData.value = fallbackData;
 				isDataFromCache.value = true;
 			} else {
-				playerData.value = [];
+				guildData.value = [];
 			}
 		}
 
 		hasLoaded.value = true;
-		return playerData.value;
+		return guildData.value;
 	}
 
 	function animateTable() {
 		nextTick(() => {
-			const cells = document.querySelectorAll("#leaderboard-table td");
-			cells.forEach((cell, index) => {
-				cell.style.opacity = 0;
-				cell.style.animation = "tiltanimation 0.75s forwards";
-				cell.style.animationDelay = index * 0.005 + "s";
+			const cards = document.querySelectorAll(".guild-card");
+			cards.forEach((card, index) => {
+				card.style.opacity = 0;
+				card.style.animation = "tiltanimation 0.75s forwards";
+				card.style.animationDelay = index * 0.100 + "s";
 			});
 		});
 	}
 
 	return {
-		playerData: readonly(playerData),
+		guildData: readonly(guildData),
 		hasLoaded: readonly(hasLoaded),
 		isDataFromCache: readonly(isDataFromCache),
-		loadPlayerData,
+		loadGuildData,
 		animateTable,
-		processPlayerData,
+		processGuildData,
 		sortByMMR,
 		clearCache,
 		isCacheValid,
