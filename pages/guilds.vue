@@ -9,7 +9,7 @@
 				<!-- <h2>Season {{ selectedSeason }}</h2> -->
 			</div>
 			<div class="flex">
-				<p>Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
+				<p>Here you can view Guild stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 				<UTooltip text="How to register" :popper="{ placement: 'right' }">
 					<UButton
 						class="h-6 w-6"
