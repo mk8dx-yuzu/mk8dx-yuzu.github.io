@@ -32,7 +32,7 @@
 .navigation-container nav ul {
     list-style-type: none;
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .navigation-container nav ul li {
@@ -117,7 +117,7 @@
     transform: none;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1224px) {
     .navigation-container {
         position: relative;
     }
@@ -133,12 +133,12 @@
     }
 
     .hamburger {
+        cursor: pointer;
         display: block;
         position: absolute;
-        top: 50%;
         right: 15px;
+        top: 50%;
         transform: translateY(-50%);
-        cursor: pointer;
         z-index: 2;
     }
 
@@ -179,9 +179,16 @@
     .navigation-container nav.open {
         display: flex;
     }
+
+    .hamburger.open {
+        position: fixed;
+        top: calc(56px / 2);
+        right: 15px;
+        transform: translateY(-50%);
+    }
 }
 
-@media screen and (min-width: 1201px) {
+@media screen and (min-width: 1225px) {
     .hamburger {
         display: none;
     }
