@@ -252,6 +252,7 @@
 	font-weight: 500;
 	border: 1px solid rgba(255, 255, 255, 0.2);
 	transition: all 0.2s ease;
+	cursor: pointer;
 }
 
 .member-tag:hover {
