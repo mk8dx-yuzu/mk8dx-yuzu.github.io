@@ -96,7 +96,7 @@
 	border-radius: 12px;
 	overflow: hidden;
 	transition: all 0.3s ease;
-	cursor: pointer;
+	/* cursor: pointer; */ /* TODO: Uncomment when singular guild stats page is implemented */
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -421,7 +421,7 @@
 
 	function navToGuild(guildName) {
 		// TODO: navigation logic for guilds if needed
-		console.log(`Navigating to guild: ${guildName}`);
+		console.log(`Debug: navToGuild - Navigating to guild: ${guildName}`);
 	}
 
 	function getGuildTag(guildName) {
