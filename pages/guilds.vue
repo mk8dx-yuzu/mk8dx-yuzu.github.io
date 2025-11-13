@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<NoticeBanner color="yellow">
-			<p>You are viewing a preview of Guilds. Data on this page may be placeholders until Guilds officially release.</p>
-		</NoticeBanner>
 		<div class="title">
 			<h1 class="text-center">Guild Leaderboard</h1>
 			<div class="flex items-center justify-between">
