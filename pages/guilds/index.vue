@@ -8,9 +8,7 @@
 			<div class="flex">
 				<p>Here you can view Guild stats from our Mario Kart 8 Deluxe Yuzu Lounge!</p>
 				<UTooltip text="How to register" :popper="{ placement: 'right' }">
-					<UButton
-						class="h-6 w-6"
-						style="background-color: transparent !important"
+					<UButton class="h-6 w-6" style="background-color: transparent !important"
 						icon="heroicons-question-mark-circle"
 						to="https://discord.com/channels/1084911987626094654/1181312934803144724" />
 				</UTooltip>
@@ -21,11 +19,7 @@
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !guilds.length" />
 		<div v-else class="guilds-container">
 			<!-- For dynamic data -->
-			<div
-				v-for="(guild, index) in guilds"
-				:key="guild.name"
-				class="guild-card"
-				:class="getColor(guild.mmr)"
+			<div v-for="(guild, index) in guilds" :key="guild.name" class="guild-card" :class="getColor(guild.mmr)"
 				@click="navToGuild(guild.name)">
 				<div class="guild-header">
 					<div class="guild-rank-section">
@@ -42,9 +36,7 @@
 						<div class="guild-stats">
 							<div class="stat-item">
 								<span class="stat-label">MMR</span>
-								<span
-								class="stat-value"
-								:class="getColor(guild.mmr)">{{ guild.mmr }}</span>
+								<span class="stat-value" :class="getColor(guild.mmr)">{{ guild.mmr }}</span>
 							</div>
 							<div class="stat-item">
 								<span class="stat-label">Wins</span>
@@ -63,11 +55,8 @@
 						<span class="members-count">{{ getGuildMemberCount(guild) }}</span>
 					</div>
 					<div class="members-list">
-						<span 
-							v-for="(member, memberIndex) in getGuildMembers(guild)" 
-							:key="memberIndex" 
-							class="member-tag"
-							@click="navToPlayer(member)">
+						<span v-for="(member, memberIndex) in getGuildMembers(guild)" :key="memberIndex"
+							class="member-tag" @click="navToPlayer(member)">
 							{{ member }}
 						</span>
 					</div>
@@ -93,7 +82,8 @@
 	border-radius: 12px;
 	overflow: hidden;
 	transition: all 0.3s ease;
-	/* cursor: pointer; */ /* TODO: Uncomment when singular guild stats page is implemented */
+	/* cursor: pointer; */
+	/* TODO: Uncomment when singular guild stats page is implemented */
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -263,191 +253,205 @@
 		padding: 0 15px;
 		gap: 15px;
 	}
-	
+
 	.guild-header {
 		padding: 16px;
 		flex-wrap: wrap;
 		gap: 16px;
 	}
-	
+
 	.guild-rank {
 		font-size: 1.2rem;
 		padding: 6px 12px;
 	}
-	
+
 	.guild-logo {
 		width: 60px;
 		height: 60px;
 	}
-	
+
 	.guild-name {
 		font-size: 1.25rem;
 	}
-	
+
 	.guild-tag {
 		font-size: 0.8rem;
 		padding: 3px 10px;
 	}
-	
+
 	.guild-stats {
 		gap: 16px;
 	}
-	
+
 	.stat-value {
 		font-size: 1.1rem;
 	}
-	
+
 	.guild-members {
 		padding: 16px;
 	}
 }
 
 @media (max-width: 480px) {
-   .guild-header {
-	   flex-direction: row;
-	   text-align: left;
-	   gap: 10px;
-	   padding: 10px;
-   }
-   .guild-rank-section {
-	   min-width: 40px;
-	   justify-content: flex-start;
-   }
-   .guild-rank {
-	   font-size: 1.1rem;
-	   padding: 4px 10px;
-   }
-   .guild-logo-section {
-	   min-width: 60px;
-   }
-   .guild-logo {
-	   width: 60px;
-	   height: 60px;
-   }
-   .guild-main-info {
-	   gap: 8px;
-   }
-   .guild-name {
-	   font-size: 1.15rem;
-   }
-   .guild-title-section {
-	   flex-direction: row;
-	   gap: 6px;
-	   flex-wrap: wrap;
-   }
-   .guild-tag {
-	   font-size: 0.8rem;
-	   padding: 2px 8px;
-   }
-   .guild-stats {
-	   gap: 10px;
-	   flex-wrap: wrap;
-   }
-   .stat-item {
-	   /* min-width: 60px; */
-   }
-   .stat-value {
-	   font-size: 1rem;
-   }
-   .guild-members {
-	   padding: 10px;
-   }
-   .members-header {
-	   gap: 6px;
-	   margin-bottom: 8px;
-   }
-   .members-list {
-	   gap: 6px;
-	   flex-wrap: wrap;
-	   justify-content: flex-start;
-   }
-   .member-tag {
-	   padding: 5px 10px;
-	   font-size: 0.85rem;
-   }
+	.guild-header {
+		flex-direction: row;
+		text-align: left;
+		gap: 10px;
+		padding: 10px;
+	}
+
+	.guild-rank-section {
+		min-width: 40px;
+		justify-content: flex-start;
+	}
+
+	.guild-rank {
+		font-size: 1.1rem;
+		padding: 4px 10px;
+	}
+
+	.guild-logo-section {
+		min-width: 60px;
+	}
+
+	.guild-logo {
+		width: 60px;
+		height: 60px;
+	}
+
+	.guild-main-info {
+		gap: 8px;
+	}
+
+	.guild-name {
+		font-size: 1.15rem;
+	}
+
+	.guild-title-section {
+		flex-direction: row;
+		gap: 6px;
+		flex-wrap: wrap;
+	}
+
+	.guild-tag {
+		font-size: 0.8rem;
+		padding: 2px 8px;
+	}
+
+	.guild-stats {
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	.stat-item {
+		/* min-width: 60px; */
+	}
+
+	.stat-value {
+		font-size: 1rem;
+	}
+
+	.guild-members {
+		padding: 10px;
+	}
+
+	.members-header {
+		gap: 6px;
+		margin-bottom: 8px;
+	}
+
+	.members-list {
+		gap: 6px;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	.member-tag {
+		padding: 5px 10px;
+		font-size: 0.85rem;
+	}
 }
 </style>
 
 <script setup lang="js">
-	import Fuse from 'fuse.js'
-	import { useRouter } from 'vue-router'
-	import { useColor } from '~/composables/useColor'
-	import { useState } from '#app'
+import Fuse from 'fuse.js'
+import { useRouter } from 'vue-router'
+import { useColor } from '~/composables/useColor'
+import { useState } from '#app'
 
-	const router = useRouter()
-	const route = useRoute()
-	const { getColor } = useColor()
+const router = useRouter()
+const route = useRoute()
+const { getColor } = useColor()
 
-	const hasMounted = useState("guildsMounted", () => false);
-	const { guildData, hasLoaded, isDataFromCache, loadGuildData, animateTable } = useGuildData()
+const hasMounted = useState("guildsMounted", () => false);
+const { guildData, hasLoaded, isDataFromCache, loadGuildData, animateTable } = useGuildData()
 
-	// Use guild data from the composable
-	const guilds = computed(() => guildData.value || [])
+// Use guild data from the composable
+const guilds = computed(() => guildData.value || [])
 
-	// Season management
-	const selectedSeason = ref(route.query.s ? parseInt(route.query.s) : 4)
+// Season management
+const selectedSeason = ref(route.query.s ? parseInt(route.query.s) : 4)
 
-	// Load guild data on component mount
-	onMounted(async () => {
-		hasMounted.value = true;
-		await Promise.all([
-			loadGuildData(selectedSeason.value),
-		]);
-		animateTable();
-	})
+// Load guild data on component mount
+onMounted(async () => {
+	hasMounted.value = true;
+	await Promise.all([
+		loadGuildData(selectedSeason.value),
+	]);
+	animateTable();
+})
 
-	// Handle season change
-	async function onSeasonChange(newSeason) {
-		selectedSeason.value = newSeason;
-		
-		// Update URL query parameter
-		await navigateTo({
-			path: route.path,
-			query: { ...route.query, s: newSeason }
-		});
+// Handle season change
+async function onSeasonChange(newSeason) {
+	selectedSeason.value = newSeason;
 
-		// Load new season data and
-		await Promise.all([
-			loadGuildData(newSeason),
-		]);
-		animateTable();
+	// Update URL query parameter
+	await navigateTo({
+		path: route.path,
+		query: { ...route.query, s: newSeason }
+	});
+
+	// Load new season data and
+	await Promise.all([
+		loadGuildData(newSeason),
+	]);
+	animateTable();
+}
+
+function navToPlayer(playerName) {
+	router.push({ path: `/${playerName}`, query: route.query })
+}
+
+function navToGuild(guildName) {
+	router.push({ path: `/guilds/${getGuildTag(guildName)}`, query: route.query })
+}
+
+function getGuildTag(guildName) {
+	// Split the guild name into words and take the first letter of each word
+	return guildName
+		.split(' ')
+		.map(word => word.charAt(0).toUpperCase())
+		.join('')
+}
+
+function getGuildIcon(guild) {
+	// If guild has an icon property, use it; otherwise empty
+	if (guild.icon) {
+		return guild.icon;
 	}
+	return '/images/Guild No Icon.png';
+}
 
-	function navToPlayer(playerName) {
-		router.push({path: `/${playerName}`, query: route.query})
+function getGuildMembers(guild) {
+	const names = [];
+	for (const player of guild.players) {
+		names.push(player.name);
 	}
+	return names;
+}
 
-	function navToGuild(guildName) {
-		// TODO: navigation logic for guilds if needed
-		console.log(`Debug: navToGuild - Navigating to guild: ${guildName}`);
-	}
+function getGuildMemberCount(guild) {
 
-	function getGuildTag(guildName) {
-		// Split the guild name into words and take the first letter of each word
-		return guildName
-			.split(' ')
-			.map(word => word.charAt(0).toUpperCase())
-			.join('')
-	}
-
-	function getGuildIcon(guild) {
-		// If guild has an icon property, use it; otherwise empty
-		if (guild.icon) {
-			return guild.icon;
-		}
-		return '/images/Guild No Icon.png';
-	}
-
-	function getGuildMembers(guild) {
-		const names = [];
-		for (const player of guild.players) {
-			names.push(player.name);
-		}
-		return names;
-	}
-
-	function getGuildMemberCount(guild) {
-
-		return guild.players.length;
-	}
+	return guild.players.length;
+}
 </script>
