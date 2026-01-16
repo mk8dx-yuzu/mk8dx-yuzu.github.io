@@ -3,16 +3,16 @@
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
 		<div v-else-if="player" class="content">
-			<NoticeBanner
+			<!-- <NoticeBanner
 				v-if="selectedSeason != 4" color="blue">
 				<p>You are viewing historical player data from Season {{ selectedSeason }}. Select the current season on the leaderboard for up-to-date stats.</p>
-			</NoticeBanner>
-			<NoticeBanner v-else-if="suspended" color="red">
+			</NoticeBanner> -->
+			<NoticeBanner v-if="suspended" color="red">
 				<p>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</p>
 			</NoticeBanner>
 			<div class="profile-container">
 				<div class="profile-container-inner">
-                    <SeasonSelector />
+                    <SeasonSelector v-model="selectedSeason" @change="onSeasonChange" />
 					<div class="rank-icon-background">
 						<img
 							:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
@@ -27,7 +27,7 @@
                         </div>
 						<div class="overlay">
 							<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
-							<!-- <h2>Season {{ selectedSeason }}</h2> -->
+							<!-- <h2 class="season-number">Season {{ selectedSeason }}</h2> -->
 							<div class="rank-info">
 								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
 								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">●</p>
@@ -106,10 +106,10 @@
 											<span class="player-guild-stat-label">Losses</span>
 											<span class="player-guild-stat-value">{{ playerGuild.losses }}</span>
 										</div>
-										<div class="player-guild-stat-item">
+										<!-- <div class="player-guild-stat-item">
 											<span class="player-guild-stat-label">Members</span>
 											<span class="player-guild-stat-value">{{ playerGuild.players.length }}</span>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							</div>
@@ -132,14 +132,14 @@
 
 <script setup>
 	import SeasonSelector from "~/components/SeasonSelector.vue";
-import { useRank } from "~/composables/useRank";
-import { useRouter } from 'vue-router';
+    import { useRank } from "~/composables/useRank";
+    import { useRouter } from 'vue-router';
 
 	const route = useRoute();
 	const router = useRouter();
 	const name = route.params.name;
 
-	const { playerData, hasLoaded } = usePlayerData();
+	const { playerData, hasLoaded, loadPlayerData } = usePlayerData();
 	const { guildData, hasLoaded: guildHasLoaded, loadGuildData } = useGuildData();
 	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
 	const hasMounted = useState("mounted", () => false);
@@ -155,14 +155,14 @@ import { useRouter } from 'vue-router';
 		
 		const rank = getRank(player.value.mmr, playerData.value.indexOf(player.value));
 		const colorMap = {
-            'Wood': { primary: '#036666', secondary: '#06B2B2' },
+            'Wood': { primary: '#023B3B', secondary: '#06B2B2' },
 			'Bronze': { primary: '#763A00', secondary: '#F57600' },
 			'Silver': { primary: '#343A40', secondary: '#ADB5BD' },
-			'Gold': { primary: '#76520E', secondary: '#B67B16' },
+			'Gold': { primary: '#76520E', secondary: '#DB971A' },
 			'Platinum': { primary: '#140524', secondary: '#4E148C' },
 			'Diamond': { primary: '#03045E', secondary: '#2529F8' },
-			'Master': { primary: '#212529', secondary: '#CED4DA' },
-			'Grandmaster': { primary: '#D51C5E', secondary: '#891C3E' }
+			'Master': { primary: '#1B1E22', secondary: '#CED4DA' },
+			'Grandmaster': { primary: '#D51C5E', secondary: '#48091F' }
 		};
 		
 		return colorMap[rank] || { primary: '#CAF0F8', secondary: '#03045E' };  
@@ -205,9 +205,20 @@ import { useRouter } from 'vue-router';
 		router.push({ path: '/guilds', query: route.query });
 	}
 
-	// Load guild data on mount
+	// Handle season change - reload both player and guild data
+	async function onSeasonChange() {
+		await Promise.all([
+			loadPlayerData(selectedSeason.value),
+			loadGuildData(selectedSeason.value)
+		]);
+	}
+
+	// Load player and guild data on mount
 	onMounted(async () => {
-		await loadGuildData(selectedSeason.value);
+		await Promise.all([
+			loadPlayerData(selectedSeason.value),
+			loadGuildData(selectedSeason.value)
+		]);
 	});
 
 	const history = computed(() => {
@@ -273,7 +284,7 @@ import { useRouter } from 'vue-router';
 	});
 </script>
 
-<style>
+<style scoped>
 .content {
     display: flex;
     justify-content: center;
@@ -284,7 +295,7 @@ import { useRouter } from 'vue-router';
     display: flex;
     justify-content: center;
     padding: 0% 8%;
-    margin: 60px 0px;
+    margin: 20px 0px;
 }
 
 .profile-container-inner {
@@ -299,6 +310,7 @@ import { useRouter } from 'vue-router';
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 10;
     margin: 0;
 }
 
@@ -311,6 +323,7 @@ import { useRouter } from 'vue-router';
 
 .rank-icon-background img {
     width: 100%;
+    aspect-ratio: 1 / 1;
     -webkit-mask-image: linear-gradient(to bottom,black 10%,transparent 70%); /* Original value 80% */
     mask-image: linear-gradient(to bottom,black 10%,transparent 70%);
 }
@@ -331,6 +344,10 @@ import { useRouter } from 'vue-router';
 
 .overlay p {
     font-size: clamp(1rem, 1.25vw, 2rem);
+}
+
+.season-number {
+    font-size: 1vw;
 }
 
 .player-name {
@@ -508,7 +525,8 @@ import { useRouter } from 'vue-router';
             rgba(0, 0, 0, 0.2) 30%,
             rgba(0, 0, 0, 0.05) 50%,
             rgba(0, 0, 0, 0) 70%
-        );
+        ),
+        linear-gradient(to bottom, black 0%, black 98%, transparent 100%); /* To prevent a hard cutoff at the bottom of the gradient, tweaking might be needed */
     mask-image: 
         linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%),
         linear-gradient(to top, 
@@ -517,7 +535,8 @@ import { useRouter } from 'vue-router';
             rgba(0, 0, 0, 0.2) 30%,
             rgba(0, 0, 0, 0.05) 50%,
             rgba(0, 0, 0, 0) 70%
-        );
+        ),
+        linear-gradient(to bottom, black 0%, black 98%, transparent 100%); /* To prevent a hard cutoff at the bottom of the gradient, tweaking might be needed */
     mask-composite: intersect;
     opacity: 0;
 }
@@ -533,29 +552,11 @@ import { useRouter } from 'vue-router';
     /* background: linear-gradient(to left, var(--rank-primary), var(--rank-secondary), var(--rank-primary)); */
     background: linear-gradient(to left, color-mix(in srgb, var(--rank-primary) 60%, transparent),
         color-mix(in srgb, var(--rank-secondary) 70%, transparent),
-        color-mix(in srgb, var(--rank-primary) 80%, transparent));
+        color-mix(in srgb, var(--rank-primary) 60%, transparent));
     background-size: 200% 200%;
     filter: blur(12px);
     /* transform: scale(0.9); */
     animation: animate-gradient-start-2 2s ease-out 1s 1 forwards, animate-gradient 2s linear 1s infinite reverse;
-    /* -webkit-mask-image:  */
-        /* linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), */
-        /* linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(0, 0, 0, 0.5) 15%,
-            rgba(0, 0, 0, 0.2) 30%,
-            rgba(0, 0, 0, 0.05) 50%,
-            rgba(0, 0, 0, 0) 70%
-        ); */
-    /* mask-image:  */
-        /* linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), */
-        /* linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(0, 0, 0, 0.5) 15%,
-            rgba(0, 0, 0, 0.2) 30%,
-            rgba(0, 0, 0, 0.05) 50%,
-            rgba(0, 0, 0, 0) 70%
-        ); */
     mask-composite: intersect;
     opacity: 0.8;
 }
@@ -573,24 +574,6 @@ import { useRouter } from 'vue-router';
     filter: blur(12px);
     /* transform: scale(1, 3); */
     animation: animate-gradient-start-3 2s ease-out 1s 1 forwards, animate-gradient 8s linear 1s infinite;
-    /* -webkit-mask-image:  */
-        /* linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), */
-        /* linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(0, 0, 0, 0.5) 15%,
-            rgba(0, 0, 0, 0.2) 30%,
-            rgba(0, 0, 0, 0.05) 50%,
-            rgba(0, 0, 0, 0) 70%
-        ); */
-    /* mask-image:  */
-        /* linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), */
-        /* linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(0, 0, 0, 0.5) 15%,
-            rgba(0, 0, 0, 0.2) 30%,
-            rgba(0, 0, 0, 0.05) 50%,
-            rgba(0, 0, 0, 0) 70%
-        ); */
     mask-composite: intersect;
     opacity: 0.2;
 }
@@ -631,41 +614,10 @@ import { useRouter } from 'vue-router';
     }
 }
 
-@media only screen and (max-width:767px) {
-    .rank-icon-background {
-        width: 100%;
-    }
-
-    .overlay p {
-        font-size: 16px;
-    }
-
-    .player-name {
-        font-size: 44px;
-    }
-
-    /* .rank-info p {
-        font-size: 16px;
-    } */
-
-    /* .stats {
-        gap: 5vw;
-    } */
-
-    .stat-title {
-        font-size: 16px;
-    }
-    
-    .stat-value {
-        font-size: 20px;
-    }
-}
-
 /* Guild Section Styles */
 .guild-section {
     width: 100%;
     margin-top: 30px;
-    padding: 0 10px;
 }
 
 .guild-section-header {
@@ -686,14 +638,11 @@ import { useRouter } from 'vue-router';
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .player-guild-card:hover {
     background: rgba(70, 70, 70, 0.3);
     border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 .player-guild-header {
@@ -814,8 +763,40 @@ import { useRouter } from 'vue-router';
     font-weight: bold;
 }
 
-/* Guild section responsive styles */
 @media only screen and (max-width:767px) {
+    .rank-icon-background {
+        width: 100%;
+    }
+
+    .season-selector {
+        position: initial;
+        margin-bottom: 10px;
+    }
+
+    .overlay p {
+        font-size: 16px;
+    }
+
+    .player-name {
+        font-size: 44px;
+    }
+
+    /* .rank-info p {
+        font-size: 16px;
+    } */
+
+    /* .stats {
+        gap: 5vw;
+    } */
+
+    .stat-title {
+        font-size: 16px;
+    }
+    
+    .stat-value {
+        font-size: 20px;
+    }
+
     .guild-section {
         margin-top: 20px;
     }
