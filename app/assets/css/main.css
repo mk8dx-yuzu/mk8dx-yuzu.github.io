@@ -55,6 +55,12 @@
 .season-selector {
     margin-top: 15px;
     margin-bottom: 10px;
+    width: 100%;
+    overflow-x: scroll;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    max-width: fit-content;
 }
 
 /* Screen reader only class for accessibility */
@@ -72,15 +78,14 @@
 
 .season-tabs {
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     gap: 5px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
     padding: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: fit-content;
+    width: max-content;
     margin: 0 auto;
+    scroll-snap-type: x mandatory;
 }
 
 .season-tabs legend {
@@ -103,6 +108,7 @@
     display: flex;
     align-items: center;
     margin: 0;
+    scroll-snap-align: end;
 }
 
 /* Hide the radio button visually but keep it accessible */
