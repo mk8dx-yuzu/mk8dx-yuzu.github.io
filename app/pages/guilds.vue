@@ -257,8 +257,7 @@
 	border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+@media only screen and (max-width: 767px) {
 	.guilds-container {
 		padding: 0 15px;
 		gap: 15px;
@@ -302,68 +301,83 @@
 	}
 }
 
-@media (max-width: 480px) {
+@media only screen and (max-width: 480px) {
    .guild-header {
-	   flex-direction: row;
-	   text-align: left;
-	   gap: 10px;
-	   padding: 10px;
+		flex-direction: row;
+		text-align: left;
+		gap: 10px;
+		padding: 10px;
    }
+
    .guild-rank-section {
-	   min-width: 40px;
-	   justify-content: flex-start;
+		min-width: 40px;
+		justify-content: flex-start;
    }
+
    .guild-rank {
-	   font-size: 1.1rem;
-	   padding: 4px 10px;
+		font-size: 1.1rem;
+		padding: 4px 10px;
    }
+
    .guild-logo-section {
-	   min-width: 60px;
+	   	min-width: 60px;
    }
+
    .guild-logo {
-	   width: 60px;
-	   height: 60px;
+		width: 60px;
+		height: 60px;
    }
+
    .guild-main-info {
-	   gap: 8px;
+	   	gap: 8px;
    }
+
    .guild-name {
-	   font-size: 1.15rem;
+	   	font-size: 1.15rem;
    }
+
    .guild-title-section {
-	   flex-direction: row;
-	   gap: 6px;
-	   flex-wrap: wrap;
+		flex-direction: row;
+		gap: 6px;
+		flex-wrap: wrap;
    }
+
    .guild-tag {
-	   font-size: 0.8rem;
-	   padding: 2px 8px;
+		font-size: 0.8rem;
+		padding: 2px 8px;
    }
+
    .guild-stats {
-	   gap: 10px;
-	   flex-wrap: wrap;
+		gap: 10px;
+		flex-wrap: wrap;
    }
+
    .stat-item {
-	   /* min-width: 60px; */
+	   	/* min-width: 60px; */
    }
+
    .stat-value {
-	   font-size: 1rem;
+	   	font-size: 1rem;
    }
+
    .guild-members {
-	   padding: 10px;
+	   	padding: 10px;
    }
+
    .members-header {
-	   gap: 6px;
-	   margin-bottom: 8px;
+		gap: 6px;
+		margin-bottom: 8px;
    }
+
    .members-list {
-	   gap: 6px;
-	   flex-wrap: wrap;
-	   justify-content: flex-start;
+		gap: 6px;
+		flex-wrap: wrap;
+		justify-content: flex-start;
    }
+   
    .member-tag {
-	   padding: 5px 10px;
-	   font-size: 0.85rem;
+		padding: 5px 10px;
+		font-size: 0.85rem;
    }
 }
 </style>
