@@ -178,7 +178,8 @@
 
 	const isGuildOwner = computed(() => {
 		if (!playerGuild.value || !player.value) return false;
-		// First player in the players array is typically the owner
+		// First player in the players array is the owner
+        // FIXME: The order of players is not always have the owner first
 		return playerGuild.value.players[0]?.name === player.value.name;
 	});
 
