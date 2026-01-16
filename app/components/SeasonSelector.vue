@@ -19,6 +19,8 @@
 	const seasons = [
 		{ value: 4, label: "Season 4" },
 		{ value: 3, label: "Season 3" },
+		{ value: 2, label: "Season 2" },
+		{ value: 1, label: "Season 1" },
 	];
 
 	const emit = defineEmits(["update:modelValue", "change"]);
