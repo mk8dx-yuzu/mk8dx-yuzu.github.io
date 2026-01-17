@@ -141,7 +141,7 @@
 
 	const { playerData, hasLoaded, loadPlayerData } = usePlayerData();
 	const { guildData, hasLoaded: guildHasLoaded, loadGuildData } = useGuildData();
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4));
 	const hasMounted = useState("mounted", () => false);
 
 	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
@@ -207,7 +207,8 @@
 	}
 
 	// Handle season change - reload both player and guild data
-	async function onSeasonChange() {
+	async function onSeasonChange(season) {
+		selectedSeason.value = season;
 		await Promise.all([
 			loadPlayerData(selectedSeason.value),
 			loadGuildData(selectedSeason.value)

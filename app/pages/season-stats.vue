@@ -92,7 +92,7 @@
 	const route = useRoute()
 	const hasMounted = useState("mounted", () => false)
 	const { mogiData, hasLoaded, isDataFromCache, loadMogiData, calculateStats } = useMogiData()
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4))
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4))
 	
 	const formatChartData = ref(null)
 	
@@ -180,7 +180,8 @@
 		};
 	}
 
-	async function onSeasonChange() {
+	async function onSeasonChange(season) {
+		selectedSeason.value = season;
 		await loadMogiData(selectedSeason.value)
 		await updateStats()
 	}

@@ -39,12 +39,12 @@ export const useMogiData = () => {
 		cacheTimestamps.value.clear();
 	}
 
-	async function loadMogiData(season = null, forceRefresh = false) {
+	async function loadMogiData(season = 4, forceRefresh = false) {
 		// Reset loading state
 		hasLoaded.value = false;
 
-		// Use provided season or fall back to 4
-		const currentSeason = season !== null ? season : route.query.s ? route.query.s : 4;
+		// Use provided season parameter (defaults to 4 if not provided)
+		const currentSeason = season;
 
 		// Check if we have valid cached data and not forcing a refresh
 		if (!forceRefresh && isCacheValid(currentSeason)) {

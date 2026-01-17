@@ -14,7 +14,18 @@
 	const route = useRoute();
 	const router = useRouter();
 
-	const modelValue = ref(route.query.s == 3 ? 3 : 4);
+	const modelValue = ref(
+		[1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4
+	);
+
+	watch(() => route.query.s, (newSeason) => {
+		const season = [1, 2, 3].includes(Number(newSeason)) ? Number(newSeason) : 4;
+		
+		if (modelValue.value !== season) {
+			modelValue.value = season;
+			emit("change", season);
+		}
+	});
 
 	const seasons = [
 		{ value: 4, label: "Season 4" },
@@ -36,12 +47,14 @@
 		selectedSeasonModel.value = modelValue.value;
 		emit("change", selectedSeasonModel.value);
 
-		if (modelValue.value == 3) {
-			router.push({ path: route.path, query: { ...route.query, s: 3 } });
-		} else if (modelValue.value == 4) {
-			const newQuery = { ...route.query };
-			delete newQuery["s"];
-			router.push({ path: route.path, query: newQuery });
+		const newQuery = { ...route.query };
+		
+		if (modelValue.value == 4) {
+			delete newQuery.s;
+		} else {
+			newQuery.s = modelValue.value;
 		}
+		
+		router.push({ path: route.path, query: newQuery });
 	}
 </script>
