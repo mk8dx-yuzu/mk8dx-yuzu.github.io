@@ -283,6 +283,13 @@
 			],
 		};
 	});
+
+    useSeoMeta({
+        title: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
+        description: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`),
+        ogTitle: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
+        ogDescription: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`)
+    });
 </script>
 
 <style scoped>
