@@ -195,6 +195,13 @@
 	watch(mogiData, async () => {
 		await updateStats()
 	})
+
+	useSeoMeta({
+		title: 'Season Statistics - MK8DX-yuzu Lounge',
+		description: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.',
+		ogTitle: 'Season Statistics - MK8DX-yuzu Lounge',
+		ogDescription: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.'
+	});
 </script>
 
 <style scoped>

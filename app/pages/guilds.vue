@@ -464,4 +464,11 @@
 
 		return guild.players.length;
 	}
+
+	useSeoMeta({
+		title: 'Guild Leaderboard - MK8DX-yuzu Lounge',
+		description: 'View guild rankings, MMR, wins and losses from our Mario Kart 8 Deluxe Yuzu Lounge.',
+		ogTitle: 'Guild Leaderboard - MK8DX-yuzu Lounge',
+		ogDescription: 'View guild rankings, MMR, wins and losses from our Mario Kart 8 Deluxe Yuzu Lounge.'
+	});
 </script>
