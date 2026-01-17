@@ -112,7 +112,7 @@ export default defineNuxtConfig({
         {
           name: "description",
           content:
-            "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline",
+            "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!",
         },
         {
           property: "og:title",
