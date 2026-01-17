@@ -209,7 +209,7 @@
 	justify-content: center;
 	padding: 0 20px;
 	max-width: 1800px;
-	margin: 0 auto;
+	margin: 0 auto 20px auto;
 }
 
 .stats-grid {
