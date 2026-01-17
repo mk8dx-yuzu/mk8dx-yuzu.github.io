@@ -398,8 +398,11 @@
 	// Use guild data from the composable
 	const guilds = computed(() => guildData.value || [])
 
-	// Season management
-	const selectedSeason = ref(route.query.s ? parseInt(route.query.s) : 4)
+	// Season management - Guilds only exist from Season 4 onwards
+	const selectedSeason = ref(() => {
+		const querySeason = route.query.s ? parseInt(route.query.s) : 4;
+		return querySeason >= 4 ? querySeason : 4;
+	})
 
 	// Load guild data on component mount
 	onMounted(async () => {
@@ -412,6 +415,10 @@
 
 	// Handle season change
 	async function onSeasonChange(newSeason) {
+		// Guilds only exist from Season 4 onwards
+		if (newSeason < 4) {
+			newSeason = 4;
+		}
 		selectedSeason.value = newSeason;
 		
 		// Update URL query parameter
