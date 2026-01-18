@@ -401,10 +401,6 @@
 	line-height: 1.6;
 }
 
-.no-data-content img {
-	opacity: 0.8;
-}
-
 .player-list {
 	max-height: 200px;
 	overflow-y: auto;
