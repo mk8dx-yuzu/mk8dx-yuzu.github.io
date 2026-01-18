@@ -320,6 +320,20 @@ tr.rank01grandmaster:nth-child(4n+4) {
     }
 }
 
+@keyframes reveal{
+    0%{
+        transform: translateY(150px);
+        opacity: 0;
+        filter: blur(4px);
+    }
+
+    100%{
+        transform: translateY(0);
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
 /* API ERROR CSS */
 .api-error {
     justify-content: center;

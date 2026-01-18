@@ -2,18 +2,31 @@
 	<div>
 		<Loader v-if="!hasMounted || !hasLoaded" />
 		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
-		<div v-else-if="player" class="content">
+		<div v-else class="content">
 			<!-- <NoticeBanner
 				v-if="selectedSeason != 4" color="blue">
 				<p>You are viewing historical player data from Season {{ selectedSeason }}. Select the current season on the leaderboard for up-to-date stats.</p>
 			</NoticeBanner> -->
-			<NoticeBanner v-if="suspended" color="red">
+			<NoticeBanner v-if="player && suspended" color="red">
 				<p>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</p>
 			</NoticeBanner>
 			<div class="profile-container">
 				<div class="profile-container-inner">
                     <SeasonSelector v-model="selectedSeason" @change="onSeasonChange" />
-					<div class="rank-icon-background">
+					
+					<!-- Player not found in selected season -->
+					<div v-if="!player" class="player-not-found">
+						<div class="player-not-found-content">
+							<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="150" height="150" />
+							<h2>Player Not Found in Season {{ selectedSeason }}</h2>
+							<p>Player {{ name }} does not have any recorded data in Season {{ selectedSeason }}.</p>
+							<p>Please select a different season above to view their stats.<br>(Or they might not even exist altogether)</p>
+						</div>
+					</div>
+
+					<!-- Player profile content -->
+					<div v-if="player" class="player-profile-content">
+					<div v-if="player" class="rank-icon-background">
 						<img
 							:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
 							alt="rank icon" />
@@ -120,12 +133,9 @@
 						<!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
 						<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
 					</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div v-else class="text-5xl flex flex-col items-center py-10">
-			<p>This player does not exist</p>
-			<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="200" height="200" />
 		</div>
 	</div>
 </template>
@@ -305,14 +315,16 @@
     justify-content: center;
     padding: 0% 8%;
     margin: 20px 0px;
+    width: 100%;
 }
 
 .profile-container-inner {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     position: relative;
+    width: 100%;
+    max-width: 1800px;
 }
 
 .season-selector {
@@ -321,6 +333,46 @@
     left: 0;
     z-index: 10;
     margin: 0;
+}
+
+.player-not-found {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    margin-top: 40px;
+}
+
+.player-not-found-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    max-width: 600px;
+    animation: reveal 0.70s 1 cubic-bezier(0.17, 0.84, 0.44, 1)
+}
+
+.player-not-found-content h2 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: bold;
+    color: #ff6b6b;
+    margin: 0;
+}
+
+.player-not-found-content p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.player-profile-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .rank-icon-background {
@@ -773,6 +825,10 @@
 }
 
 @media only screen and (max-width:767px) {
+    .profile-container {
+        padding: 0% 4%;
+    }
+
     .rank-icon-background {
         width: 100%;
     }
@@ -780,6 +836,24 @@
     .season-selector {
         position: initial;
         margin-bottom: 10px;
+    }
+
+    .player-not-found {
+        padding: 40px 15px;
+        margin-top: 20px;
+    }
+
+    .player-not-found-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .player-not-found-content p {
+        font-size: 1rem;
+    }
+
+    .player-not-found-content img {
+        width: 120px;
+        height: 120px;
     }
 
     .overlay p {
