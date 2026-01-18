@@ -15,7 +15,16 @@
 			</div>
 			
 			<Loader v-if="!hasMounted || !hasLoaded" />
-			<ErrorTxt v-else-if="hasMounted && hasLoaded && (!mogiData || !mogiData.length)" />
+			
+			<!-- Show informative message when no mogi data exists for selected season -->
+			<div v-else-if="hasMounted && hasLoaded && (!mogiData || !mogiData.length)" class="no-data-container">
+				<div class="no-data-content">
+					<img src="/images/MK8D-PoliceRed.png" alt="no data icon" width="150" height="150" />
+					<h2>No Statistics Available for Season {{ selectedSeason }}</h2>
+					<p>Mogi statistics were only introduced starting from Season 3.</p>
+					<p>Please select Season 3 or later above to view statistics.</p>
+				</div>
+			</div>
 			
 			<div v-else class="stats-container">
 				<div class="stats-grid">
@@ -92,7 +101,7 @@
 	const route = useRoute()
 	const hasMounted = useState("mounted", () => false)
 	const { mogiData, hasLoaded, isDataFromCache, loadMogiData, calculateStats } = useMogiData()
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4))
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4))
 	
 	const formatChartData = ref(null)
 	
@@ -180,7 +189,8 @@
 		};
 	}
 
-	async function onSeasonChange() {
+	async function onSeasonChange(season) {
+		selectedSeason.value = season;
 		await loadMogiData(selectedSeason.value)
 		await updateStats()
 	}
@@ -195,6 +205,13 @@
 	watch(mogiData, async () => {
 		await updateStats()
 	})
+
+	useSeoMeta({
+		title: 'Season Statistics - MK8DX-yuzu Lounge',
+		description: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.',
+		ogTitle: 'Season Statistics - MK8DX-yuzu Lounge',
+		ogDescription: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.'
+	});
 </script>
 
 <style scoped>
@@ -209,7 +226,7 @@
 	justify-content: center;
 	padding: 0 20px;
 	max-width: 1800px;
-	margin: 0 auto;
+	margin: 0 auto 20px auto;
 }
 
 .stats-grid {
@@ -351,6 +368,39 @@
 	margin: 20px 0;
 }
 
+.no-data-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+	margin: 40px 0;
+}
+
+.no-data-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 20px;
+	max-width: 600px;
+	animation: reveal 0.70s 1 cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+.no-data-content h2 {
+	font-size: clamp(1.5rem, 3vw, 2.5rem);
+	font-weight: bold;
+	color: #ff6b6b;
+	margin: 0;
+}
+
+.no-data-content p {
+	font-size: clamp(1rem, 2vw, 1.25rem);
+	color: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	line-height: 1.6;
+}
+
 .player-list {
 	max-height: 200px;
 	overflow-y: auto;
@@ -396,6 +446,24 @@
 	
 	.stat-value {
 		font-size: 24px;
+	}
+
+	.no-data-container {
+		padding: 40px 15px;
+		margin: 20px 0;
+	}
+
+	.no-data-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.no-data-content p {
+		font-size: 1rem;
+	}
+
+	.no-data-content img {
+		width: 120px;
+		height: 120px;
 	}
 }
 </style>

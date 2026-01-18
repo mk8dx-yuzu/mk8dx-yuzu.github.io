@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     head: {
+      title: "MK8DX-yuzu Lounge",
       link: [
         {
           rel: "apple-touch-icon",
@@ -85,7 +86,7 @@ export default defineNuxtConfig({
           rel: "icon",
           type: "image/png",
           sizes: "96x96",
-          href: "/favicon/favicon/favicon-96x96.png",
+          href: "/favicon/favicon-96x96.png",
         },
         {
           rel: "icon",
@@ -111,11 +112,11 @@ export default defineNuxtConfig({
         {
           name: "description",
           content:
-            "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline",
+            "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!",
         },
         {
           property: "og:title",
-          content: "MK8DX-Yuzu Leaderboard",
+          content: "MK8DX-yuzu Lounge",
         },
         {
           property: "og:site_name",

@@ -63,7 +63,7 @@
 
 	const hasMounted = useState("mounted", () => false);
 	const { playerData, hasLoaded, isDataFromCache, loadPlayerData, animateTable } = usePlayerData()
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4));
 	const searchQuery = useState('searchQuery')
 
 	const fuseOptions = {
@@ -90,7 +90,8 @@
 		router.push({path: `/${playerName}`, query: route.query})
 	}
 
-	async function onSeasonChange() {
+	async function onSeasonChange(season) {
+		selectedSeason.value = season;
 		await loadPlayerData(selectedSeason.value)
 		animateTable()
 	}
