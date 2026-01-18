@@ -129,8 +129,6 @@
 						</div>
 					</div>
 					<div class="history-container">
-						<!-- <p v-if="player?.name">Extended History:</p> -->
-						<!-- FIXME: highchart has weird width behavior, making everything else displayed wrong. Why? idfk-->
 						<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
 					</div>
 					</div>
