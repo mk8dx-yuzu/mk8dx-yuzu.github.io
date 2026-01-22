@@ -192,8 +192,7 @@
 
 	onMounted(async () => {
 		hasMounted.value = true
-		await loadMogiData(selectedSeason.value)
-		await updateStats()
+		await onSeasonChange(selectedSeason.value)
 	})
 
 	// Watch for changes in mogiData and update stats

@@ -223,12 +223,9 @@
 		]);
 	}
 
-	// Load player and guild data on mount
-	onMounted(async () => {
-		await Promise.all([
-			loadPlayerData(selectedSeason.value),
-			loadGuildData(selectedSeason.value)
-		]);
+	// Set mounted state - data loading is triggered by SeasonSelector's onMounted emission
+	onMounted(() => {
+		hasMounted.value = true;
 	});
 
 	const history = computed(() => {

@@ -101,8 +101,8 @@
 		animateTable()
 	}
 
-	// Load Season 4 data by default when component mounts
+	// Set mounted state - data loading is triggered by SeasonSelector's onMounted emission
 	onMounted(() => {
-		onSeasonChange()
+		hasMounted.value = true;
 	})
 </script>

@@ -18,6 +18,14 @@
 		[1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4
 	);
 
+	const emit = defineEmits(["update:modelValue", "change"]);
+
+	// Emit initial season on mount to trigger data load
+	onMounted(() => {
+		emit("change", modelValue.value);
+		emit("update:modelValue", modelValue.value);
+	});
+
 	watch(() => route.query.s, (newSeason) => {
 		const season = [1, 2, 3].includes(Number(newSeason)) ? Number(newSeason) : 4;
 		
@@ -33,8 +41,6 @@
 		{ value: 2, label: "Season 2" },
 		{ value: 1, label: "Season 1" },
 	];
-
-	const emit = defineEmits(["update:modelValue", "change"]);
 
 	const availableSeasons = computed(() => seasons);
 
