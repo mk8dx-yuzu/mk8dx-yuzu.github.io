@@ -1,11 +1,6 @@
 <template>
 	<div>
-		<div class="content">
-			<!-- <Head>
-				<title>Season Statistics - MK8DX Yuzu Lounge</title>
-				<meta name="description" content="View detailed statistics from our Mario Kart 8 Deluxe Yuzu Lounge events including mogis played, player activity, and format distribution." />
-			</Head> -->
-			
+		<div class="content">	
 			<div class="title">
 				<h1 class="text-center">Season Statistics</h1>
 				<div class="flex items-center justify-center">
@@ -28,37 +23,37 @@
 			
 			<div v-else class="stats-container">
 				<div class="stats-grid">
-					<div class="stat-card">
+					<div class="stat-card mogis-played-card">
 						<h3>Total Mogis Played</h3>
 						<p class="stat-value">{{ stats.totalMogis }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-duration-card">
 						<h3>Average Duration</h3>
 						<p class="stat-value">{{ stats.averageDurationMinutes }} minutes</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-dcs-card">
 						<h3>Average DCs per Mogi</h3>
 						<p class="stat-value">{{ stats.averageDisconnections }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card max-dcs-card">
 						<h3>Most DCs in a Mogi</h3>
 						<p class="stat-value">{{ stats.maxDisconnections }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-subs-card">
 						<h3>Average Subs per Mogi</h3>
 						<p class="stat-value">{{ stats.averageSubs }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-players-card">
 						<h3>Average Players per Mogi</h3>
 						<p class="stat-value">{{ stats.averagePlayersPerMogi }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card biggest-mmr-changes-card">
 						<h3>Biggest MMR Changes</h3>
 						<div class="mmr-changes">
 							<p><span class="gain">📈 Gain:</span> {{ stats.biggestGain }}</p>
@@ -66,7 +61,7 @@
 						</div>
 					</div>
 					
-					<div class="stat-card wide">
+					<div class="stat-card wide most-active-players-card">
 						<h3>Most Active Players</h3>
 						<div v-if="stats.top3Players && stats.top3Players.length > 0" class="player-list">
 							<p v-for="([playerName, count], index) in stats.top3Players" :key="playerName">
@@ -77,7 +72,7 @@
 						<p v-else class="no-data">No player data available</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card format-distribution-card">
 						<h3>Format Distribution</h3>
 						<div v-if="Object.keys(stats.formatsDict).length > 0" class="format-list">
 							<p v-for="(count, format) in stats.formatsDict" :key="format">
@@ -261,6 +256,63 @@
 	min-width: 300px;
 }
 
+/* TODO: Season-Stats Design Update */
+/* .stat-card::after {
+	content: "";
+	width: 90px;
+	height: 90px;
+	background-size: contain;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	filter: invert();
+	opacity: 0.2;
+}
+
+.stat-card.mogis-played-card::after {
+	background-image: url(/images/stats/Equal%20Sign.svg);
+	right: 10px;
+}
+
+.stat-card.average-duration-card::after {
+	background-image: url(/images/stats/Timer.svg);
+}
+
+.stat-card.average-dcs-card::after {
+	background-image: url(/images/stats/Disconnection.svg);
+	transform: none;
+}
+
+.stat-card.max-dcs-card::after {
+	background-image: url(/images/stats/Disconnection.svg);
+	transform: none;
+}
+
+.stat-card.average-subs-card::after {
+	background-image: url(/images/stats/Substitute.svg);
+	right: 10px;
+}
+
+.stat-card.average-players-card::after {
+	background-image: url(/images/stats/Players.svg);
+	right: 10px;
+}
+
+.stat-card.biggest-mmr-changes-card::after {
+	background-image: url(/images/stats/Plus%20Sign.svg);
+	right: 10px;
+}
+
+.stat-card.most-active-players-card::after {
+	background-image: url(/images/stats/Shower.svg);
+	right: 10px;
+}
+
+.stat-card.format-distribution-card::after {
+	background-image: url(/images/stats/Pie%20Chart.svg);
+	right: 10px;
+} */
+
 .stat-card:nth-child(1) { animation-delay: 0.1s; }
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
 .stat-card:nth-child(3) { animation-delay: 0.3s; }
@@ -296,7 +348,8 @@
 
 .stat-card h3 {
 	margin-bottom: 15px;
-	color: #02bae7;
+	/* color: #02bae7; */
+	color: rgba(255, 255, 255, 0.7);
 	font-size: 18px;
 	font-weight: 600;
 }
