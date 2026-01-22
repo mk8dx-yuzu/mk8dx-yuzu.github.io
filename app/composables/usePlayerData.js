@@ -31,8 +31,15 @@ export const usePlayerData = () => {
 	}
 
 	function processPlayerData(data) {
+		// Filter out any null/undefined/invalid entries first
+		const validData = data.filter(player => 
+			player && 
+			(player.name || player.Player) && 
+			(player.mmr !== undefined || player.MMR !== undefined)
+		);
+		
 		return sortByMMR(
-			data.map((player) => ({
+			validData.map((player) => ({
 				name: player.name || player.Player,
 				mmr: player.mmr || player.MMR,
 				history: player.history || [],
