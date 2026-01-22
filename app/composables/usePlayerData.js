@@ -36,8 +36,8 @@ export const usePlayerData = () => {
 				name: player.name || player.Player,
 				mmr: player.mmr || player.MMR,
 				history: player.history || [],
-				wins: player.history.filter((delta) => delta >= 0).length,
-				losses: player.history.filter((delta) => delta < 0).length,
+				wins: (player.history || []).filter((delta) => delta >= 0).length,
+				losses: (player.history || []).filter((delta) => delta < 0).length,
 				discord: player.discord_id || undefined,
 				disconnects: player.disconnects || 0,
 				suspended: player.suspended || false,
@@ -76,12 +76,12 @@ export const usePlayerData = () => {
 		cacheTimestamps.value.clear();
 	}
 
-	async function loadPlayerData(season = null, forceRefresh = false) {
+	async function loadPlayerData(season = 4, forceRefresh = false) {
 		// Reset loading state
 		hasLoaded.value = false;
 
-		// Use provided season or fall back to the global selected season
-		const currentSeason = season !== null ? season : route.query.s ? route.query.s : 4;
+		// Use provided season parameter (defaults to 4 if not provided)
+		const currentSeason = season;
 
 		// Check if we have valid cached data and not forcing a refresh
 		if (!forceRefresh && isCacheValid(currentSeason)) {

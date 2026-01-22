@@ -1,11 +1,6 @@
 <template>
 	<div>
-		<div class="content">
-			<!-- <Head>
-				<title>Season Statistics - MK8DX Yuzu Lounge</title>
-				<meta name="description" content="View detailed statistics from our Mario Kart 8 Deluxe Yuzu Lounge events including mogis played, player activity, and format distribution." />
-			</Head> -->
-			
+		<div class="content">	
 			<div class="title">
 				<h1 class="text-center">Season Statistics</h1>
 				<div class="flex items-center justify-center">
@@ -15,41 +10,50 @@
 			</div>
 			
 			<Loader v-if="!hasMounted || !hasLoaded" />
-			<ErrorTxt v-else-if="hasMounted && hasLoaded && (!mogiData || !mogiData.length)" />
+			
+			<!-- Show informative message when no mogi data exists for selected season -->
+			<div v-else-if="hasMounted && hasLoaded && (!mogiData || !mogiData.length)" class="no-data-container">
+				<div class="no-data-content">
+					<img src="/images/MK8D-PoliceRed.png" alt="no data icon" width="150" height="150" />
+					<h2>No Statistics Available for Season {{ selectedSeason }}</h2>
+					<p>Mogi statistics were only introduced starting from Season 3.</p>
+					<p>Please select Season 3 or later above to view statistics.</p>
+				</div>
+			</div>
 			
 			<div v-else class="stats-container">
 				<div class="stats-grid">
-					<div class="stat-card">
+					<div class="stat-card mogis-played-card">
 						<h3>Total Mogis Played</h3>
 						<p class="stat-value">{{ stats.totalMogis }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-duration-card">
 						<h3>Average Duration</h3>
 						<p class="stat-value">{{ stats.averageDurationMinutes }} minutes</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-dcs-card">
 						<h3>Average DCs per Mogi</h3>
 						<p class="stat-value">{{ stats.averageDisconnections }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card max-dcs-card">
 						<h3>Most DCs in a Mogi</h3>
 						<p class="stat-value">{{ stats.maxDisconnections }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-subs-card">
 						<h3>Average Subs per Mogi</h3>
 						<p class="stat-value">{{ stats.averageSubs }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card average-players-card">
 						<h3>Average Players per Mogi</h3>
 						<p class="stat-value">{{ stats.averagePlayersPerMogi }}</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card biggest-mmr-changes-card">
 						<h3>Biggest MMR Changes</h3>
 						<div class="mmr-changes">
 							<p><span class="gain">📈 Gain:</span> {{ stats.biggestGain }}</p>
@@ -57,7 +61,7 @@
 						</div>
 					</div>
 					
-					<div class="stat-card wide">
+					<div class="stat-card wide most-active-players-card">
 						<h3>Most Active Players</h3>
 						<div v-if="stats.top3Players && stats.top3Players.length > 0" class="player-list">
 							<p v-for="([playerName, count], index) in stats.top3Players" :key="playerName">
@@ -68,7 +72,7 @@
 						<p v-else class="no-data">No player data available</p>
 					</div>
 					
-					<div class="stat-card">
+					<div class="stat-card format-distribution-card">
 						<h3>Format Distribution</h3>
 						<div v-if="Object.keys(stats.formatsDict).length > 0" class="format-list">
 							<p v-for="(count, format) in stats.formatsDict" :key="format">
@@ -92,7 +96,7 @@
 	const route = useRoute()
 	const hasMounted = useState("mounted", () => false)
 	const { mogiData, hasLoaded, isDataFromCache, loadMogiData, calculateStats } = useMogiData()
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4))
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4))
 	
 	const formatChartData = ref(null)
 	
@@ -180,7 +184,8 @@
 		};
 	}
 
-	async function onSeasonChange() {
+	async function onSeasonChange(season) {
+		selectedSeason.value = season;
 		await loadMogiData(selectedSeason.value)
 		await updateStats()
 	}
@@ -195,6 +200,13 @@
 	watch(mogiData, async () => {
 		await updateStats()
 	})
+
+	useSeoMeta({
+		title: 'Season Statistics - MK8DX-yuzu Lounge',
+		description: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.',
+		ogTitle: 'Season Statistics - MK8DX-yuzu Lounge',
+		ogDescription: 'View detailed seasonal statistics from our Mario Kart 8 Deluxe Yuzu Lounge events.'
+	});
 </script>
 
 <style scoped>
@@ -209,7 +221,7 @@
 	justify-content: center;
 	padding: 0 20px;
 	max-width: 1800px;
-	margin: 0 auto;
+	margin: 0 auto 20px auto;
 }
 
 .stats-grid {
@@ -243,6 +255,63 @@
 	flex: 1;
 	min-width: 300px;
 }
+
+/* TODO: Season-Stats Design Update */
+/* .stat-card::after {
+	content: "";
+	width: 90px;
+	height: 90px;
+	background-size: contain;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	filter: invert();
+	opacity: 0.2;
+}
+
+.stat-card.mogis-played-card::after {
+	background-image: url(/images/stats/Equal%20Sign.svg);
+	right: 10px;
+}
+
+.stat-card.average-duration-card::after {
+	background-image: url(/images/stats/Timer.svg);
+}
+
+.stat-card.average-dcs-card::after {
+	background-image: url(/images/stats/Disconnection.svg);
+	transform: none;
+}
+
+.stat-card.max-dcs-card::after {
+	background-image: url(/images/stats/Disconnection.svg);
+	transform: none;
+}
+
+.stat-card.average-subs-card::after {
+	background-image: url(/images/stats/Substitute.svg);
+	right: 10px;
+}
+
+.stat-card.average-players-card::after {
+	background-image: url(/images/stats/Players.svg);
+	right: 10px;
+}
+
+.stat-card.biggest-mmr-changes-card::after {
+	background-image: url(/images/stats/Plus%20Sign.svg);
+	right: 10px;
+}
+
+.stat-card.most-active-players-card::after {
+	background-image: url(/images/stats/Shower.svg);
+	right: 10px;
+}
+
+.stat-card.format-distribution-card::after {
+	background-image: url(/images/stats/Pie%20Chart.svg);
+	right: 10px;
+} */
 
 .stat-card:nth-child(1) { animation-delay: 0.1s; }
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
@@ -279,7 +348,8 @@
 
 .stat-card h3 {
 	margin-bottom: 15px;
-	color: #02bae7;
+	/* color: #02bae7; */
+	color: rgba(255, 255, 255, 0.7);
 	font-size: 18px;
 	font-weight: 600;
 }
@@ -351,6 +421,39 @@
 	margin: 20px 0;
 }
 
+.no-data-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+	margin: 40px 0;
+}
+
+.no-data-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 20px;
+	max-width: 600px;
+	animation: reveal 0.70s 1 cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+.no-data-content h2 {
+	font-size: clamp(1.5rem, 3vw, 2.5rem);
+	font-weight: bold;
+	color: #ff6b6b;
+	margin: 0;
+}
+
+.no-data-content p {
+	font-size: clamp(1rem, 2vw, 1.25rem);
+	color: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	line-height: 1.6;
+}
+
 .player-list {
 	max-height: 200px;
 	overflow-y: auto;
@@ -396,6 +499,24 @@
 	
 	.stat-value {
 		font-size: 24px;
+	}
+
+	.no-data-container {
+		padding: 40px 15px;
+		margin: 20px 0;
+	}
+
+	.no-data-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.no-data-content p {
+		font-size: 1rem;
+	}
+
+	.no-data-content img {
+		width: 120px;
+		height: 120px;
 	}
 }
 </style>

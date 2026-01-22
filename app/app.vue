@@ -1,13 +1,4 @@
 <template>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline" />
-	<meta property="og:title" content="MK8DX-Yuzu Leaderboard" />
-	<meta property="og:site_name" content="dsc.gg/yuzuonline" />
-	<meta property="al:web:url" content="https://dsc.gg/yuzuonline" />
-	<meta property="og:description" content="Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!" />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://mk8dx-yuzu.github.io/" />
-	<meta property="og:image" content="https://mk8dx-yuzu.github.io/favicon/ms-icon-310x310.png" />
 	<div class="app-container">
 		<div class="gradient-bg"></div>
 		<div class="main-content">
@@ -183,48 +174,6 @@
 				isSearchOpen.value = !isSearchOpen.value;
 			},
 		},
-	});
-
-	useHead({
-		title: "MK8DX-Yuzu Leaderboard",
-		meta: [
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1.0",
-			},
-			{
-				name: "description",
-				content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge! dsc.gg/yuzuonline",
-			},
-			{
-				property: "og:title",
-				content: "MK8DX-Yuzu Leaderboard",
-			},
-			{
-				property: "og:site_name",
-				content: "dsc.gg/yuzuonline",
-			},
-			{
-				property: "al:web:url",
-				content: "https://dsc.gg/yuzuonline",
-			},
-			{
-				property: "og:description",
-				content: "Here you can view your stats from our Mario Kart 8 Deluxe Yuzu Lounge!",
-			},
-			{
-				property: "og:type",
-				content: "website",
-			},
-			{
-				property: "og:url",
-				content: "https://mk8dx-yuzu.github.io/",
-			},
-			{
-				property: "og:image",
-				content: "https://mk8dx-yuzu.github.io/images/kawaii_icon_by_kevnkkm.png",
-			},
-		],
 	});
 </script>
 
