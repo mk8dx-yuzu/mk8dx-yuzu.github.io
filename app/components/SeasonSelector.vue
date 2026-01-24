@@ -1,13 +1,21 @@
 <template>
-	<div class="season-selector">
-		<fieldset class="season-tabs" role="radiogroup" aria-labelledby="season-selector-label">
-			<legend id="season-selector-label" class="sr-only">Select Season</legend>
-			<label v-for="season in availableSeasons" :key="season.value" class="season-tab">
-				<input type="radio" :value="season.value" v-model="modelValue" @change="handleSeasonChange" name="season" :aria-label="`Season ${season.value}`" />
-				<span>{{ season.label }}</span>
-			</label>
-		</fieldset>
+	<div class="season-selector-outer">
+		<div class="season-selector">
+			<fieldset class="season-tabs" role="radiogroup" aria-labelledby="season-selector-label">
+				<legend id="season-selector-label" class="sr-only">Select Season</legend>
+				<label v-for="season in availableSeasons" :key="season.value" class="season-tab">
+					<input type="radio" :value="season.value" v-model="modelValue" @change="handleSeasonChange" name="season" :aria-label="`Season ${season.value}`" />
+					<span>{{ season.label }}</span>
+				</label>
+			</fieldset>
+		</div>
+		<Transition name="season-info">
+			<div v-if="modelValue === 1" class="season-1-info">
+				<p>Season 1 data might contain inaccuracies or be incomplete because the data was stored on a broken Google Sheets file.</p>
+			</div>
+		</Transition>
 	</div>
+	 
 </template>
 
 <script setup>

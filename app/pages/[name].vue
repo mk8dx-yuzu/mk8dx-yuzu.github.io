@@ -322,7 +322,7 @@
     max-width: 1800px;
 }
 
-.season-selector {
+.season-selector-outer {
     position: absolute;
     top: 0;
     left: 0;
@@ -828,7 +828,7 @@
         width: 100%;
     }
 
-    .season-selector {
+    .season-selector-outer {
         position: initial;
         margin-bottom: 10px;
     }

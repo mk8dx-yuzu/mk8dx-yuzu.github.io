@@ -52,15 +52,30 @@
     text-align: center;
 }
 
-.season-selector {
+.season-selector-outer {
     margin-top: 15px;
     margin-bottom: 10px;
+    max-width: fit-content;
+    width: 100%;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+.season-selector-outer:has(.season-1-info) {
+    margin-bottom: 40px;
+}
+
+.season-selector {
     width: 100%;
     overflow-x: auto;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     max-width: fit-content;
+}
+
+.season-selector:has(+ .season-1-info) {
+    border-radius: 5px 5px 0 0;
 }
 
 /* Screen reader only class for accessibility */
@@ -160,6 +175,42 @@ Alternative approach using adjacent sibling for older browsers
         border: 1px solid #02bae7;
     }
 } */
+
+.season-1-info {
+    position: absolute;
+    padding: 5px;
+    border: 1px solid #A3A300;
+    border-radius: 0 0 5px 5px;
+    /* background-color: #525200; */
+    background: repeating-linear-gradient(-45deg, #666600 0, #666600, 6px, #525200 6px, #525200 12px);
+    /* width: 100%;
+    box-sizing: border-box; */
+}
+
+/* Vue transition classes for season-info */
+.season-info-enter-active {
+    transition: all 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
+    transform-origin: top;
+}
+
+.season-info-leave-active {
+    transition: all 0.2s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+    transform-origin: bottom;
+}
+
+.season-info-enter-from {
+    opacity: 0;
+    transform: translateY(-15px);
+}
+
+.season-info-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.season-1-info p {
+    font-size: 12px;
+}
 
 .leaderboard-container {
     display: flex;
