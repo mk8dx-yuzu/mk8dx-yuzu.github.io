@@ -96,7 +96,7 @@
 	const url = useState("url", () => "https://mk8dx-yuzu.kevnkkm.de/api/leaderboard");
 	const hasMounted = useState("mounted", () => false);
 	const { playerData, hasLoaded, loadPlayerData, animateTable, clearCache } = usePlayerData();
-	const selectedSeason = useState("selectedSeason", () => (route.query.s == 3 ? 3 : 4));
+	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4));
 
 	onMounted(async () => {
 		hasMounted.value = true;
@@ -104,18 +104,8 @@
 		// Clear cache on page refresh/initial load to ensure fresh data
 		clearCache();
 
-		// Note: Data loading is now handled by individual pages for season-specific content
-
-		// Only load default data if on a non-index page that needs it
-
-		console.log(`Current season query: ${route.query.s}`);
-		let season = 4;
-		if (route.query.s == 3) {
-			season = 3;
-		}
-		console.log(`Loading data for season ${season}`);
-		await loadPlayerData(season); // Load Season 3 data for non-index pages
-		animateTable();
+		// Note: Data loading is now handled by SeasonSelector component's onMounted emission
+		// No need to load data here to avoid duplicate loading
 	});
 
 	async function downloadSheet() {
