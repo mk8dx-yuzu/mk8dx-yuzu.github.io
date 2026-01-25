@@ -141,11 +141,17 @@ export const usePlayerData = () => {
 
 	function animateTable() {
 		nextTick(() => {
+			// *Why* <td> is used instead of <tr> to animate rows:
+			// When animating rows, the background-color of each row gets animated as well (doesn't look good). With <td> it makes it look like the text is animating in, which looks better.
+			// To prevent excessive delay accumulation in large tables (Season 4 has 1000+ entries for example), we reset the delay every 20 rows which has to be divided by the amount of columns.
 			const cells = document.querySelectorAll("#leaderboard-table td");
+			const columnsPerRow = document.querySelector("#leaderboard-table tr")?.children.length;
+			const animationDelay = 0.005;
 			cells.forEach((cell, index) => {
 				cell.style.opacity = 0;
 				cell.style.animation = "tiltanimation 0.75s forwards";
-				cell.style.animationDelay = index * 0.005 + "s";
+				const rowIndex = Math.floor(index / columnsPerRow);
+				cell.style.animationDelay = (rowIndex % 20) * (animationDelay * columnsPerRow) + "s";
 			});
 		});
 	}
