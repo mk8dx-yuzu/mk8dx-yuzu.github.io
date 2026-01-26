@@ -20,7 +20,7 @@
 					<nav :class="{ open: isMenuOpen }">
 						<ul>
 							<li class="search-icon">
-								<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'">
+								<UPopover v-model:open="isSearchOpen" v-if="route.path == '/'" class="search-icon-inner">
 									<UTooltip text="Search" :shortcuts="['CTRL', 'K']" :popper="{ placement: 'left' }">
 										<UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
 									</UTooltip>

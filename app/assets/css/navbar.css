@@ -49,6 +49,14 @@
 
 .search-icon {
     width: fit-content !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.search-icon-inner {
+    display: flex;
+    align-items: center;
 }
 
 .navigation-container nav ul li a {
