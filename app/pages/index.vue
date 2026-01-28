@@ -101,8 +101,10 @@
 		animateTable()
 	}
 
-	// Set mounted state - data loading is triggered by SeasonSelector's onMounted emission
-	onMounted(() => {
+	// Load data on component mount
+	onMounted(async () => {
 		hasMounted.value = true;
+		await loadPlayerData(selectedSeason.value);
+		animateTable();
 	})
 </script>
