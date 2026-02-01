@@ -1,305 +1,374 @@
 <template>
-	<div>
-		<Loader v-if="!hasMounted || !hasLoaded" />
-		<ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
-		<div v-else class="content">
-			<!-- <NoticeBanner
-				v-if="selectedSeason != 4" color="blue">
-				<p>You are viewing historical player data from Season {{ selectedSeason }}. Select the current season on the leaderboard for up-to-date stats.</p>
-			</NoticeBanner> -->
-			<NoticeBanner v-if="player && suspended" color="red">
-				<p>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</p>
-			</NoticeBanner>
-			<div class="profile-container">
-				<div class="profile-container-inner">
-                    <SeasonSelector v-model="selectedSeason" @change="onSeasonChange" />
-					
-					<!-- Player not found in selected season -->
-					<div v-if="!player" class="player-not-found">
-						<div class="player-not-found-content">
-							<img src="/images/MK8D-PoliceRed.png" alt="error icon" width="150" height="150" />
-							<h2>Player Not Found in Season {{ selectedSeason }}</h2>
-							<p>Player {{ name }} does not have any recorded data in Season {{ selectedSeason }}.</p>
-							<p>Please select a different season above to view their stats.<br>(Or they might not even exist altogether)</p>
-						</div>
-					</div>
+  <div>
+    <Loader v-if="!hasMounted || !hasLoaded" />
+    <ErrorTxt v-else-if="hasMounted && hasLoaded && !playerData.length" />
+    <div
+      v-else
+      class="content"
+    >
+      <!-- <NoticeBanner
+       v-if="selectedSeason != 4" color="blue">
+        <p>You are viewing historical player data from Season {{ selectedSeason }}. Select the current season on the leaderboard for up-to-date stats.</p>
+      </NoticeBanner> -->
+      <NoticeBanner
+        v-if="player && suspended"
+        color="red"
+      >
+        <p>This player is currently suspended and may no longer participate in MK8DX-yuzu Lounge.</p>
+      </NoticeBanner>
+      <div class="profile-container">
+        <div class="profile-container-inner">
+          <SeasonSelector
+            v-model="selectedSeason"
+            @change="onSeasonChange"
+          />
 
-					<!-- Player profile content -->
-					<div v-if="player" class="player-profile-content">
-					<div v-if="player" class="rank-icon-background">
-						<img
-							:src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
-							alt="rank icon" />
-						<div class="gradient-blur">
-							<div v-for="i in 3" :key="i"></div>
-						</div>
-                        <div class="gradient-rank" :style="{
-							'--rank-primary': rankColors.primary,
-							'--rank-secondary': rankColors.secondary
-						}">
-                        </div>
-						<div class="overlay">
-							<a class="player-name" :href="`https://discord.com/users/${player.discord}`">{{ player.name }}</a>
-							<!-- <h2 class="season-number">Season {{ selectedSeason }}</h2> -->
-							<div class="rank-info">
-								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ player.mmr }} MMR</p>
-								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">●</p>
-								<p :class="[getColor(player.mmr, playerData.indexOf(player))]">{{ getRank(player.mmr, playerData.indexOf(player)) }} Rank</p>
-							</div>
-							<p>Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
-						</div>
-					</div>
-					<div class="stats">
-						<div class="stat">
-							<p class="stat-title">Your last 5 MMR changes:</p>
-							<p class="stat-value">{{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None" }}</p>
-						</div>
-						<div class="stat">
-							<p class="stat-value">
-								<b>{{ player.wins }}</b> total wins
-							</p>
-							<p class="stat-title">
-								and <b>{{ player.losses }}</b> total losses
-							</p>
-						</div>
-						<div class="stat">
-							<p class="stat-value">
-								<b>{{ player.wins + player.losses === 0 ? 0 : Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
-							</p>
-							<p class="stat-title">
-								out of <b>{{ player.wins + player.losses }}</b> total mogis
-							</p>
-						</div>
-						<div class="stat">
-							<p class="stat-title">With an average of 69 minutes per mogi</p>
-							<p class="stat-value">
-								<b>{{ (player.wins + player.losses) * 69 }} minutes</b> wasted
-							</p>
-						</div>
-						<div class="stat">
-							<p class="stat-value">
-								<b>{{ player.disconnects }}</b> disconnects
-							</p>
-							<p class="stat-title">
-								<b>{{ player.disconnects * 3 }}</b> minutes wasted for others
-							</p>
-						</div>
-					</div>
-					<!-- Guild Section -->
-					<div v-if="playerGuild" class="guild-section">
-						<div class="guild-section-header">
-							<h3>Guild Affiliation</h3>
-						</div>
-						<div class="player-guild-card" :class="getColor(playerGuild.mmr)" @click="navToGuilds">
-							<div class="player-guild-header">
-								<div class="player-guild-rank-section">
-									<div class="player-guild-rank">#{{ guildRank }}</div>
-								</div>
-								<div class="player-guild-logo-section">
-									<img :src="getGuildIcon(playerGuild)" alt="Guild Logo" class="player-guild-logo" />
-								</div>
-								<div class="player-guild-main-info">
-									<div class="player-guild-title-section">
-										<h3 class="player-guild-name">{{ playerGuild.name }}</h3>
-										<span class="player-guild-tag">{{ getGuildTag(playerGuild.name) }}</span>
-										<span class="player-role-badge" :class="isGuildOwner ? 'owner' : 'member'">
-											{{ isGuildOwner ? 'Owner' : 'Member' }}
-										</span>
-									</div>
-									<div class="player-guild-stats">
-										<div class="player-guild-stat-item">
-											<span class="player-guild-stat-label">MMR</span>
-											<span class="player-guild-stat-value" :class="getColor(playerGuild.mmr)">{{ playerGuild.mmr }}</span>
-										</div>
-										<div class="player-guild-stat-item">
-											<span class="player-guild-stat-label">Wins</span>
-											<span class="player-guild-stat-value">{{ playerGuild.wins }}</span>
-										</div>
-										<div class="player-guild-stat-item">
-											<span class="player-guild-stat-label">Losses</span>
-											<span class="player-guild-stat-value">{{ playerGuild.losses }}</span>
-										</div>
-										<!-- <div class="player-guild-stat-item">
-											<span class="player-guild-stat-label">Members</span>
-											<span class="player-guild-stat-value">{{ playerGuild.players.length }}</span>
-										</div> -->
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="history-container">
-						<highchart v-if="player?.name" :options="chartOptions" class="overflow-x-auto" />
-					</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          <!-- Player not found in selected season -->
+          <div
+            v-if="!player"
+            class="player-not-found"
+          >
+            <div class="player-not-found-content">
+              <img
+                src="/images/MK8D-PoliceRed.png"
+                alt="error icon"
+                width="150"
+                height="150"
+              >
+              <h2>Player Not Found in Season {{ selectedSeason }}</h2>
+              <p>Player {{ name }} does not have any recorded data in Season {{ selectedSeason }}.</p>
+              <p>Please select a different season above to view their stats.<br>(Or they might not even exist altogether)</p>
+            </div>
+          </div>
+
+          <!-- Player profile content -->
+          <div
+            v-if="player"
+            class="player-profile-content"
+          >
+            <div
+              v-if="player"
+              class="rank-icon-background"
+            >
+              <img
+                :src="`https://raw.githubusercontent.com/mk8dx-yuzu/ranks/refs/heads/main/${getRank(player.mmr, playerData.indexOf(player))}.png`"
+                alt="rank icon"
+              >
+              <div class="gradient-blur">
+                <div
+                  v-for="i in 3"
+                  :key="i"
+                />
+              </div>
+              <div
+                class="gradient-rank"
+                :style="{
+                  '--rank-primary': rankColors.primary,
+                  '--rank-secondary': rankColors.secondary
+                }"
+              />
+              <div class="overlay">
+                <a
+                  class="player-name"
+                  :href="`https://discord.com/users/${player.discord}`"
+                >{{ player.name }}</a>
+                <!-- <h2 class="season-number">Season {{ selectedSeason }}</h2> -->
+                <div class="rank-info">
+                  <p :class="[getColor(player.mmr, playerData.indexOf(player))]">
+                    {{ player.mmr }} MMR
+                  </p>
+                  <p :class="[getColor(player.mmr, playerData.indexOf(player))]">
+                    ●
+                  </p>
+                  <p :class="[getColor(player.mmr, playerData.indexOf(player))]">
+                    {{ getRank(player.mmr, playerData.indexOf(player)) }} Rank
+                  </p>
+                </div>
+                <p>Rank #{{ playerData.findIndex((obj) => obj.name === player.name) + 1 }} serverwide</p>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-title">
+                  Your last 5 MMR changes:
+                </p>
+                <p class="stat-value">
+                  {{ player.history.length != 0 ? player.history.slice(-5).join(", ") : "None" }}
+                </p>
+              </div>
+              <div class="stat">
+                <p class="stat-value">
+                  <b>{{ player.wins }}</b> total wins
+                </p>
+                <p class="stat-title">
+                  and <b>{{ player.losses }}</b> total losses
+                </p>
+              </div>
+              <div class="stat">
+                <p class="stat-value">
+                  <b>{{ player.wins + player.losses === 0 ? 0 : Math.round((player.wins / (player.wins + player.losses)) * 100) }}%</b> Winrate
+                </p>
+                <p class="stat-title">
+                  out of <b>{{ player.wins + player.losses }}</b> total mogis
+                </p>
+              </div>
+              <div class="stat">
+                <p class="stat-title">
+                  With an average of 69 minutes per mogi
+                </p>
+                <p class="stat-value">
+                  <b>{{ (player.wins + player.losses) * 69 }} minutes</b> wasted
+                </p>
+              </div>
+              <div class="stat">
+                <p class="stat-value">
+                  <b>{{ player.disconnects }}</b> disconnects
+                </p>
+                <p class="stat-title">
+                  <b>{{ player.disconnects * 3 }}</b> minutes wasted for others
+                </p>
+              </div>
+            </div>
+            <!-- Guild Section -->
+            <div
+              v-if="playerGuild"
+              class="guild-section"
+            >
+              <div class="guild-section-header">
+                <h3>Guild Affiliation</h3>
+              </div>
+              <div
+                class="player-guild-card"
+                :class="getColor(playerGuild.mmr)"
+                @click="navToGuilds"
+              >
+                <div class="player-guild-header">
+                  <div class="player-guild-rank-section">
+                    <div class="player-guild-rank">
+                      #{{ guildRank }}
+                    </div>
+                  </div>
+                  <div class="player-guild-logo-section">
+                    <img
+                      :src="getGuildIcon(playerGuild)"
+                      alt="Guild Logo"
+                      class="player-guild-logo"
+                    >
+                  </div>
+                  <div class="player-guild-main-info">
+                    <div class="player-guild-title-section">
+                      <h3 class="player-guild-name">
+                        {{ playerGuild.name }}
+                      </h3>
+                      <span class="player-guild-tag">{{ getGuildTag(playerGuild.name) }}</span>
+                      <span
+                        class="player-role-badge"
+                        :class="isGuildOwner ? 'owner' : 'member'"
+                      >
+                        {{ isGuildOwner ? 'Owner' : 'Member' }}
+                      </span>
+                    </div>
+                    <div class="player-guild-stats">
+                      <div class="player-guild-stat-item">
+                        <span class="player-guild-stat-label">MMR</span>
+                        <span
+                          class="player-guild-stat-value"
+                          :class="getColor(playerGuild.mmr)"
+                        >{{ playerGuild.mmr }}</span>
+                      </div>
+                      <div class="player-guild-stat-item">
+                        <span class="player-guild-stat-label">Wins</span>
+                        <span class="player-guild-stat-value">{{ playerGuild.wins }}</span>
+                      </div>
+                      <div class="player-guild-stat-item">
+                        <span class="player-guild-stat-label">Losses</span>
+                        <span class="player-guild-stat-value">{{ playerGuild.losses }}</span>
+                      </div>
+                      <!-- <div class="player-guild-stat-item">
+                        <span class="player-guild-stat-label">Members</span>
+                        <span class="player-guild-stat-value">{{ playerGuild.players.length }}</span>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history-container">
+              <highchart
+                v-if="player?.name"
+                :options="chartOptions"
+                class="overflow-x-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-	import SeasonSelector from "~/components/SeasonSelector.vue";
-    import { useRank } from "~/composables/useRank";
-    import { useRouter } from 'vue-router';
+import SeasonSelector from '~/components/SeasonSelector.vue'
+import { useRank } from '~/composables/useRank'
+import { useRouter } from 'vue-router'
 
-	const route = useRoute();
-	const router = useRouter();
-	const name = route.params.name;
+const route = useRoute()
+const router = useRouter()
+const name = route.params.name
 
-	const { playerData, hasLoaded, loadPlayerData } = usePlayerData();
-	const { guildData, hasLoaded: guildHasLoaded, loadGuildData } = useGuildData();
-	const selectedSeason = useState("selectedSeason", () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4));
-	const hasMounted = useState("mounted", () => false);
+const { playerData, hasLoaded, loadPlayerData } = usePlayerData()
+const { guildData, hasLoaded: guildHasLoaded, loadGuildData } = useGuildData()
+const selectedSeason = useState('selectedSeason', () => ([1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4))
+const hasMounted = useState('mounted', () => false)
 
-	const player = computed(() => playerData.value.filter((player) => player.name == name)[0]);
-	const suspended = computed(() => player.value?.suspended == true);
+const player = computed(() => playerData.value.filter(player => player.name == name)[0])
+const suspended = computed(() => player.value?.suspended == true)
 
-	const { getColor } = useColor();
-	const { getRank } = useRank();
+const { getColor } = useColor()
+const { getRank } = useRank()
 
-	const rankColors = computed(() => {
-		if (!player.value) return { primary: '#CAF0F8', secondary: '#03045E' };
-		
-		const rank = getRank(player.value.mmr, playerData.value.indexOf(player.value));
-		const colorMap = {
-            'Wood': { primary: '#023B3B', secondary: '#06B2B2' },
-			'Bronze': { primary: '#763A00', secondary: '#F57600' },
-			'Silver': { primary: '#343A40', secondary: '#ADB5BD' },
-			'Gold': { primary: '#76520E', secondary: '#DB971A' },
-			'Platinum': { primary: '#140524', secondary: '#4E148C' },
-			'Diamond': { primary: '#03045E', secondary: '#2529F8' },
-			'Master': { primary: '#1B1E22', secondary: '#CED4DA' },
-			'Grandmaster': { primary: '#D51C5E', secondary: '#48091F' }
-		};
-		
-		return colorMap[rank] || { primary: '#CAF0F8', secondary: '#03045E' };  
-	});
+const rankColors = computed(() => {
+  if (!player.value) return { primary: '#CAF0F8', secondary: '#03045E' }
 
-	// Guild-related computed properties
-	const playerGuild = computed(() => {
-		if (!guildData.value || !player.value) return null;
-		return guildData.value.find(guild => 
-			guild.players.some(p => p.name === player.value.name)
-		);
-	});
+  const rank = getRank(player.value.mmr, playerData.value.indexOf(player.value))
+  const colorMap = {
+    Wood: { primary: '#023B3B', secondary: '#06B2B2' },
+    Bronze: { primary: '#763A00', secondary: '#F57600' },
+    Silver: { primary: '#343A40', secondary: '#ADB5BD' },
+    Gold: { primary: '#76520E', secondary: '#DB971A' },
+    Platinum: { primary: '#140524', secondary: '#4E148C' },
+    Diamond: { primary: '#03045E', secondary: '#2529F8' },
+    Master: { primary: '#1B1E22', secondary: '#CED4DA' },
+    Grandmaster: { primary: '#D51C5E', secondary: '#48091F' }
+  }
 
-	const isGuildOwner = computed(() => {
-		if (!playerGuild.value || !player.value) return false;
-		// First player in the players array is the owner
-        // FIXME: The order of players is not always have the owner first
-		return playerGuild.value.players[0]?.name === player.value.name;
-	});
+  return colorMap[rank] || { primary: '#CAF0F8', secondary: '#03045E' }
+})
 
-	const guildRank = computed(() => {
-		if (!playerGuild.value || !guildData.value) return 0;
-		return guildData.value.findIndex(g => g.name === playerGuild.value.name) + 1;
-	});
+// Guild-related computed properties
+const playerGuild = computed(() => {
+  if (!guildData.value || !player.value) return null
+  return guildData.value.find(guild =>
+    guild.players.some(p => p.name === player.value.name)
+  )
+})
 
-	function getGuildIcon(guild) {
-		if (guild?.icon) {
-			return guild.icon;
-		}
-		return '/images/Guild No Icon.png';
-	}
+const isGuildOwner = computed(() => {
+  if (!playerGuild.value || !player.value) return false
+  // First player in the players array is the owner
+  // FIXME: The order of players is not always have the owner first
+  return playerGuild.value.players[0]?.name === player.value.name
+})
 
-	function getGuildTag(guildName) {
-		return guildName
-			.split(' ')
-			.map(word => word.charAt(0).toUpperCase())
-			.join('');
-	}
+const guildRank = computed(() => {
+  if (!playerGuild.value || !guildData.value) return 0
+  return guildData.value.findIndex(g => g.name === playerGuild.value.name) + 1
+})
 
-	function navToGuilds() {
-		router.push({ path: '/guilds', query: route.query });
-	}
+function getGuildIcon(guild) {
+  if (guild?.icon) {
+    return guild.icon
+  }
+  return '/images/Guild No Icon.png'
+}
 
-	// Handle season change - reload both player and guild data
-	async function onSeasonChange(season) {
-		selectedSeason.value = season;
-		await Promise.all([
-			loadPlayerData(selectedSeason.value),
-			loadGuildData(selectedSeason.value)
-		]);
-	}
+function getGuildTag(guildName) {
+  return guildName
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase())
+    .join('')
+}
 
-	// Load data on component mount
-	onMounted(async () => {
-		hasMounted.value = true;
-		await Promise.all([
-			loadPlayerData(selectedSeason.value),
-			loadGuildData(selectedSeason.value)
-		]);
-	});
+function navToGuilds() {
+  router.push({ path: '/guilds', query: route.query })
+}
 
-	const history = computed(() => {
-		let scores = [player.value?.mmr];
-		for (let i = player.value?.history.length - 1; i >= 0; i--) {
-			const change = player.value?.history[i];
-			scores.push(scores[scores.length - 1] - change);
-		}
-		return scores.reverse();
-	});
+// Handle season change - reload both player and guild data
+async function onSeasonChange(season) {
+  selectedSeason.value = season
+  await Promise.all([
+    loadPlayerData(selectedSeason.value),
+    loadGuildData(selectedSeason.value)
+  ])
+}
 
-	const chartOptions = computed(() => {
-		if (!player.value) return {};
+// Load data on component mount
+onMounted(async () => {
+  hasMounted.value = true
+  await Promise.all([
+    loadPlayerData(selectedSeason.value),
+    loadGuildData(selectedSeason.value)
+  ])
+})
 
-		return {
-			chart: {
-				type: "spline",
-				styledMode: true,
-			},
-			title: {
-				text: "MMR History",
-			},
-			subtitle: {
-				text: `Player: ${player.value?.name}`,
-			},
-			xAxis: {
-				title: {
-					text: "Mogis",
-				},
-				categories: history.value.map((x, index) => `${index + 1}`),
-				accessibility: {
-					description: "Time",
-				},
-			},
-			yAxis: {
-				title: {
-					text: "MMR",
-				},
-			},
-			tooltip: {
-				crosshairs: true,
-				shared: true,
-			},
-			plotOptions: {
-				spline: {
-					marker: {
-						radius: 4,
-						lineColor: "#666666",
-						lineWidth: 1,
-					},
-				},
-			},
-			series: [
-				{
-					name: `${player.value?.name}'s MMR developement'`,
-					marker: {
-						symbol: "square",
-					},
-					data: history.value,
-				},
-			],
-		};
-	});
+const history = computed(() => {
+  const scores = [player.value?.mmr]
+  for (let i = player.value?.history.length - 1; i >= 0; i--) {
+    const change = player.value?.history[i]
+    scores.push(scores[scores.length - 1] - change)
+  }
+  return scores.reverse()
+})
 
-    useSeoMeta({
-        title: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
-        description: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`),
-        ogTitle: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
-        ogDescription: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`)
-    });
+const chartOptions = computed(() => {
+  if (!player.value) return {}
+
+  return {
+    chart: {
+      type: 'spline',
+      styledMode: true
+    },
+    title: {
+      text: 'MMR History'
+    },
+    subtitle: {
+      text: `Player: ${player.value?.name}`
+    },
+    xAxis: {
+      title: {
+        text: 'Mogis'
+      },
+      categories: history.value.map((x, index) => `${index + 1}`),
+      accessibility: {
+        description: 'Time'
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'MMR'
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 4,
+          lineColor: '#666666',
+          lineWidth: 1
+        }
+      }
+    },
+    series: [
+      {
+        name: `${player.value?.name}'s MMR developement'`,
+        marker: {
+          symbol: 'square'
+        },
+        data: history.value
+      }
+    ]
+  }
+})
+
+useSeoMeta({
+  title: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
+  description: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`),
+  ogTitle: computed(() => `${player.value ? `${player.value.name}'s ` : ''}Player Profile - MK8DX-yuzu Lounge`),
+  ogDescription: computed(() => `View ${player.value ? `the profile of ${player.value.name}, including` : 'player profiles including'} MMR, wins, losses, and guild affiliation${player.value ? '' : 's'} in the MK8DX-yuzu Lounge.`)
+})
 </script>
 
 <style scoped>
@@ -392,7 +461,7 @@
     z-index: 10;
     position: absolute;
     /* margin-top: 18%; */
-    left: 0; 
+    left: 0;
     right: 0;
     bottom: 5%;
     display: flex;
@@ -574,23 +643,23 @@
     background-size: 200% 200%;
     filter: blur(12px);
     /* transform: scale(0.9); */
-    animation: 
+    animation:
         animate-gradient-start-1 2s ease-out 1s 1 forwards,
         animate-gradient 2s linear 1s infinite;
-    -webkit-mask-image: 
+    -webkit-mask-image:
         linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%),
-        linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
+        linear-gradient(to top,
+            rgba(0, 0, 0, 1) 0%,
             rgba(0, 0, 0, 0.5) 15%,
             rgba(0, 0, 0, 0.2) 30%,
             rgba(0, 0, 0, 0.05) 50%,
             rgba(0, 0, 0, 0) 70%
         ),
         linear-gradient(to bottom, black 0%, black 98%, transparent 100%); /* To prevent a hard cutoff at the bottom of the gradient, tweaking might be needed */
-    mask-image: 
+    mask-image:
         linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%),
-        linear-gradient(to top, 
-            rgba(0, 0, 0, 1) 0%, 
+        linear-gradient(to top,
+            rgba(0, 0, 0, 1) 0%,
             rgba(0, 0, 0, 0.5) 15%,
             rgba(0, 0, 0, 0.2) 30%,
             rgba(0, 0, 0, 0.05) 50%,
@@ -874,7 +943,7 @@
     .stat-title {
         font-size: 16px;
     }
-    
+
     .stat-value {
         font-size: 20px;
     }
