@@ -157,7 +157,7 @@ const url = useState(
   () => 'https://mk8dx-yuzu.kevnkkm.de/api/leaderboard'
 )
 const hasMounted = useState('mounted', () => false)
-const clearCache = usePlayerData()
+const { clearCache } = usePlayerData()
 
 onMounted(async () => {
   hasMounted.value = true
