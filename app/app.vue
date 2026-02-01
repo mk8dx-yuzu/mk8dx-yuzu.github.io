@@ -61,12 +61,29 @@
                         </p>
                         <div class="flex space-x-4">
                           <div class="flex text-center items-center">
-                            <UInput v-model="searchQuery" />
-                            <UIcon
+                            <UInput
+                              v-model="searchQuery"
+                              :ui="{ trailing: 'pe-1' }"
+                            >
+                              <template
+                                v-if="searchQuery?.length"
+                                #trailing
+                              >
+                                <UButton
+                                  color="neutral"
+                                  variant="link"
+                                  size="sm"
+                                  icon="i-heroicons-x-mark"
+                                  aria-label="Clear input"
+                                  @click="searchQuery = ''"
+                                />
+                              </template>
+                            </UInput>
+                            <!-- <UIcon
                               name="i-heroicons-x-mark"
                               class="absolute right-5 cursor-pointer"
                               @click="searchQuery = ''"
-                            />
+                            /> -->
                           </div>
                         </div>
                       </div>
