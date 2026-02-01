@@ -1,25 +1,25 @@
 <template>
-    <div>
-        <canvas id="pieChart"></canvas>
-    </div>
+  <div>
+    <canvas id="pieChart" />
+  </div>
 </template>
 
 <script>
-import { Chart, registerables } from "chart.js";
+import { Chart, registerables } from 'chart.js'
 
 export default {
-    props: {
-        pieChartData: {
-            type: Object,
-            required: true,
-            default: () => ({})
-        }
-    },
+  props: {
+    pieChartData: {
+      type: Object,
+      required: true,
+      default: () => ({})
+    }
+  },
 
-    mounted() {
-        const ctx = document.getElementById("pieChart");
-        Chart.register(...registerables);
-        new Chart(ctx, this.pieChartData);
-    },
-};
+  mounted() {
+    const ctx = document.getElementById('pieChart')
+    Chart.register(...registerables)
+    new Chart(ctx, this.pieChartData)
+  }
+}
 </script>
