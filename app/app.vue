@@ -35,7 +35,13 @@
                   <UPopover
                     v-if="route.path == '/'"
                     v-model:open="isSearchOpen"
+                    arrow
                     class="search-icon-inner"
+                    :content="{
+                      align: 'center',
+                      side: 'bottom',
+                      sideOffset: 8
+                    }"
                   >
                     <UTooltip
                       text="Search"
@@ -48,7 +54,7 @@
                       />
                     </UTooltip>
 
-                    <template #panel>
+                    <template #content>
                       <div class="p-4">
                         <p class="text-2xl text-center pb-2">
                           Search players
