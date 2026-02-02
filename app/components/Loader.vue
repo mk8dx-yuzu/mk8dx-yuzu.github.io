@@ -8,7 +8,7 @@
     </div>
     <div class="loader-text">
       <p id="loader-p">
-        {{ texts[Math.floor(Math.random() * texts.length)] }}
+        {{ displayText }}
       </p>
     </div>
   </div>
@@ -22,4 +22,10 @@ const texts = [
   'Dodging bananas...',
   'Blocking red shells...'
 ]
+
+const displayText = ref(texts[0])
+
+onMounted(() => {
+  displayText.value = texts[Math.floor(Math.random() * texts.length)]
+})
 </script>
