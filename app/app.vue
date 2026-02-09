@@ -32,63 +32,75 @@
             <nav :class="{ open: isMenuOpen }">
               <ul>
                 <li class="search-icon">
-                  <UPopover
+                  <UTooltip
                     v-if="route.path == '/'"
-                    v-model:open="isSearchOpen"
+                    :open="isTooltipOpen"
+                    text="Search is active"
                     arrow
-                    class="search-icon-inner"
                     :content="{
                       align: 'center',
                       side: 'bottom',
                       sideOffset: 8
                     }"
                   >
-                    <UTooltip
-                      text="Search"
-                      :kbds="['meta', 'K']"
-                      :content="{ side: 'left' }"
+                    <UPopover
+                      v-if="route.path == '/'"
+                      v-model:open="isSearchOpen"
+                      arrow
+                      class="search-icon-inner"
+                      :content="{
+                        align: 'center',
+                        side: 'bottom',
+                        sideOffset: 8
+                      }"
                     >
-                      <UIcon
-                        name="i-heroicons-magnifying-glass"
-                        class="w-5 h-5"
-                      />
-                    </UTooltip>
+                      <UTooltip
+                        text="Search"
+                        :kbds="['meta', 'K']"
+                        :content="{ side: 'left' }"
+                      >
+                        <UIcon
+                          name="i-heroicons-magnifying-glass"
+                          class="w-5 h-5"
+                        />
+                      </UTooltip>
 
-                    <template #content>
-                      <div class="p-4">
-                        <p class="text-2xl text-center pb-2">
-                          Search players
-                        </p>
-                        <div class="flex space-x-4">
-                          <div class="flex text-center items-center">
-                            <UInput
-                              v-model="searchQuery"
-                              :ui="{ trailing: 'pe-1' }"
-                            >
-                              <template
-                                v-if="searchQuery?.length"
-                                #trailing
+                      <template #content>
+                        <div class="p-4">
+                          <p class="text-2xl text-center pb-2">
+                            Search players
+                          </p>
+                          <div class="flex space-x-4">
+                            <div class="flex text-center items-center">
+                              <UInput
+                                v-model="searchQuery"
+                                :ui="{ trailing: 'pe-1' }"
                               >
-                                <UButton
-                                  color="neutral"
-                                  variant="link"
-                                  size="sm"
-                                  icon="i-heroicons-x-mark"
-                                  aria-label="Clear input"
-                                  @click="searchQuery = ''"
-                                />
-                              </template>
-                            </UInput>
-                            <!-- <UIcon
-                              name="i-heroicons-x-mark"
-                              class="absolute right-5 cursor-pointer"
-                              @click="searchQuery = ''"
-                            /> -->
+                                <template
+                                  v-if="searchQuery?.length"
+                                  #trailing
+                                >
+                                  <UButton
+                                    color="neutral"
+                                    variant="link"
+                                    size="sm"
+                                    icon="i-heroicons-x-mark"
+                                    aria-label="Clear input"
+                                    @click="searchQuery = ''"
+                                  />
+                                </template>
+                              </UInput>
+                              <!-- <UIcon
+                                name="i-heroicons-x-mark"
+                                class="absolute right-5 cursor-pointer"
+                                @click="searchQuery = ''"
+                              /> -->
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </template>
-                  </UPopover>
+                      </template>
+                    </UPopover>
+                  </UTooltip>
                 </li>
                 <li>
                   <nuxt-link
@@ -231,6 +243,9 @@ async function downloadSheet() {
 const searchQuery = useState('searchQuery', () => '')
 const isSearchOpen = ref(false)
 const isMenuOpen = ref(false)
+const isTooltipOpen = computed(() =>
+  Boolean(searchQuery.value && !isSearchOpen.value)
+)
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
