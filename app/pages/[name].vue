@@ -458,7 +458,7 @@ useSeoMeta({
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 100;
   margin: 0;
 }
 
@@ -521,7 +521,7 @@ useSeoMeta({
 }
 
 .overlay {
-  z-index: 10;
+  z-index: 11;
   position: absolute;
   /* margin-top: 18%; */
   left: 0;

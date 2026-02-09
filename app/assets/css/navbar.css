@@ -11,7 +11,7 @@
   margin-right: auto;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 10000;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -151,7 +151,7 @@
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 2;
+    z-index: 10001;
   }
 
   .navigation-container nav {
@@ -163,7 +163,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 10000;
   }
 
   .navigation-container nav ul {
