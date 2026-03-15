@@ -112,22 +112,21 @@ const route = useRoute()
 const { getColor } = useColor()
 
 const hasMounted = useState('guildsMounted', () => false)
-const { guildData, hasLoaded, isDataFromCache, loadGuildData, animateTable }
-  = useGuildData()
+const {
+  guildData,
+  hasLoaded,
+  isDataFromCache: _isDataFromCache,
+  loadGuildData,
+  animateTable
+} = useGuildData()
 
 // Use guild data from the composable
 const guilds = computed(() => guildData.value || [])
 
-// Season management - Guilds only exist from Season 4 onwards
-const selectedSeason = ref(() => {
-  const querySeason = route.query.s ? parseInt(route.query.s) : 4
-  return querySeason >= 4 ? querySeason : 4
-})
-
 // Load guild data on component mount
 onMounted(async () => {
   hasMounted.value = true
-  await Promise.all([loadGuildData(selectedSeason.value)])
+  await Promise.all([loadGuildData(4)])
   animateTable()
 })
 

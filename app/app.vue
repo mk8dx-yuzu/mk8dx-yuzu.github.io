@@ -200,8 +200,8 @@ onMounted(async () => {
   // Clear cache on page refresh/initial load to ensure fresh data
   clearCache()
 
-  // Note: Data loading is now handled by SeasonSelector component's onMounted emission
-  // No need to load data here to avoid duplicate loading
+  // Data loading is handled in individual pages on mount and season change.
+  // Keep app-level mount free of data fetches to avoid duplicate loading.
 })
 
 async function downloadSheet() {

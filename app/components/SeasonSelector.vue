@@ -53,12 +53,6 @@ const modelValue = ref(
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-// Emit initial season on mount to trigger data load
-onMounted(() => {
-  emit('change', modelValue.value)
-  emit('update:modelValue', modelValue.value)
-})
-
 watch(
   () => route.query.s,
   (newSeason) => {

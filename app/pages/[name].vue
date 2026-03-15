@@ -255,7 +255,7 @@ const router = useRouter()
 const name = route.params.name
 
 const { playerData, hasLoaded, loadPlayerData } = usePlayerData()
-const { guildData, hasLoaded: guildHasLoaded, loadGuildData } = useGuildData()
+const { guildData, hasLoaded: _guildHasLoaded, loadGuildData } = useGuildData()
 const selectedSeason = useState('selectedSeason', () =>
   [1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4
 )
@@ -330,22 +330,16 @@ function navToGuilds() {
   router.push({ path: '/guilds', query: route.query })
 }
 
-// Handle season change - reload both player and guild data
+// Handle season change - player data follows selected season, guild data is always season 4
 async function onSeasonChange(season) {
   selectedSeason.value = season
-  await Promise.all([
-    loadPlayerData(selectedSeason.value),
-    loadGuildData(selectedSeason.value)
-  ])
+  await Promise.all([loadPlayerData(selectedSeason.value), loadGuildData(4)])
 }
 
 // Load data on component mount
 onMounted(async () => {
   hasMounted.value = true
-  await Promise.all([
-    loadPlayerData(selectedSeason.value),
-    loadGuildData(selectedSeason.value)
-  ])
+  await Promise.all([loadPlayerData(selectedSeason.value), loadGuildData(4)])
 })
 
 const history = computed(() => {
