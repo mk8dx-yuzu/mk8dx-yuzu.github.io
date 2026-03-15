@@ -192,16 +192,9 @@ const url = useState(
   () => 'https://mk8dx-yuzu.kevnkkm.de/api/leaderboard'
 )
 const hasMounted = useState('mounted', () => false)
-const { clearCache } = usePlayerData()
 
 onMounted(async () => {
   hasMounted.value = true
-
-  // Clear cache on page refresh/initial load to ensure fresh data
-  clearCache()
-
-  // Data loading is handled in individual pages on mount and season change.
-  // Keep app-level mount free of data fetches to avoid duplicate loading.
 })
 
 async function downloadSheet() {

@@ -6,6 +6,7 @@ export const usePlayerData = () => {
   // Cache for storing fetched data by season
   const dataCache = useState('dataCache', () => new Map())
   const cacheTimestamps = useState('cacheTimestamps', () => new Map())
+  const latestRequestId = useState('latestPlayerDataRequestId', () => 0)
 
   // Cache duration in milliseconds (5 minutes)
   const CACHE_DURATION = 5 * 60 * 1000
@@ -88,6 +89,9 @@ export const usePlayerData = () => {
   }
 
   async function loadPlayerData(season = 4, forceRefresh = false) {
+    const requestId = latestRequestId.value + 1
+    latestRequestId.value = requestId
+
     // Reset loading state
     hasLoaded.value = false
 
@@ -98,6 +102,9 @@ export const usePlayerData = () => {
     if (!forceRefresh && isCacheValid(currentSeason)) {
       const cachedData = getCacheData(currentSeason)
       if (cachedData && cachedData.length > 0) {
+        if (requestId !== latestRequestId.value) {
+          return playerData.value
+        }
         console.log(`Loading season ${currentSeason} player data from cache`)
         playerData.value = cachedData
         isDataFromCache.value = true
@@ -128,9 +135,17 @@ export const usePlayerData = () => {
         )
       }
 
+      if (requestId !== latestRequestId.value) {
+        return playerData.value
+      }
+
       playerData.value = processedData
     } catch (e) {
       console.error('Error fetching player data:', e)
+
+      if (requestId !== latestRequestId.value) {
+        return playerData.value
+      }
 
       // If API fails, try to use expired cache as fallback
       const fallbackData = getCacheData(currentSeason)
@@ -143,6 +158,10 @@ export const usePlayerData = () => {
       } else {
         playerData.value = []
       }
+    }
+
+    if (requestId !== latestRequestId.value) {
+      return playerData.value
     }
 
     hasLoaded.value = true

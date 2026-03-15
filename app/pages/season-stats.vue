@@ -145,12 +145,21 @@
 import { useMogiData } from '~/composables/useMogiData'
 
 const route = useRoute()
+const router = useRouter()
 const hasMounted = useState('mounted', () => false)
-const { mogiData, hasLoaded, isDataFromCache, loadMogiData, calculateStats }
-  = useMogiData()
-const selectedSeason = useState('selectedSeason', () =>
-  [1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4
-)
+const {
+  mogiData,
+  hasLoaded,
+  isDataFromCache: _isDataFromCache,
+  loadMogiData,
+  calculateStats
+} = useMogiData()
+const selectedSeason = useState('selectedSeason', () => 4)
+
+function getSeasonFromQuery() {
+  const season = Number(route.query.s)
+  return [1, 2, 3, 4].includes(season) ? season : 4
+}
 
 const formatChartData = ref(null)
 
@@ -251,6 +260,8 @@ async function onSeasonChange(season) {
 
 onMounted(async () => {
   hasMounted.value = true
+  await router.isReady()
+  selectedSeason.value = getSeasonFromQuery()
   await onSeasonChange(selectedSeason.value)
 })
 
@@ -270,11 +281,6 @@ useSeoMeta({
 </script>
 
 <style scoped>
-.content {
-  /* not needed after footer fix from a while ago */
-  /* min-height: 100dvh; */
-}
-
 .stats-container {
   display: flex;
   justify-content: center;

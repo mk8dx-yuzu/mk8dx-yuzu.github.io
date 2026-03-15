@@ -93,12 +93,20 @@ const router = useRouter()
 const route = useRoute()
 
 const hasMounted = useState('mounted', () => false)
-const { playerData, hasLoaded, isDataFromCache, loadPlayerData, animateTable }
-  = usePlayerData()
-const selectedSeason = useState('selectedSeason', () =>
-  [1, 2, 3].includes(Number(route.query.s)) ? Number(route.query.s) : 4
-)
+const {
+  playerData,
+  hasLoaded,
+  isDataFromCache: _isDataFromCache,
+  loadPlayerData,
+  animateTable
+} = usePlayerData()
+const selectedSeason = useState('selectedSeason', () => 4)
 const searchQuery = useState('searchQuery')
+
+function getSeasonFromQuery() {
+  const season = Number(route.query.s)
+  return [1, 2, 3, 4].includes(season) ? season : 4
+}
 
 const fuseOptions = {
   keys: ['name', 'mmr']
@@ -132,6 +140,8 @@ async function onSeasonChange(season) {
 // Load data on component mount
 onMounted(async () => {
   hasMounted.value = true
+  await router.isReady()
+  selectedSeason.value = getSeasonFromQuery()
   await loadPlayerData(selectedSeason.value)
   animateTable()
 })
