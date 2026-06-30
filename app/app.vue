@@ -131,7 +131,7 @@
                 </li>
                 <li>
                   <nuxt-link
-                    to="https://github.com/probablyjassin/bot-mk8dx-public"
+                    to="https://github.com/probablyjassin/bot-mk8dx"
                     class="nav-link"
                   >Lounge Bot</nuxt-link>
                 </li>
