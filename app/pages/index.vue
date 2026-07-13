@@ -4,7 +4,7 @@
       <p>
         Season 4 released! Check out the changes
         <a
-          href="https://github.com/probablyjassin/bot-mk8dx-public/blob/main/README.md#the-4th-season-of-mk8dx-lounge-on-yuzu-online"
+          href="https://github.com/probablyjassin/bot-mk8dx/blob/main/README.md#the-4th-season-of-mk8dx-lounge-on-yuzu-online"
           target="_blank"
         >here!</a>
       </p>
